@@ -24,7 +24,27 @@ describe 'flog command' do
     end
   
     it 'should run' do
-      lambda { run_command('blah') }.should_not raise_error(Errno::ENOENT)
+      lambda { run_command }.should_not raise_error(Errno::ENOENT)
+    end
+    
+    it 'should create a Flog instance' do
+      Flog.expects(:new).returns(@flog)
+      run_command
+    end
+    
+    it 'should call flog_files on the Flog instance' do
+      @flog.expects(:flog_files)
+      run_command
+    end
+    
+    it 'should call report on the Flog instance' do
+      @flog.expects(:report)
+      run_command
+    end
+    
+    it "should pass '-' (for the file path) to flog_files on the instance" do
+      @flog.expects(:flog_files).with(['-'])
+      run_command
     end
   end
 end
