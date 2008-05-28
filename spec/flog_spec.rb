@@ -32,4 +32,48 @@ describe Flog do
       @flog.calls.should == {}
     end
   end
+  
+  describe "when flogging a list of files" do
+    before :each do
+      @flog = Flog.new
+    end
+    
+    describe 'when stdin is specified as input' do
+      it 'should not raise an exception'
+      
+      it 'should do something useful'
+    end
+    
+    describe 'when files are specified' do
+      describe 'when some of the files do not exist' do
+        before :each do
+          @files = [ __FILE__, '/asdfasfas/asdfasdfasdfasd' ]
+        end
+        
+        it 'should raise an error about the missing files' do
+          lambda { @flog.flog_files(@files) }.should raise_error(Errno::ENOENT)
+        end       
+      end
+      
+      describe 'when all the files exist' do
+        before :each do
+          @files = [ __FILE__ ]
+        end
+        
+        it 'should not raise an exception' do
+          lambda { @flog.flog_files(@files) }.should_not raise_error
+        end
+
+        it 'should do something useful'        
+      end
+    end
+    
+    describe 'when no files are specified' do
+      it 'should not raise an exception' do
+        lambda { @flog.flog_files }.should_not raise_error
+      end
+      
+      it 'should do nothing'
+    end
+  end
 end
