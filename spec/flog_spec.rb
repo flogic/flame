@@ -2,6 +2,16 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 require 'flog'
 
 describe Flog do
+  describe 'when initializing' do
+    it 'should allow no arguments' do
+      lambda { Flog.new 'bogus' }.should raise_error(ArgumentError)
+    end
+    
+    it 'should succeed if given no arguments' do
+      lambda { Flog.new }.should_not raise_error
+    end
+  end
+  
   describe 'after initializing' do
     before :each do
       @flog = Flog.new
