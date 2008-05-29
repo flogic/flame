@@ -35,11 +35,19 @@ describe Flog do
   
   describe "when flogging a list of files" do
     before :each do
+      @stdin = $stdin  # HERE: working through the fact that zenspider is using $stdin in the middle of the system
+      $stdin = stub('stdin', :read => '')
       @flog = Flog.new
     end
     
+    after :each do
+      $stdin = @stdin
+    end
+    
     describe 'when stdin is specified as input' do
-      it 'should not raise an exception'
+      it 'should not raise an exception' do
+        lambda { @flog.flog_files('-') }.should_not raise_error
+      end
       
       it 'should do something useful'
     end
