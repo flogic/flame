@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:29:31 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:29:37 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>79</tt>
+      <td class='lines_total'><tt>87</tt>
         </td>
-      <td class='lines_code'><tt>61</tt>
+      <td class='lines_code'><tt>68</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -635,48 +635,56 @@ span.run100 {
 </span><span class="inferred1"><a name="line35"></a>35   
 </span><span class="marked0"><a name="line36"></a>36   describe &quot;when flogging a list of files&quot; do
 </span><span class="marked1"><a name="line37"></a>37     before :each do
-</span><span class="marked0"><a name="line38"></a>38       @flog = Flog.new
-</span><span class="inferred1"><a name="line39"></a>39     end
-</span><span class="inferred0"><a name="line40"></a>40     
-</span><span class="marked1"><a name="line41"></a>41     describe 'when stdin is specified as input' do
-</span><span class="marked0"><a name="line42"></a>42       it 'should not raise an exception'
-</span><span class="inferred1"><a name="line43"></a>43       
-</span><span class="marked0"><a name="line44"></a>44       it 'should do something useful'
+</span><span class="marked0"><a name="line38"></a>38       @stdin = $stdin  # HERE: working through the fact that zenspider is using $stdin in the middle of the system
+</span><span class="marked1"><a name="line39"></a>39       $stdin = stub('stdin', :read =&gt; '')
+</span><span class="marked0"><a name="line40"></a>40       @flog = Flog.new
+</span><span class="inferred1"><a name="line41"></a>41     end
+</span><span class="inferred0"><a name="line42"></a>42     
+</span><span class="marked1"><a name="line43"></a>43     after :each do
+</span><span class="marked0"><a name="line44"></a>44       $stdin = @stdin
 </span><span class="inferred1"><a name="line45"></a>45     end
 </span><span class="inferred0"><a name="line46"></a>46     
-</span><span class="marked1"><a name="line47"></a>47     describe 'when files are specified' do
-</span><span class="marked0"><a name="line48"></a>48       describe 'when some of the files do not exist' do
-</span><span class="marked1"><a name="line49"></a>49         before :each do
-</span><span class="marked0"><a name="line50"></a>50           @files = [ __FILE__, '/asdfasfas/asdfasdfasdfasd' ]
-</span><span class="inferred1"><a name="line51"></a>51         end
-</span><span class="inferred0"><a name="line52"></a>52         
-</span><span class="marked1"><a name="line53"></a>53         it 'should raise an error about the missing files' do
-</span><span class="marked0"><a name="line54"></a>54           lambda { @flog.flog_files(@files) }.should raise_error(Errno::ENOENT)
-</span><span class="inferred1"><a name="line55"></a>55         end       
-</span><span class="inferred0"><a name="line56"></a>56       end
-</span><span class="inferred1"><a name="line57"></a>57       
-</span><span class="marked0"><a name="line58"></a>58       describe 'when all the files exist' do
-</span><span class="marked1"><a name="line59"></a>59         before :each do
-</span><span class="marked0"><a name="line60"></a>60           @files = [ __FILE__ ]
-</span><span class="inferred1"><a name="line61"></a>61         end
-</span><span class="inferred0"><a name="line62"></a>62         
-</span><span class="marked1"><a name="line63"></a>63         it 'should not raise an exception' do
-</span><span class="marked0"><a name="line64"></a>64           lambda { @flog.flog_files(@files) }.should_not raise_error
-</span><span class="inferred1"><a name="line65"></a>65         end
-</span><span class="inferred0"><a name="line66"></a>66 
-</span><span class="marked1"><a name="line67"></a>67         it 'should do something useful'        
-</span><span class="inferred0"><a name="line68"></a>68       end
-</span><span class="inferred1"><a name="line69"></a>69     end
-</span><span class="inferred0"><a name="line70"></a>70     
-</span><span class="marked1"><a name="line71"></a>71     describe 'when no files are specified' do
-</span><span class="marked0"><a name="line72"></a>72       it 'should not raise an exception' do
-</span><span class="marked1"><a name="line73"></a>73         lambda { @flog.flog_files }.should_not raise_error
-</span><span class="inferred0"><a name="line74"></a>74       end
-</span><span class="inferred1"><a name="line75"></a>75       
-</span><span class="marked0"><a name="line76"></a>76       it 'should do nothing'
+</span><span class="marked1"><a name="line47"></a>47     describe 'when stdin is specified as input' do
+</span><span class="marked0"><a name="line48"></a>48       it 'should not raise an exception' do
+</span><span class="marked1"><a name="line49"></a>49         lambda { @flog.flog_files('-') }.should_not raise_error
+</span><span class="inferred0"><a name="line50"></a>50       end
+</span><span class="inferred1"><a name="line51"></a>51       
+</span><span class="marked0"><a name="line52"></a>52       it 'should do something useful'
+</span><span class="inferred1"><a name="line53"></a>53     end
+</span><span class="inferred0"><a name="line54"></a>54     
+</span><span class="marked1"><a name="line55"></a>55     describe 'when files are specified' do
+</span><span class="marked0"><a name="line56"></a>56       describe 'when some of the files do not exist' do
+</span><span class="marked1"><a name="line57"></a>57         before :each do
+</span><span class="marked0"><a name="line58"></a>58           @files = [ __FILE__, '/asdfasfas/asdfasdfasdfasd' ]
+</span><span class="inferred1"><a name="line59"></a>59         end
+</span><span class="inferred0"><a name="line60"></a>60         
+</span><span class="marked1"><a name="line61"></a>61         it 'should raise an error about the missing files' do
+</span><span class="marked0"><a name="line62"></a>62           lambda { @flog.flog_files(@files) }.should raise_error(Errno::ENOENT)
+</span><span class="inferred1"><a name="line63"></a>63         end       
+</span><span class="inferred0"><a name="line64"></a>64       end
+</span><span class="inferred1"><a name="line65"></a>65       
+</span><span class="marked0"><a name="line66"></a>66       describe 'when all the files exist' do
+</span><span class="marked1"><a name="line67"></a>67         before :each do
+</span><span class="marked0"><a name="line68"></a>68           @files = [ __FILE__ ]
+</span><span class="inferred1"><a name="line69"></a>69         end
+</span><span class="inferred0"><a name="line70"></a>70         
+</span><span class="marked1"><a name="line71"></a>71         it 'should not raise an exception' do
+</span><span class="marked0"><a name="line72"></a>72           lambda { @flog.flog_files(@files) }.should_not raise_error
+</span><span class="inferred1"><a name="line73"></a>73         end
+</span><span class="inferred0"><a name="line74"></a>74 
+</span><span class="marked1"><a name="line75"></a>75         it 'should do something useful'        
+</span><span class="inferred0"><a name="line76"></a>76       end
 </span><span class="inferred1"><a name="line77"></a>77     end
-</span><span class="inferred0"><a name="line78"></a>78   end
-</span><span class="inferred1"><a name="line79"></a>79 end
+</span><span class="inferred0"><a name="line78"></a>78     
+</span><span class="marked1"><a name="line79"></a>79     describe 'when no files are specified' do
+</span><span class="marked0"><a name="line80"></a>80       it 'should not raise an exception' do
+</span><span class="marked1"><a name="line81"></a>81         lambda { @flog.flog_files }.should_not raise_error
+</span><span class="inferred0"><a name="line82"></a>82       end
+</span><span class="inferred1"><a name="line83"></a>83       
+</span><span class="marked0"><a name="line84"></a>84       it 'should do nothing'
+</span><span class="inferred1"><a name="line85"></a>85     end
+</span><span class="inferred0"><a name="line86"></a>86   end
+</span><span class="inferred1"><a name="line87"></a>87 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
