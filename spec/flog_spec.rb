@@ -35,59 +35,7 @@ describe Flog do
   
   describe "when flogging a list of files" do
     before :each do
-      @stdin = $stdin  # HERE: working through the fact that zenspider is using $stdin in the middle of the system
-      $stdin = stub('stdin', :read => '')
       @flog = Flog.new
-    end
-    
-    after :each do
-      $stdin = @stdin
-    end
-    
-    describe 'when stdin is specified as input' do
-      it 'should not raise an exception' do
-        lambda { @flog.flog_files('-') }.should_not raise_error
-      end
-
-      it 'should flog the data from stdin' 
-    end
-    
-    describe 'when files are specified' do
-      describe 'when some of the files do not exist' do
-        before :each do
-          @files = [ __FILE__, '/asdfasfas/asdfasdfasdfasd' ]
-        end
-        
-        it 'should raise an error about the missing files' do
-          lambda { @flog.flog_files(@files) }.should raise_error(Errno::ENOENT)
-        end       
-      end
-      
-      describe 'when all the files exist' do
-        before :each do
-          @files = [ __FILE__ ]
-        end
-        
-        it 'should not raise an exception' do
-          lambda { @flog.flog_files(@files) }.should_not raise_error
-        end
-
-        it 'should run flog_file for each file'
-      end
-    end
-    
-    describe 'flog_file' do
-      describe 'when file is a directory' do
-        it 'should get the list of files in the directory'
-        it 'should call flog_file for each file in the directory'
-        it 'CURRENTLY uses side-effects to compile the results of flogging each file in the directory'
-      end
-      
-      describe 'when file is a normal file' do
-        it 'should read the contents of the file'
-        it 'should flog the contents of the file'
-        it 'should return the result of flogging the contents of the file'
-      end
     end
     
     describe 'when no files are specified' do
@@ -95,7 +43,117 @@ describe Flog do
         lambda { @flog.flog_files }.should_not raise_error
       end
       
-      it 'should do nothing'
+      it 'should never call flog_file' do
+        @flog.expects(:flog_file).never
+        @flog.flog_files
+      end
     end
+    
+    describe 'when files are specified' do
+      before :each do
+        @files = [1, 2, 3, 4]
+        @flog.stubs(:flog_file)
+      end
+      
+      it 'should do a flog for each individual file' do
+        @flog.expects(:flog_file).times(@files.size)
+        @flog.flog_files(@files)
+      end
+      
+      it 'should provide the filename when flogging a file' do
+        @files.each do |file|
+          @flog.expects(:flog_file).with(file)
+        end
+        @flog.flog_files(@files)          
+      end
+    end
+    
+    describe 'when flogging a single file' do
+      before :each do
+        @flog.stubs(:flog)
+      end
+      
+      describe 'when the filename is "-"' do
+        before :each do
+          @stdin = $stdin  # HERE: working through the fact that zenspider is using $stdin in the middle of the system
+          $stdin = stub('stdin', :read => 'data')
+        end
+
+        after :each do
+          $stdin = @stdin
+        end
+
+        it 'should not raise an exception' do
+          lambda { @flog.flog_file('-') }.should_not raise_error
+        end
+
+        it 'should read the data from stdin' do
+          $stdin.expects(:read).returns('data')
+          @flog.flog_file('-')
+        end
+        
+        it 'should flog the read data' do
+          @flog.expects(:flog).with('data')
+          @flog.flog_file('-')
+        end
+      end
+      
+      describe 'when the filename points to a directory' do
+        before :each do
+          @file.stubs(:flog_directory)
+          @file = File.dirname(__FILE__)
+        end
+
+        it 'should expand the files in the directory' do
+          @flog.expects(:flog_directory)
+          @flog.flog_file(@file)
+        end
+        
+        it 'should not read data from stdin' do
+          $stdin.expects(:read).never
+          @flog.flog_file(@file)          
+        end
+        
+        it 'should not flog any data' do
+          @flog.expects(:flog).never
+          @flog.flog_file(@file)
+        end
+      end
+      
+      describe 'when the filename points to a non-existant file' do
+        before :each do
+          @file = '/adfasdfasfas/fasdfaf-#{rand(1000000).to_s}'
+        end
+        
+        it 'should raise an exception' do
+          lambda { @flog.flog_file(@file) }.should raise_error(Errno::ENOENT)
+        end
+      end
+      
+      describe 'when the filename points to an existing file' do
+        before :each do
+          @file = __FILE__
+          File.stubs(:read).returns('data')
+        end
+        
+        it 'should read the contents of the file' do
+          File.expects(:read).with(@file).returns('data')
+          @flog.flog_file(@file)
+        end
+        
+        it 'should flog the contents of the file' do
+          @flog.expects(:flog).with('data')
+          @flog.flog_file(@file)
+        end
+      end
+    end
+  end
+
+  describe 'when flogging a directory' do
+    
+  end
+
+  describe 'when flogging a string' do
+    
   end
 end

@@ -78,6 +78,44 @@ class Flog < SexpProcessor
     self.reset
   end
 
+  def flog_files *files
+    files.flatten.each do |file|
+      flog_file(file)
+    end
+  end
+  
+  def flog_file(file)
+    if file == '-'
+      data = $stdin.read
+      flog(data)
+    elsif File.directory? file
+      flog_directory(file)
+    else
+      warn "** flogging #{file}" if $v  # TODO: characterize
+      
+      flog(File.read(file))
+    end
+  end
+  
+  def flog_directory(dir)
+  end
+  
+  def flog(data)  # TODO:  characterize
+    # ruby = file == "-" ? $stdin.read : File.read(file)  # from original flog_files
+    
+    begin
+      sexp = @pt.parse_tree_for_string(ruby, file)
+      process Sexp.from_array(sexp).first
+    rescue SyntaxError => e
+      if e.inspect =~ /<%|%>/ then
+        warn e.inspect + " at " + e.backtrace.first(5).join(', ')
+        warn "...stupid lemmings and their bad erb templates... skipping"
+      else
+        raise e
+      end
+    end
+  end
+  
   def add_to_score(name, score)
     @calls["#{self.klass_name}##{self.method_name}"][name] += score * @multiplier
   end
@@ -90,28 +128,6 @@ class Flog < SexpProcessor
 
   def bleed exp
     process exp.shift until exp.empty?
-  end
-
-  def flog_files *files
-    files.flatten.each do |file|
-      if File.directory? file then
-        flog_files Dir["#{file}/**/*.rb"]
-      else
-        warn "** flogging #{file}" if $v
-        ruby = file == "-" ? $stdin.read : File.read(file)
-        begin
-          sexp = @pt.parse_tree_for_string(ruby, file)
-          process Sexp.from_array(sexp).first
-        rescue SyntaxError => e
-          if e.inspect =~ /<%|%>/ then
-            warn e.inspect + " at " + e.backtrace.first(5).join(', ')
-            warn "...stupid lemmings and their bad erb templates... skipping"
-          else
-            raise e
-          end
-        end
-      end
-    end
   end
 
   def klass name
