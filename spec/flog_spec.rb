@@ -48,8 +48,8 @@ describe Flog do
       it 'should not raise an exception' do
         lambda { @flog.flog_files('-') }.should_not raise_error
       end
-      
-      it 'should do something useful'
+
+      it 'should flog the data from stdin' 
     end
     
     describe 'when files are specified' do
@@ -72,7 +72,21 @@ describe Flog do
           lambda { @flog.flog_files(@files) }.should_not raise_error
         end
 
-        it 'should do something useful'        
+        it 'should run flog_file for each file'
+      end
+    end
+    
+    describe 'flog_file' do
+      describe 'when file is a directory' do
+        it 'should get the list of files in the directory'
+        it 'should call flog_file for each file in the directory'
+        it 'CURRENTLY uses side-effects to compile the results of flogging each file in the directory'
+      end
+      
+      describe 'when file is a normal file' do
+        it 'should read the contents of the file'
+        it 'should flog the contents of the file'
+        it 'should return the result of flogging the contents of the file'
       end
     end
     
