@@ -2,6 +2,10 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 require 'flog'
 
 describe Flog do
+  before :each do
+    @flog = Flog.new
+  end
+
   describe 'when initializing' do
     it 'should allow no arguments' do
       lambda { Flog.new 'bogus' }.should raise_error(ArgumentError)
@@ -13,10 +17,6 @@ describe Flog do
   end
   
   describe 'after initializing' do
-    before :each do
-      @flog = Flog.new
-    end
-
     it 'may need to verify more state than these specs currently do'
     
     it 'should return an SexpProcessor' do
@@ -34,10 +34,6 @@ describe Flog do
   end
   
   describe "when flogging a list of files" do
-    before :each do
-      @flog = Flog.new
-    end
-    
     describe 'when no files are specified' do
       it 'should not raise an exception' do
         lambda { @flog.flog_files }.should_not raise_error
@@ -100,7 +96,7 @@ describe Flog do
       
       describe 'when the filename points to a directory' do
         before :each do
-          @file.stubs(:flog_directory)
+          @flog.stubs(:flog_directory)
           @file = File.dirname(__FILE__)
         end
 
@@ -150,7 +146,29 @@ describe Flog do
   end
 
   describe 'when flogging a directory' do
+    before :each do
+      @files = ['a', 'b', 'c', 'd']
+      @dir = File.dirname(__FILE__)
+      @flog.stubs(:flog_file)
+      Dir.stubs(:new).returns(@files)
+    end
     
+    it 'should get the list of files in the directory' do
+      Dir.expects(:new).returns(@files)
+      @flog.flog_directory(@dir)
+    end
+    
+    it 'should call flog_file once for each file in the directory' do
+      @flog.expects(:flog_file).times(@files.size)
+      @flog.flog_directory(@dir)
+    end
+    
+    it 'should pass the filename to flog_file for each file in the directory' do
+      @files.each do |file|
+        @flog.expects(:flog_file).with(file)
+      end
+      @flog.flog_directory(@dir)      
+    end
   end
 
   describe 'when flogging a string' do
