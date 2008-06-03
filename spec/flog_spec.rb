@@ -223,8 +223,10 @@ describe Flog do
         @flog.flog('string', 'filename')
       end
       
-      it 'should provide the string to the parse tree processor'      
-      it 'should provide the filename to the parse tree processor'
+      it 'should provide the string and the filename to the parse tree processor' do
+        @flog.expects(:process_parse_tree).with('string', 'filename')
+        @flog.flog('string', 'filename')
+      end
     end
   end
   
