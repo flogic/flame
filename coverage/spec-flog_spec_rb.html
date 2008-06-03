@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:30:30 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:30:36 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -784,16 +784,16 @@ span.run100 {
 </span><span class="marked1"><a name="line184"></a>184       describe 'when the string has erb snippets' do
 </span><span class="marked0"><a name="line185"></a>185         it 'should warn about skipping' do
 </span><span class="marked1"><a name="line186"></a>186           @flog.expects(:warn).at_least_once
-</span><span class="marked0"><a name="line187"></a>187           @flog.flog('string')
+</span><span class="marked0"><a name="line187"></a>187           @flog.flog('string', 'filename')
 </span><span class="inferred1"><a name="line188"></a>188         end
 </span><span class="inferred0"><a name="line189"></a>189         
 </span><span class="marked1"><a name="line190"></a>190         it 'should not raise an exception' do
-</span><span class="marked0"><a name="line191"></a>191           lambda { @flog.flog('string') }.should_not raise_error
+</span><span class="marked0"><a name="line191"></a>191           lambda { @flog.flog('string', 'filename') }.should_not raise_error
 </span><span class="inferred1"><a name="line192"></a>192         end
 </span><span class="inferred0"><a name="line193"></a>193         
 </span><span class="marked1"><a name="line194"></a>194         it 'should not process the failing code' do
 </span><span class="marked0"><a name="line195"></a>195           @flog.expects(:process).never
-</span><span class="marked1"><a name="line196"></a>196           @flog.flog('string')
+</span><span class="marked1"><a name="line196"></a>196           @flog.flog('string', 'filename')
 </span><span class="inferred0"><a name="line197"></a>197         end
 </span><span class="inferred1"><a name="line198"></a>198       end
 </span><span class="inferred0"><a name="line199"></a>199       
@@ -803,12 +803,12 @@ span.run100 {
 </span><span class="inferred0"><a name="line203"></a>203         end
 </span><span class="inferred1"><a name="line204"></a>204         
 </span><span class="marked0"><a name="line205"></a>205         it 'should raise a SyntaxError exception' do
-</span><span class="marked1"><a name="line206"></a>206           lambda { @flog.flog('string') }.should raise_error(SyntaxError)
+</span><span class="marked1"><a name="line206"></a>206           lambda { @flog.flog('string', 'filename') }.should raise_error(SyntaxError)
 </span><span class="inferred0"><a name="line207"></a>207         end
 </span><span class="inferred1"><a name="line208"></a>208         
 </span><span class="marked0"><a name="line209"></a>209         it 'should not process the failing code' do
 </span><span class="marked1"><a name="line210"></a>210           @flog.expects(:process).never
-</span><span class="marked0"><a name="line211"></a>211           lambda { @flog.flog('string') }
+</span><span class="marked0"><a name="line211"></a>211           lambda { @flog.flog('string', 'filename') }
 </span><span class="inferred1"><a name="line212"></a>212         end
 </span><span class="inferred0"><a name="line213"></a>213       end
 </span><span class="inferred1"><a name="line214"></a>214     end
@@ -820,7 +820,7 @@ span.run100 {
 </span><span class="inferred1"><a name="line220"></a>220       
 </span><span class="marked0"><a name="line221"></a>221       it 'should process the parse tree for the string' do
 </span><span class="marked1"><a name="line222"></a>222         @flog.expects(:process_parse_tree)
-</span><span class="marked0"><a name="line223"></a>223         @flog.flog('string')
+</span><span class="marked0"><a name="line223"></a>223         @flog.flog('string', 'filename')
 </span><span class="inferred1"><a name="line224"></a>224       end
 </span><span class="inferred0"><a name="line225"></a>225       
 </span><span class="marked1"><a name="line226"></a>226       it 'should provide the string to the parse tree processor'      

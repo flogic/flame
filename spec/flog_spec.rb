@@ -184,16 +184,16 @@ describe Flog do
       describe 'when the string has erb snippets' do
         it 'should warn about skipping' do
           @flog.expects(:warn).at_least_once
-          @flog.flog('string')
+          @flog.flog('string', 'filename')
         end
         
         it 'should not raise an exception' do
-          lambda { @flog.flog('string') }.should_not raise_error
+          lambda { @flog.flog('string', 'filename') }.should_not raise_error
         end
         
         it 'should not process the failing code' do
           @flog.expects(:process).never
-          @flog.flog('string')
+          @flog.flog('string', 'filename')
         end
       end
       
@@ -203,12 +203,12 @@ describe Flog do
         end
         
         it 'should raise a SyntaxError exception' do
-          lambda { @flog.flog('string') }.should raise_error(SyntaxError)
+          lambda { @flog.flog('string', 'filename') }.should raise_error(SyntaxError)
         end
         
         it 'should not process the failing code' do
           @flog.expects(:process).never
-          lambda { @flog.flog('string') }
+          lambda { @flog.flog('string', 'filename') }
         end
       end
     end
@@ -220,7 +220,7 @@ describe Flog do
       
       it 'should process the parse tree for the string' do
         @flog.expects(:process_parse_tree)
-        @flog.flog('string')
+        @flog.flog('string', 'filename')
       end
       
       it 'should provide the string to the parse tree processor'      
