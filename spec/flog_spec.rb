@@ -199,7 +199,7 @@ describe Flog do
       
       describe 'when the string has no erb snippets' do
         before :each do
-          @flog.stubs(:process_parse_tree).raises(SyntaxError.new(''))
+          @flog.stubs(:process_parse_tree).raises(SyntaxError)
         end
         
         it 'should raise a SyntaxError exception' do
