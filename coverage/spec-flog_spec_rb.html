@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:31:15 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:31:20 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -598,268 +598,268 @@ span.run100 {
       </tr>
     </tbody>
   </table>
-<pre><span class="marked1"><a name="line1"></a>  1 require File.dirname(__FILE__) + '/spec_helper.rb'
-</span><span class="marked0"><a name="line2"></a>  2 require 'flog'
-</span><span class="inferred1"><a name="line3"></a>  3 
-</span><span class="marked0"><a name="line4"></a>  4 describe Flog do
-</span><span class="marked1"><a name="line5"></a>  5   before :each do
-</span><span class="marked0"><a name="line6"></a>  6     @flog = Flog.new
-</span><span class="inferred1"><a name="line7"></a>  7   end
-</span><span class="inferred0"><a name="line8"></a>  8 
-</span><span class="marked1"><a name="line9"></a>  9   describe 'when initializing' do
-</span><span class="marked0"><a name="line10"></a> 10     it 'should allow no arguments' do
-</span><span class="marked1"><a name="line11"></a> 11       lambda { Flog.new 'bogus' }.should raise_error(ArgumentError)
-</span><span class="inferred0"><a name="line12"></a> 12     end
-</span><span class="inferred1"><a name="line13"></a> 13     
-</span><span class="marked0"><a name="line14"></a> 14     it 'should succeed if given no arguments' do
-</span><span class="marked1"><a name="line15"></a> 15       lambda { Flog.new }.should_not raise_error
-</span><span class="inferred0"><a name="line16"></a> 16     end
-</span><span class="inferred1"><a name="line17"></a> 17   end
-</span><span class="inferred0"><a name="line18"></a> 18   
-</span><span class="marked1"><a name="line19"></a> 19   describe 'after initializing' do
-</span><span class="marked0"><a name="line20"></a> 20     it 'may need to verify more state than these specs currently do'
-</span><span class="inferred1"><a name="line21"></a> 21     
-</span><span class="marked0"><a name="line22"></a> 22     it 'should return an SexpProcessor' do
-</span><span class="marked1"><a name="line23"></a> 23       @flog.should be_a_kind_of(SexpProcessor)
-</span><span class="inferred0"><a name="line24"></a> 24     end
-</span><span class="inferred1"><a name="line25"></a> 25     
-</span><span class="marked0"><a name="line26"></a> 26     it 'should be initialized like all SexpProcessors' do
-</span><span class="inferred1"><a name="line27"></a> 27       # less than ideal means of insuring the Flog instance was initialized properly, imo -RB
-</span><span class="marked0"><a name="line28"></a> 28       @flog.context.should == []  
-</span><span class="inferred1"><a name="line29"></a> 29     end
-</span><span class="inferred0"><a name="line30"></a> 30     
-</span><span class="marked1"><a name="line31"></a> 31     it 'should not have any calls yet' do
-</span><span class="marked0"><a name="line32"></a> 32       @flog.calls.should == {}
-</span><span class="inferred1"><a name="line33"></a> 33     end
-</span><span class="inferred0"><a name="line34"></a> 34   end
-</span><span class="inferred1"><a name="line35"></a> 35   
-</span><span class="marked0"><a name="line36"></a> 36   describe &quot;when flogging a list of files&quot; do
-</span><span class="marked1"><a name="line37"></a> 37     describe 'when no files are specified' do
-</span><span class="marked0"><a name="line38"></a> 38       it 'should not raise an exception' do
-</span><span class="marked1"><a name="line39"></a> 39         lambda { @flog.flog_files }.should_not raise_error
-</span><span class="inferred0"><a name="line40"></a> 40       end
-</span><span class="inferred1"><a name="line41"></a> 41       
-</span><span class="marked0"><a name="line42"></a> 42       it 'should never call flog_file' do
-</span><span class="marked1"><a name="line43"></a> 43         @flog.expects(:flog_file).never
-</span><span class="marked0"><a name="line44"></a> 44         @flog.flog_files
-</span><span class="inferred1"><a name="line45"></a> 45       end
-</span><span class="inferred0"><a name="line46"></a> 46     end
-</span><span class="inferred1"><a name="line47"></a> 47     
-</span><span class="marked0"><a name="line48"></a> 48     describe 'when files are specified' do
-</span><span class="marked1"><a name="line49"></a> 49       before :each do
-</span><span class="marked0"><a name="line50"></a> 50         @files = [1, 2, 3, 4]
-</span><span class="marked1"><a name="line51"></a> 51         @flog.stubs(:flog_file)
-</span><span class="inferred0"><a name="line52"></a> 52       end
-</span><span class="inferred1"><a name="line53"></a> 53       
-</span><span class="marked0"><a name="line54"></a> 54       it 'should do a flog for each individual file' do
-</span><span class="marked1"><a name="line55"></a> 55         @flog.expects(:flog_file).times(@files.size)
-</span><span class="marked0"><a name="line56"></a> 56         @flog.flog_files(@files)
-</span><span class="inferred1"><a name="line57"></a> 57       end
-</span><span class="inferred0"><a name="line58"></a> 58       
-</span><span class="marked1"><a name="line59"></a> 59       it 'should provide the filename when flogging a file' do
-</span><span class="marked0"><a name="line60"></a> 60         @files.each do |file|
-</span><span class="marked1"><a name="line61"></a> 61           @flog.expects(:flog_file).with(file)
-</span><span class="inferred0"><a name="line62"></a> 62         end
-</span><span class="marked1"><a name="line63"></a> 63         @flog.flog_files(@files)          
-</span><span class="inferred0"><a name="line64"></a> 64       end
-</span><span class="inferred1"><a name="line65"></a> 65     end
-</span><span class="inferred0"><a name="line66"></a> 66     
-</span><span class="marked1"><a name="line67"></a> 67     describe 'when flogging a single file' do
-</span><span class="marked0"><a name="line68"></a> 68       before :each do
-</span><span class="marked1"><a name="line69"></a> 69         @flog.stubs(:flog)
-</span><span class="inferred0"><a name="line70"></a> 70       end
-</span><span class="inferred1"><a name="line71"></a> 71       
-</span><span class="marked0"><a name="line72"></a> 72       describe 'when the filename is &quot;-&quot;' do
-</span><span class="marked1"><a name="line73"></a> 73         before :each do
-</span><span class="marked0"><a name="line74"></a> 74           @stdin = $stdin  # HERE: working through the fact that zenspider is using $stdin in the middle of the system
-</span><span class="marked1"><a name="line75"></a> 75           $stdin = stub('stdin', :read =&gt; 'data')
-</span><span class="inferred0"><a name="line76"></a> 76         end
-</span><span class="inferred1"><a name="line77"></a> 77 
-</span><span class="marked0"><a name="line78"></a> 78         after :each do
-</span><span class="marked1"><a name="line79"></a> 79           $stdin = @stdin
-</span><span class="inferred0"><a name="line80"></a> 80         end
-</span><span class="inferred1"><a name="line81"></a> 81 
-</span><span class="marked0"><a name="line82"></a> 82         it 'should not raise an exception' do
-</span><span class="marked1"><a name="line83"></a> 83           lambda { @flog.flog_file('-') }.should_not raise_error
-</span><span class="inferred0"><a name="line84"></a> 84         end
-</span><span class="inferred1"><a name="line85"></a> 85 
-</span><span class="marked0"><a name="line86"></a> 86         it 'should read the data from stdin' do
-</span><span class="marked1"><a name="line87"></a> 87           $stdin.expects(:read).returns('data')
-</span><span class="marked0"><a name="line88"></a> 88           @flog.flog_file('-')
-</span><span class="inferred1"><a name="line89"></a> 89         end
-</span><span class="inferred0"><a name="line90"></a> 90         
-</span><span class="marked1"><a name="line91"></a> 91         it 'should flog the read data' do
-</span><span class="marked0"><a name="line92"></a> 92           @flog.expects(:flog).with('data', '-')
-</span><span class="marked1"><a name="line93"></a> 93           @flog.flog_file('-')
-</span><span class="inferred0"><a name="line94"></a> 94         end
-</span><span class="inferred1"><a name="line95"></a> 95       end
-</span><span class="inferred0"><a name="line96"></a> 96       
-</span><span class="marked1"><a name="line97"></a> 97       describe 'when the filename points to a directory' do
-</span><span class="marked0"><a name="line98"></a> 98         before :each do
-</span><span class="marked1"><a name="line99"></a> 99           @flog.stubs(:flog_directory)
-</span><span class="marked0"><a name="line100"></a>100           @file = File.dirname(__FILE__)
-</span><span class="inferred1"><a name="line101"></a>101         end
-</span><span class="inferred0"><a name="line102"></a>102 
-</span><span class="marked1"><a name="line103"></a>103         it 'should expand the files in the directory' do
-</span><span class="marked0"><a name="line104"></a>104           @flog.expects(:flog_directory)
-</span><span class="marked1"><a name="line105"></a>105           @flog.flog_file(@file)
-</span><span class="inferred0"><a name="line106"></a>106         end
-</span><span class="inferred1"><a name="line107"></a>107         
-</span><span class="marked0"><a name="line108"></a>108         it 'should not read data from stdin' do
-</span><span class="marked1"><a name="line109"></a>109           $stdin.expects(:read).never
-</span><span class="marked0"><a name="line110"></a>110           @flog.flog_file(@file)          
-</span><span class="inferred1"><a name="line111"></a>111         end
-</span><span class="inferred0"><a name="line112"></a>112         
-</span><span class="marked1"><a name="line113"></a>113         it 'should not flog any data' do
-</span><span class="marked0"><a name="line114"></a>114           @flog.expects(:flog).never
-</span><span class="marked1"><a name="line115"></a>115           @flog.flog_file(@file)
-</span><span class="inferred0"><a name="line116"></a>116         end
-</span><span class="inferred1"><a name="line117"></a>117       end
-</span><span class="inferred0"><a name="line118"></a>118       
-</span><span class="marked1"><a name="line119"></a>119       describe 'when the filename points to a non-existant file' do
-</span><span class="marked0"><a name="line120"></a>120         before :each do
-</span><span class="marked1"><a name="line121"></a>121           @file = '/adfasdfasfas/fasdfaf-#{rand(1000000).to_s}'
-</span><span class="inferred0"><a name="line122"></a>122         end
-</span><span class="inferred1"><a name="line123"></a>123         
-</span><span class="marked0"><a name="line124"></a>124         it 'should raise an exception' do
-</span><span class="marked1"><a name="line125"></a>125           lambda { @flog.flog_file(@file) }.should raise_error(Errno::ENOENT)
-</span><span class="inferred0"><a name="line126"></a>126         end
-</span><span class="inferred1"><a name="line127"></a>127       end
-</span><span class="inferred0"><a name="line128"></a>128       
-</span><span class="marked1"><a name="line129"></a>129       describe 'when the filename points to an existing file' do
-</span><span class="marked0"><a name="line130"></a>130         before :each do
-</span><span class="marked1"><a name="line131"></a>131           @file = __FILE__
-</span><span class="marked0"><a name="line132"></a>132           File.stubs(:read).returns('data')
-</span><span class="inferred1"><a name="line133"></a>133         end
-</span><span class="inferred0"><a name="line134"></a>134         
-</span><span class="marked1"><a name="line135"></a>135         it 'should read the contents of the file' do
-</span><span class="marked0"><a name="line136"></a>136           File.expects(:read).with(@file).returns('data')
-</span><span class="marked1"><a name="line137"></a>137           @flog.flog_file(@file)
-</span><span class="inferred0"><a name="line138"></a>138         end
-</span><span class="inferred1"><a name="line139"></a>139         
-</span><span class="marked0"><a name="line140"></a>140         it 'should flog the contents of the file' do
-</span><span class="marked1"><a name="line141"></a>141           @flog.expects(:flog).with('data', @file)
-</span><span class="marked0"><a name="line142"></a>142           @flog.flog_file(@file)
-</span><span class="inferred1"><a name="line143"></a>143         end
-</span><span class="inferred0"><a name="line144"></a>144         
-</span><span class="marked1"><a name="line145"></a>145         describe 'when the verbose flag is on' do
-</span><span class="marked0"><a name="line146"></a>146           before :each do
-</span><span class="marked1"><a name="line147"></a>147             $v = true
-</span><span class="inferred0"><a name="line148"></a>148           end
-</span><span class="inferred1"><a name="line149"></a>149           
-</span><span class="marked0"><a name="line150"></a>150           after :each do
-</span><span class="marked1"><a name="line151"></a>151             $v = false
-</span><span class="inferred0"><a name="line152"></a>152           end
-</span><span class="inferred1"><a name="line153"></a>153           
-</span><span class="marked0"><a name="line154"></a>154           it 'should note which file is being flogged' do
-</span><span class="marked1"><a name="line155"></a>155             @flog.expects(:warn)
-</span><span class="marked0"><a name="line156"></a>156             @flog.flog_file(@file)
-</span><span class="inferred1"><a name="line157"></a>157           end
-</span><span class="inferred0"><a name="line158"></a>158         end
-</span><span class="inferred1"><a name="line159"></a>159         
-</span><span class="marked0"><a name="line160"></a>160         describe 'when the verbose flag is off' do
-</span><span class="marked1"><a name="line161"></a>161           before :each do
-</span><span class="marked0"><a name="line162"></a>162             $v = false
-</span><span class="inferred1"><a name="line163"></a>163           end
-</span><span class="inferred0"><a name="line164"></a>164           
-</span><span class="marked1"><a name="line165"></a>165           it 'should note which file is being flogged' do
-</span><span class="marked0"><a name="line166"></a>166             @flog.expects(:warn).never
-</span><span class="marked1"><a name="line167"></a>167             @flog.flog_file(@file)
-</span><span class="inferred0"><a name="line168"></a>168           end          
-</span><span class="inferred1"><a name="line169"></a>169         end
-</span><span class="inferred0"><a name="line170"></a>170       end
-</span><span class="inferred1"><a name="line171"></a>171     end
-</span><span class="inferred0"><a name="line172"></a>172   end
-</span><span class="inferred1"><a name="line173"></a>173 
-</span><span class="marked0"><a name="line174"></a>174   describe 'when flogging a directory' do
-</span><span class="marked1"><a name="line175"></a>175     before :each do
-</span><span class="marked0"><a name="line176"></a>176       @files = ['a', 'b', 'c', 'd']
-</span><span class="marked1"><a name="line177"></a>177       @dir = File.dirname(__FILE__)
-</span><span class="marked0"><a name="line178"></a>178       @flog.stubs(:flog_file)
-</span><span class="marked1"><a name="line179"></a>179       Dir.stubs(:new).returns(@files)
-</span><span class="inferred0"><a name="line180"></a>180     end
-</span><span class="inferred1"><a name="line181"></a>181     
-</span><span class="marked0"><a name="line182"></a>182     it 'should get the list of files in the directory' do
-</span><span class="marked1"><a name="line183"></a>183       Dir.expects(:new).returns(@files)
-</span><span class="marked0"><a name="line184"></a>184       @flog.flog_directory(@dir)
-</span><span class="inferred1"><a name="line185"></a>185     end
-</span><span class="inferred0"><a name="line186"></a>186     
-</span><span class="marked1"><a name="line187"></a>187     it 'should call flog_file once for each file in the directory' do
-</span><span class="marked0"><a name="line188"></a>188       @flog.expects(:flog_file).times(@files.size)
-</span><span class="marked1"><a name="line189"></a>189       @flog.flog_directory(@dir)
-</span><span class="inferred0"><a name="line190"></a>190     end
-</span><span class="inferred1"><a name="line191"></a>191     
-</span><span class="marked0"><a name="line192"></a>192     it 'should pass the filename to flog_file for each file in the directory' do
-</span><span class="marked1"><a name="line193"></a>193       @files.each do |file|
-</span><span class="marked0"><a name="line194"></a>194         @flog.expects(:flog_file).with(file)
-</span><span class="inferred1"><a name="line195"></a>195       end
-</span><span class="marked0"><a name="line196"></a>196       @flog.flog_directory(@dir)      
-</span><span class="inferred1"><a name="line197"></a>197     end
-</span><span class="inferred0"><a name="line198"></a>198   end
-</span><span class="inferred1"><a name="line199"></a>199 
-</span><span class="marked0"><a name="line200"></a>200   describe 'when flogging a Ruby string' do
-</span><span class="marked1"><a name="line201"></a>201     it 'should require both a Ruby string and a filename' do
-</span><span class="marked0"><a name="line202"></a>202       lambda { @flog.flog('string') }.should raise_error(ArgumentError)
-</span><span class="inferred1"><a name="line203"></a>203     end
-</span><span class="inferred0"><a name="line204"></a>204     
-</span><span class="marked1"><a name="line205"></a>205     describe 'when the string has a syntax error' do
-</span><span class="marked0"><a name="line206"></a>206       before :each do
-</span><span class="marked1"><a name="line207"></a>207         @flog.stubs(:process_parse_tree).raises(SyntaxError.new(&quot;&lt;% foo %&gt;&quot;))
-</span><span class="inferred0"><a name="line208"></a>208       end
-</span><span class="inferred1"><a name="line209"></a>209       
-</span><span class="marked0"><a name="line210"></a>210       describe 'when the string has erb snippets' do
-</span><span class="marked1"><a name="line211"></a>211         it 'should warn about skipping' do
-</span><span class="marked0"><a name="line212"></a>212           @flog.expects(:warn).at_least_once
-</span><span class="marked1"><a name="line213"></a>213           @flog.flog('string', 'filename')
-</span><span class="inferred0"><a name="line214"></a>214         end
-</span><span class="inferred1"><a name="line215"></a>215         
-</span><span class="marked0"><a name="line216"></a>216         it 'should not raise an exception' do
-</span><span class="marked1"><a name="line217"></a>217           lambda { @flog.flog('string', 'filename') }.should_not raise_error
-</span><span class="inferred0"><a name="line218"></a>218         end
-</span><span class="inferred1"><a name="line219"></a>219         
-</span><span class="marked0"><a name="line220"></a>220         it 'should not process the failing code' do
-</span><span class="marked1"><a name="line221"></a>221           @flog.expects(:process).never
-</span><span class="marked0"><a name="line222"></a>222           @flog.flog('string', 'filename')
-</span><span class="inferred1"><a name="line223"></a>223         end
-</span><span class="inferred0"><a name="line224"></a>224       end
-</span><span class="inferred1"><a name="line225"></a>225       
-</span><span class="marked0"><a name="line226"></a>226       describe 'when the string has no erb snippets' do
-</span><span class="marked1"><a name="line227"></a>227         before :each do
-</span><span class="marked0"><a name="line228"></a>228           @flog.stubs(:process_parse_tree).raises(SyntaxError)
-</span><span class="inferred1"><a name="line229"></a>229         end
-</span><span class="inferred0"><a name="line230"></a>230         
-</span><span class="marked1"><a name="line231"></a>231         it 'should raise a SyntaxError exception' do
-</span><span class="marked0"><a name="line232"></a>232           lambda { @flog.flog('string', 'filename') }.should raise_error(SyntaxError)
-</span><span class="inferred1"><a name="line233"></a>233         end
-</span><span class="inferred0"><a name="line234"></a>234         
-</span><span class="marked1"><a name="line235"></a>235         it 'should not process the failing code' do
-</span><span class="marked0"><a name="line236"></a>236           @flog.expects(:process).never
-</span><span class="marked1"><a name="line237"></a>237           lambda { @flog.flog('string', 'filename') }
-</span><span class="inferred0"><a name="line238"></a>238         end
-</span><span class="inferred1"><a name="line239"></a>239       end
-</span><span class="inferred0"><a name="line240"></a>240     end
-</span><span class="inferred1"><a name="line241"></a>241     
-</span><span class="marked0"><a name="line242"></a>242     describe 'when the string contains valid Ruby' do
-</span><span class="marked1"><a name="line243"></a>243       before :each do
-</span><span class="marked0"><a name="line244"></a>244         @flog.stubs(:process_parse_tree)
-</span><span class="inferred1"><a name="line245"></a>245       end
-</span><span class="inferred0"><a name="line246"></a>246       
-</span><span class="marked1"><a name="line247"></a>247       it 'should process the parse tree for the string' do
-</span><span class="marked0"><a name="line248"></a>248         @flog.expects(:process_parse_tree)
-</span><span class="marked1"><a name="line249"></a>249         @flog.flog('string', 'filename')
-</span><span class="inferred0"><a name="line250"></a>250       end
-</span><span class="inferred1"><a name="line251"></a>251       
-</span><span class="marked0"><a name="line252"></a>252       it 'should provide the string and the filename to the parse tree processor' do
-</span><span class="marked1"><a name="line253"></a>253         @flog.expects(:process_parse_tree).with('string', 'filename')
-</span><span class="marked0"><a name="line254"></a>254         @flog.flog('string', 'filename')
-</span><span class="inferred1"><a name="line255"></a>255       end
-</span><span class="inferred0"><a name="line256"></a>256     end
-</span><span class="inferred1"><a name="line257"></a>257   end
-</span><span class="inferred0"><a name="line258"></a>258   
-</span><span class="marked1"><a name="line259"></a>259   describe 'when processing a ruby parse tree' do
-</span><span class="marked0"><a name="line260"></a>260     it 'needs more specs'    
-</span><span class="inferred1"><a name="line261"></a>261   end
-</span><span class="inferred0"><a name="line262"></a>262 end
+<pre><span class="marked0"><a name="line1"></a>  1 require File.dirname(__FILE__) + '/spec_helper.rb'
+</span><span class="marked1"><a name="line2"></a>  2 require 'flog'
+</span><span class="inferred0"><a name="line3"></a>  3 
+</span><span class="marked1"><a name="line4"></a>  4 describe Flog do
+</span><span class="marked0"><a name="line5"></a>  5   before :each do
+</span><span class="marked1"><a name="line6"></a>  6     @flog = Flog.new
+</span><span class="inferred0"><a name="line7"></a>  7   end
+</span><span class="inferred1"><a name="line8"></a>  8 
+</span><span class="marked0"><a name="line9"></a>  9   describe 'when initializing' do
+</span><span class="marked1"><a name="line10"></a> 10     it 'should allow no arguments' do
+</span><span class="marked0"><a name="line11"></a> 11       lambda { Flog.new 'bogus' }.should raise_error(ArgumentError)
+</span><span class="inferred1"><a name="line12"></a> 12     end
+</span><span class="inferred0"><a name="line13"></a> 13     
+</span><span class="marked1"><a name="line14"></a> 14     it 'should succeed if given no arguments' do
+</span><span class="marked0"><a name="line15"></a> 15       lambda { Flog.new }.should_not raise_error
+</span><span class="inferred1"><a name="line16"></a> 16     end
+</span><span class="inferred0"><a name="line17"></a> 17   end
+</span><span class="inferred1"><a name="line18"></a> 18   
+</span><span class="marked0"><a name="line19"></a> 19   describe 'after initializing' do
+</span><span class="marked1"><a name="line20"></a> 20     it 'may need to verify more state than these specs currently do'
+</span><span class="inferred0"><a name="line21"></a> 21     
+</span><span class="marked1"><a name="line22"></a> 22     it 'should return an SexpProcessor' do
+</span><span class="marked0"><a name="line23"></a> 23       @flog.should be_a_kind_of(SexpProcessor)
+</span><span class="inferred1"><a name="line24"></a> 24     end
+</span><span class="inferred0"><a name="line25"></a> 25     
+</span><span class="marked1"><a name="line26"></a> 26     it 'should be initialized like all SexpProcessors' do
+</span><span class="inferred0"><a name="line27"></a> 27       # less than ideal means of insuring the Flog instance was initialized properly, imo -RB
+</span><span class="marked1"><a name="line28"></a> 28       @flog.context.should == []  
+</span><span class="inferred0"><a name="line29"></a> 29     end
+</span><span class="inferred1"><a name="line30"></a> 30     
+</span><span class="marked0"><a name="line31"></a> 31     it 'should not have any calls yet' do
+</span><span class="marked1"><a name="line32"></a> 32       @flog.calls.should == {}
+</span><span class="inferred0"><a name="line33"></a> 33     end
+</span><span class="inferred1"><a name="line34"></a> 34   end
+</span><span class="inferred0"><a name="line35"></a> 35   
+</span><span class="marked1"><a name="line36"></a> 36   describe &quot;when flogging a list of files&quot; do
+</span><span class="marked0"><a name="line37"></a> 37     describe 'when no files are specified' do
+</span><span class="marked1"><a name="line38"></a> 38       it 'should not raise an exception' do
+</span><span class="marked0"><a name="line39"></a> 39         lambda { @flog.flog_files }.should_not raise_error
+</span><span class="inferred1"><a name="line40"></a> 40       end
+</span><span class="inferred0"><a name="line41"></a> 41       
+</span><span class="marked1"><a name="line42"></a> 42       it 'should never call flog_file' do
+</span><span class="marked0"><a name="line43"></a> 43         @flog.expects(:flog_file).never
+</span><span class="marked1"><a name="line44"></a> 44         @flog.flog_files
+</span><span class="inferred0"><a name="line45"></a> 45       end
+</span><span class="inferred1"><a name="line46"></a> 46     end
+</span><span class="inferred0"><a name="line47"></a> 47     
+</span><span class="marked1"><a name="line48"></a> 48     describe 'when files are specified' do
+</span><span class="marked0"><a name="line49"></a> 49       before :each do
+</span><span class="marked1"><a name="line50"></a> 50         @files = [1, 2, 3, 4]
+</span><span class="marked0"><a name="line51"></a> 51         @flog.stubs(:flog_file)
+</span><span class="inferred1"><a name="line52"></a> 52       end
+</span><span class="inferred0"><a name="line53"></a> 53       
+</span><span class="marked1"><a name="line54"></a> 54       it 'should do a flog for each individual file' do
+</span><span class="marked0"><a name="line55"></a> 55         @flog.expects(:flog_file).times(@files.size)
+</span><span class="marked1"><a name="line56"></a> 56         @flog.flog_files(@files)
+</span><span class="inferred0"><a name="line57"></a> 57       end
+</span><span class="inferred1"><a name="line58"></a> 58       
+</span><span class="marked0"><a name="line59"></a> 59       it 'should provide the filename when flogging a file' do
+</span><span class="marked1"><a name="line60"></a> 60         @files.each do |file|
+</span><span class="marked0"><a name="line61"></a> 61           @flog.expects(:flog_file).with(file)
+</span><span class="inferred1"><a name="line62"></a> 62         end
+</span><span class="marked0"><a name="line63"></a> 63         @flog.flog_files(@files)          
+</span><span class="inferred1"><a name="line64"></a> 64       end
+</span><span class="inferred0"><a name="line65"></a> 65     end
+</span><span class="inferred1"><a name="line66"></a> 66     
+</span><span class="marked0"><a name="line67"></a> 67     describe 'when flogging a single file' do
+</span><span class="marked1"><a name="line68"></a> 68       before :each do
+</span><span class="marked0"><a name="line69"></a> 69         @flog.stubs(:flog)
+</span><span class="inferred1"><a name="line70"></a> 70       end
+</span><span class="inferred0"><a name="line71"></a> 71       
+</span><span class="marked1"><a name="line72"></a> 72       describe 'when the filename is &quot;-&quot;' do
+</span><span class="marked0"><a name="line73"></a> 73         before :each do
+</span><span class="marked1"><a name="line74"></a> 74           @stdin = $stdin  # HERE: working through the fact that zenspider is using $stdin in the middle of the system
+</span><span class="marked0"><a name="line75"></a> 75           $stdin = stub('stdin', :read =&gt; 'data')
+</span><span class="inferred1"><a name="line76"></a> 76         end
+</span><span class="inferred0"><a name="line77"></a> 77 
+</span><span class="marked1"><a name="line78"></a> 78         after :each do
+</span><span class="marked0"><a name="line79"></a> 79           $stdin = @stdin
+</span><span class="inferred1"><a name="line80"></a> 80         end
+</span><span class="inferred0"><a name="line81"></a> 81 
+</span><span class="marked1"><a name="line82"></a> 82         it 'should not raise an exception' do
+</span><span class="marked0"><a name="line83"></a> 83           lambda { @flog.flog_file('-') }.should_not raise_error
+</span><span class="inferred1"><a name="line84"></a> 84         end
+</span><span class="inferred0"><a name="line85"></a> 85 
+</span><span class="marked1"><a name="line86"></a> 86         it 'should read the data from stdin' do
+</span><span class="marked0"><a name="line87"></a> 87           $stdin.expects(:read).returns('data')
+</span><span class="marked1"><a name="line88"></a> 88           @flog.flog_file('-')
+</span><span class="inferred0"><a name="line89"></a> 89         end
+</span><span class="inferred1"><a name="line90"></a> 90         
+</span><span class="marked0"><a name="line91"></a> 91         it 'should flog the read data' do
+</span><span class="marked1"><a name="line92"></a> 92           @flog.expects(:flog).with('data', '-')
+</span><span class="marked0"><a name="line93"></a> 93           @flog.flog_file('-')
+</span><span class="inferred1"><a name="line94"></a> 94         end
+</span><span class="inferred0"><a name="line95"></a> 95       end
+</span><span class="inferred1"><a name="line96"></a> 96       
+</span><span class="marked0"><a name="line97"></a> 97       describe 'when the filename points to a directory' do
+</span><span class="marked1"><a name="line98"></a> 98         before :each do
+</span><span class="marked0"><a name="line99"></a> 99           @flog.stubs(:flog_directory)
+</span><span class="marked1"><a name="line100"></a>100           @file = File.dirname(__FILE__)
+</span><span class="inferred0"><a name="line101"></a>101         end
+</span><span class="inferred1"><a name="line102"></a>102 
+</span><span class="marked0"><a name="line103"></a>103         it 'should expand the files in the directory' do
+</span><span class="marked1"><a name="line104"></a>104           @flog.expects(:flog_directory)
+</span><span class="marked0"><a name="line105"></a>105           @flog.flog_file(@file)
+</span><span class="inferred1"><a name="line106"></a>106         end
+</span><span class="inferred0"><a name="line107"></a>107         
+</span><span class="marked1"><a name="line108"></a>108         it 'should not read data from stdin' do
+</span><span class="marked0"><a name="line109"></a>109           $stdin.expects(:read).never
+</span><span class="marked1"><a name="line110"></a>110           @flog.flog_file(@file)          
+</span><span class="inferred0"><a name="line111"></a>111         end
+</span><span class="inferred1"><a name="line112"></a>112         
+</span><span class="marked0"><a name="line113"></a>113         it 'should not flog any data' do
+</span><span class="marked1"><a name="line114"></a>114           @flog.expects(:flog).never
+</span><span class="marked0"><a name="line115"></a>115           @flog.flog_file(@file)
+</span><span class="inferred1"><a name="line116"></a>116         end
+</span><span class="inferred0"><a name="line117"></a>117       end
+</span><span class="inferred1"><a name="line118"></a>118       
+</span><span class="marked0"><a name="line119"></a>119       describe 'when the filename points to a non-existant file' do
+</span><span class="marked1"><a name="line120"></a>120         before :each do
+</span><span class="marked0"><a name="line121"></a>121           @file = '/adfasdfasfas/fasdfaf-#{rand(1000000).to_s}'
+</span><span class="inferred1"><a name="line122"></a>122         end
+</span><span class="inferred0"><a name="line123"></a>123         
+</span><span class="marked1"><a name="line124"></a>124         it 'should raise an exception' do
+</span><span class="marked0"><a name="line125"></a>125           lambda { @flog.flog_file(@file) }.should raise_error(Errno::ENOENT)
+</span><span class="inferred1"><a name="line126"></a>126         end
+</span><span class="inferred0"><a name="line127"></a>127       end
+</span><span class="inferred1"><a name="line128"></a>128       
+</span><span class="marked0"><a name="line129"></a>129       describe 'when the filename points to an existing file' do
+</span><span class="marked1"><a name="line130"></a>130         before :each do
+</span><span class="marked0"><a name="line131"></a>131           @file = __FILE__
+</span><span class="marked1"><a name="line132"></a>132           File.stubs(:read).returns('data')
+</span><span class="inferred0"><a name="line133"></a>133         end
+</span><span class="inferred1"><a name="line134"></a>134         
+</span><span class="marked0"><a name="line135"></a>135         it 'should read the contents of the file' do
+</span><span class="marked1"><a name="line136"></a>136           File.expects(:read).with(@file).returns('data')
+</span><span class="marked0"><a name="line137"></a>137           @flog.flog_file(@file)
+</span><span class="inferred1"><a name="line138"></a>138         end
+</span><span class="inferred0"><a name="line139"></a>139         
+</span><span class="marked1"><a name="line140"></a>140         it 'should flog the contents of the file' do
+</span><span class="marked0"><a name="line141"></a>141           @flog.expects(:flog).with('data', @file)
+</span><span class="marked1"><a name="line142"></a>142           @flog.flog_file(@file)
+</span><span class="inferred0"><a name="line143"></a>143         end
+</span><span class="inferred1"><a name="line144"></a>144         
+</span><span class="marked0"><a name="line145"></a>145         describe 'when the verbose flag is on' do
+</span><span class="marked1"><a name="line146"></a>146           before :each do
+</span><span class="marked0"><a name="line147"></a>147             $v = true
+</span><span class="inferred1"><a name="line148"></a>148           end
+</span><span class="inferred0"><a name="line149"></a>149           
+</span><span class="marked1"><a name="line150"></a>150           after :each do
+</span><span class="marked0"><a name="line151"></a>151             $v = false
+</span><span class="inferred1"><a name="line152"></a>152           end
+</span><span class="inferred0"><a name="line153"></a>153           
+</span><span class="marked1"><a name="line154"></a>154           it 'should note which file is being flogged' do
+</span><span class="marked0"><a name="line155"></a>155             @flog.expects(:warn)
+</span><span class="marked1"><a name="line156"></a>156             @flog.flog_file(@file)
+</span><span class="inferred0"><a name="line157"></a>157           end
+</span><span class="inferred1"><a name="line158"></a>158         end
+</span><span class="inferred0"><a name="line159"></a>159         
+</span><span class="marked1"><a name="line160"></a>160         describe 'when the verbose flag is off' do
+</span><span class="marked0"><a name="line161"></a>161           before :each do
+</span><span class="marked1"><a name="line162"></a>162             $v = false
+</span><span class="inferred0"><a name="line163"></a>163           end
+</span><span class="inferred1"><a name="line164"></a>164           
+</span><span class="marked0"><a name="line165"></a>165           it 'should note which file is being flogged' do
+</span><span class="marked1"><a name="line166"></a>166             @flog.expects(:warn).never
+</span><span class="marked0"><a name="line167"></a>167             @flog.flog_file(@file)
+</span><span class="inferred1"><a name="line168"></a>168           end          
+</span><span class="inferred0"><a name="line169"></a>169         end
+</span><span class="inferred1"><a name="line170"></a>170       end
+</span><span class="inferred0"><a name="line171"></a>171     end
+</span><span class="inferred1"><a name="line172"></a>172   end
+</span><span class="inferred0"><a name="line173"></a>173 
+</span><span class="marked1"><a name="line174"></a>174   describe 'when flogging a directory' do
+</span><span class="marked0"><a name="line175"></a>175     before :each do
+</span><span class="marked1"><a name="line176"></a>176       @files = ['a', 'b', 'c', 'd']
+</span><span class="marked0"><a name="line177"></a>177       @dir = File.dirname(__FILE__)
+</span><span class="marked1"><a name="line178"></a>178       @flog.stubs(:flog_file)
+</span><span class="marked0"><a name="line179"></a>179       Dir.stubs(:new).returns(@files)
+</span><span class="inferred1"><a name="line180"></a>180     end
+</span><span class="inferred0"><a name="line181"></a>181     
+</span><span class="marked1"><a name="line182"></a>182     it 'should get the list of files in the directory' do
+</span><span class="marked0"><a name="line183"></a>183       Dir.expects(:new).returns(@files)
+</span><span class="marked1"><a name="line184"></a>184       @flog.flog_directory(@dir)
+</span><span class="inferred0"><a name="line185"></a>185     end
+</span><span class="inferred1"><a name="line186"></a>186     
+</span><span class="marked0"><a name="line187"></a>187     it 'should call flog_file once for each file in the directory' do
+</span><span class="marked1"><a name="line188"></a>188       @flog.expects(:flog_file).times(@files.size)
+</span><span class="marked0"><a name="line189"></a>189       @flog.flog_directory(@dir)
+</span><span class="inferred1"><a name="line190"></a>190     end
+</span><span class="inferred0"><a name="line191"></a>191     
+</span><span class="marked1"><a name="line192"></a>192     it 'should pass the filename to flog_file for each file in the directory' do
+</span><span class="marked0"><a name="line193"></a>193       @files.each do |file|
+</span><span class="marked1"><a name="line194"></a>194         @flog.expects(:flog_file).with(file)
+</span><span class="inferred0"><a name="line195"></a>195       end
+</span><span class="marked1"><a name="line196"></a>196       @flog.flog_directory(@dir)      
+</span><span class="inferred0"><a name="line197"></a>197     end
+</span><span class="inferred1"><a name="line198"></a>198   end
+</span><span class="inferred0"><a name="line199"></a>199 
+</span><span class="marked1"><a name="line200"></a>200   describe 'when flogging a Ruby string' do
+</span><span class="marked0"><a name="line201"></a>201     it 'should require both a Ruby string and a filename' do
+</span><span class="marked1"><a name="line202"></a>202       lambda { @flog.flog('string') }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line203"></a>203     end
+</span><span class="inferred1"><a name="line204"></a>204     
+</span><span class="marked0"><a name="line205"></a>205     describe 'when the string has a syntax error' do
+</span><span class="marked1"><a name="line206"></a>206       before :each do
+</span><span class="marked0"><a name="line207"></a>207         @flog.stubs(:process_parse_tree).raises(SyntaxError.new(&quot;&lt;% foo %&gt;&quot;))
+</span><span class="inferred1"><a name="line208"></a>208       end
+</span><span class="inferred0"><a name="line209"></a>209       
+</span><span class="marked1"><a name="line210"></a>210       describe 'when the string has erb snippets' do
+</span><span class="marked0"><a name="line211"></a>211         it 'should warn about skipping' do
+</span><span class="marked1"><a name="line212"></a>212           @flog.expects(:warn).at_least_once
+</span><span class="marked0"><a name="line213"></a>213           @flog.flog('string', 'filename')
+</span><span class="inferred1"><a name="line214"></a>214         end
+</span><span class="inferred0"><a name="line215"></a>215         
+</span><span class="marked1"><a name="line216"></a>216         it 'should not raise an exception' do
+</span><span class="marked0"><a name="line217"></a>217           lambda { @flog.flog('string', 'filename') }.should_not raise_error
+</span><span class="inferred1"><a name="line218"></a>218         end
+</span><span class="inferred0"><a name="line219"></a>219         
+</span><span class="marked1"><a name="line220"></a>220         it 'should not process the failing code' do
+</span><span class="marked0"><a name="line221"></a>221           @flog.expects(:process).never
+</span><span class="marked1"><a name="line222"></a>222           @flog.flog('string', 'filename')
+</span><span class="inferred0"><a name="line223"></a>223         end
+</span><span class="inferred1"><a name="line224"></a>224       end
+</span><span class="inferred0"><a name="line225"></a>225       
+</span><span class="marked1"><a name="line226"></a>226       describe 'when the string has no erb snippets' do
+</span><span class="marked0"><a name="line227"></a>227         before :each do
+</span><span class="marked1"><a name="line228"></a>228           @flog.stubs(:process_parse_tree).raises(SyntaxError)
+</span><span class="inferred0"><a name="line229"></a>229         end
+</span><span class="inferred1"><a name="line230"></a>230         
+</span><span class="marked0"><a name="line231"></a>231         it 'should raise a SyntaxError exception' do
+</span><span class="marked1"><a name="line232"></a>232           lambda { @flog.flog('string', 'filename') }.should raise_error(SyntaxError)
+</span><span class="inferred0"><a name="line233"></a>233         end
+</span><span class="inferred1"><a name="line234"></a>234         
+</span><span class="marked0"><a name="line235"></a>235         it 'should not process the failing code' do
+</span><span class="marked1"><a name="line236"></a>236           @flog.expects(:process).never
+</span><span class="marked0"><a name="line237"></a>237           lambda { @flog.flog('string', 'filename') }
+</span><span class="inferred1"><a name="line238"></a>238         end
+</span><span class="inferred0"><a name="line239"></a>239       end
+</span><span class="inferred1"><a name="line240"></a>240     end
+</span><span class="inferred0"><a name="line241"></a>241     
+</span><span class="marked1"><a name="line242"></a>242     describe 'when the string contains valid Ruby' do
+</span><span class="marked0"><a name="line243"></a>243       before :each do
+</span><span class="marked1"><a name="line244"></a>244         @flog.stubs(:process_parse_tree)
+</span><span class="inferred0"><a name="line245"></a>245       end
+</span><span class="inferred1"><a name="line246"></a>246       
+</span><span class="marked0"><a name="line247"></a>247       it 'should process the parse tree for the string' do
+</span><span class="marked1"><a name="line248"></a>248         @flog.expects(:process_parse_tree)
+</span><span class="marked0"><a name="line249"></a>249         @flog.flog('string', 'filename')
+</span><span class="inferred1"><a name="line250"></a>250       end
+</span><span class="inferred0"><a name="line251"></a>251       
+</span><span class="marked1"><a name="line252"></a>252       it 'should provide the string and the filename to the parse tree processor' do
+</span><span class="marked0"><a name="line253"></a>253         @flog.expects(:process_parse_tree).with('string', 'filename')
+</span><span class="marked1"><a name="line254"></a>254         @flog.flog('string', 'filename')
+</span><span class="inferred0"><a name="line255"></a>255       end
+</span><span class="inferred1"><a name="line256"></a>256     end
+</span><span class="inferred0"><a name="line257"></a>257   end
+</span><span class="inferred1"><a name="line258"></a>258   
+</span><span class="marked0"><a name="line259"></a>259   describe 'when processing a ruby parse tree' do
+</span><span class="marked1"><a name="line260"></a>260     it 'needs more specs'    
+</span><span class="inferred0"><a name="line261"></a>261   end
+</span><span class="inferred1"><a name="line262"></a>262 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
