@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:31:26 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:31:31 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>288</tt>
+      <td class='lines_total'><tt>300</tt>
         </td>
-      <td class='lines_code'><tt>234</tt>
+      <td class='lines_code'><tt>244</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -883,9 +883,21 @@ span.run100 {
 </span><span class="inferred0"><a name="line283"></a>283   end
 </span><span class="inferred1"><a name="line284"></a>284   
 </span><span class="marked0"><a name="line285"></a>285   describe 'when processing a ruby parse tree' do
-</span><span class="marked1"><a name="line286"></a>286     it 'needs more specs'    
-</span><span class="inferred0"><a name="line287"></a>287   end
-</span><span class="inferred1"><a name="line288"></a>288 end
+</span><span class="marked1"><a name="line286"></a>286     it 'should compute the parse tree for the ruby string'
+</span><span class="marked0"><a name="line287"></a>287     it 'should use both the ruby string and the filename when computing the parse tree'
+</span><span class="inferred1"><a name="line288"></a>288     
+</span><span class="marked0"><a name="line289"></a>289     describe 'if the ruby string is valid' do
+</span><span class="marked1"><a name="line290"></a>290       it 'should convert the parse tree into a list of S-expressions'
+</span><span class="marked0"><a name="line291"></a>291       it 'should process the list of S-expressions'
+</span><span class="marked1"><a name="line292"></a>292       it 'should start processing at the first S-expression'
+</span><span class="inferred0"><a name="line293"></a>293     end
+</span><span class="inferred1"><a name="line294"></a>294     
+</span><span class="marked0"><a name="line295"></a>295     describe 'if the ruby string is invalid' do
+</span><span class="marked1"><a name="line296"></a>296       it 'should fail'
+</span><span class="marked0"><a name="line297"></a>297       it 'should not attempt to process the parse tree'
+</span><span class="inferred1"><a name="line298"></a>298     end
+</span><span class="inferred0"><a name="line299"></a>299   end
+</span><span class="inferred1"><a name="line300"></a>300 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
