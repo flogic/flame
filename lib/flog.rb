@@ -101,12 +101,11 @@ class Flog < SexpProcessor
     Dir.new(dir).each {|file| flog_file(file) }
   end
   
-  def flog(data)  # TODO:  characterize
+  def flog(ruby)  # TODO:  characterize
     # ruby = file == "-" ? $stdin.read : File.read(file)  # from original flog_files
-    
+    file = "x"  # TODO: fix.x 
     begin
-      sexp = @pt.parse_tree_for_string(ruby, file)
-      process Sexp.from_array(sexp).first
+      process_parse_tree(ruby, file)
     rescue SyntaxError => e
       if e.inspect =~ /<%|%>/ then
         warn e.inspect + " at " + e.backtrace.first(5).join(', ')
@@ -115,6 +114,11 @@ class Flog < SexpProcessor
         raise e
       end
     end
+  end
+  
+  def process_parse_tree(ruby, file)
+    sexp = @pt.parse_tree_for_string(ruby, file)
+    process Sexp.from_array(sexp).first
   end
   
   def add_to_score(name, score)

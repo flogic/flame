@@ -171,7 +171,30 @@ describe Flog do
     end
   end
 
-  describe 'when flogging a string' do
+  describe 'when flogging a Ruby string' do
+    describe 'when the string has a syntax error' do
+      before :each do
+        @flog.stubs(:process_parse_tree).raises(SyntaxError.new("<% foo %>"))
+      end
+      
+      describe 'when the string has erb snippets' do
+        it 'should warn about skipping' do
+          @flog.expects(:warn).at_least_once
+          @flog.flog('string')
+        end
+        
+        it 'should not raise an exception' do
+          lambda { @flog.flog('string') }.should_not raise_error
+        end
+      end
+      
+      describe 'when the string has no erb snippets' do
+        it 'should raise a SyntaxError exception'
+      end
+    end
     
+    describe 'when the string contains valid Ruby' do
+      it 'needs more specs'
+    end
   end
 end
