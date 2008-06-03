@@ -93,7 +93,7 @@ class Flog < SexpProcessor
     else
       warn "** flogging #{file}" if $v  # TODO: characterize
       
-      flog(File.read(file))
+      flog(File.read(file), file)
     end
   end
   
