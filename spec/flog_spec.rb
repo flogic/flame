@@ -194,7 +194,18 @@ describe Flog do
       end
       
       describe 'when the string has no erb snippets' do
-        it 'should raise a SyntaxError exception'
+        before :each do
+          @flog.stubs(:process_parse_tree).raises(SyntaxError.new(''))
+        end
+        
+        it 'should raise a SyntaxError exception' do
+          lambda { @flog.flog('string') }.should raise_error(SyntaxError)
+        end
+        
+        it 'should not process the failing code' do
+          @flog.expects(:process).never
+          lambda { @flog.flog('string') }
+        end
       end
     end
     
