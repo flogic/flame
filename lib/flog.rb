@@ -104,12 +104,9 @@ class Flog < SexpProcessor
   def flog(ruby, file)
     process_parse_tree(ruby, file)
   rescue SyntaxError => e
-    if e.inspect =~ /<%|%>/ then
-      warn e.inspect + " at " + e.backtrace.first(5).join(', ')
-      warn "...stupid lemmings and their bad erb templates... skipping"
-    else
-      raise e
-    end
+    raise e unless e.inspect =~ /<%|%>/
+    warn e.inspect + " at " + e.backtrace.first(5).join(', ')
+    warn "...stupid lemmings and their bad erb templates... skipping"
   end
   
   def process_parse_tree(ruby, file)
