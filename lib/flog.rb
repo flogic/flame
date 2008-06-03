@@ -87,7 +87,7 @@ class Flog < SexpProcessor
   def flog_file(file)
     if file == '-'
       data = $stdin.read
-      flog(data)
+      flog(data, file)
     elsif File.directory? file
       flog_directory(file)
     else

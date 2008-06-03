@@ -89,7 +89,7 @@ describe Flog do
         end
         
         it 'should flog the read data' do
-          @flog.expects(:flog).with('data')
+          @flog.expects(:flog).with('data', '-')
           @flog.flog_file('-')
         end
       end
