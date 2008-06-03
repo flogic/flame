@@ -49,11 +49,21 @@ describe Flog do
         @flog.parse_tree
       end
       
-      it 'should leave newlines off when creating the ParseTree instance'
+      it 'should leave newlines off when creating the ParseTree instance' do
+        ParseTree.expects(:new).with(false)
+        @flog.parse_tree
+      end
     end
     
     describe 'after the parse tree has been initialized' do
-      it 'should not attempt to create a new ParseTree instance'
+      before :each do
+        @flog.parse_tree
+      end
+      
+      it 'should not attempt to create a new ParseTree instance' do
+        ParseTree.expects(:new).never
+        @flog.parse_tree
+      end
     end
   end
   
