@@ -85,16 +85,11 @@ class Flog < SexpProcessor
   end
   
   def flog_file(file)
-    if file == '-'
-      data = $stdin.read
-      flog(data, file)
-    elsif File.directory? file
-      flog_directory(file)
-    else
-      warn "** flogging #{file}" if $v  # TODO: characterize
-      
-      flog(File.read(file), file)
-    end
+    return flog_directory(file) if File.directory? file
+    data = $stdin.read if file == '-'
+    data ||= File.read(file)
+    warn "** flogging #{file}" if $v
+    flog(data, file)
   end
   
   def flog_directory(dir)
