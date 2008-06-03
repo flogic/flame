@@ -15,7 +15,7 @@ describe Flog do
       lambda { Flog.new }.should_not raise_error
     end
     
-    it 'should not initialize a ParseTree instance'
+    it 'should reference the parse tree'
   end
   
   describe 'after initializing' do
@@ -40,7 +40,14 @@ describe Flog do
   end
   
   describe 'when accessing the parse tree' do
-    it 'should create a new ParseTree if none currently exists'
+    describe 'for the first time' do
+      it 'should create a new ParseTree'
+      it 'should leave newlines off when creating the ParseTree instance'
+    end
+    
+    describe 'after the parse tree has been initialized' do
+      it 'should not attempt to create a new ParseTree instance'
+    end
   end
   
   describe "when flogging a list of files" do
