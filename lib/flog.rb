@@ -66,16 +66,19 @@ class Flog < SexpProcessor
   @@no_class = :main
   @@no_method = :none
 
-  attr_reader :calls, :parse_tree
+  attr_reader :calls
 
   def initialize
     super
-    @pt = ParseTree.new(false)
     @klasses = []
     @methods = []
     self.auto_shift_type = true
     self.require_empty = false # HACK
     self.reset
+  end
+  
+  def parse_tree
+    ParseTree.new
   end
 
   def flog_files *files
