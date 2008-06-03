@@ -15,7 +15,10 @@ describe Flog do
       lambda { Flog.new }.should_not raise_error
     end
     
-    it 'should reference the parse tree'
+    it 'should not reference the parse tree' do
+      ParseTree.expects(:new).never
+      Flog.new
+    end
   end
   
   describe 'after initializing' do
@@ -41,7 +44,11 @@ describe Flog do
   
   describe 'when accessing the parse tree' do
     describe 'for the first time' do
-      it 'should create a new ParseTree'
+      it 'should create a new ParseTree' do
+        ParseTree.expects(:new)
+        @flog.parse_tree
+      end
+      
       it 'should leave newlines off when creating the ParseTree instance'
     end
     
