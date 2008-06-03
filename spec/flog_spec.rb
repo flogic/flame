@@ -141,6 +141,32 @@ describe Flog do
           @flog.expects(:flog).with('data', @file)
           @flog.flog_file(@file)
         end
+        
+        describe 'when the verbose flag is on' do
+          before :each do
+            $v = true
+          end
+          
+          after :each do
+            $v = false
+          end
+          
+          it 'should note which file is being flogged' do
+            @flog.expects(:warn)
+            @flog.flog_file(@file)
+          end
+        end
+        
+        describe 'when the verbose flag is off' do
+          before :each do
+            $v = false
+          end
+          
+          it 'should note which file is being flogged' do
+            @flog.expects(:warn).never
+            @flog.flog_file(@file)
+          end          
+        end
       end
     end
   end
