@@ -283,6 +283,18 @@ describe Flog do
   end
   
   describe 'when processing a ruby parse tree' do
-    it 'needs more specs'    
+    it 'should compute the parse tree for the ruby string'
+    it 'should use both the ruby string and the filename when computing the parse tree'
+    
+    describe 'if the ruby string is valid' do
+      it 'should convert the parse tree into a list of S-expressions'
+      it 'should process the list of S-expressions'
+      it 'should start processing at the first S-expression'
+    end
+    
+    describe 'if the ruby string is invalid' do
+      it 'should fail'
+      it 'should not attempt to process the parse tree'
+    end
   end
 end
