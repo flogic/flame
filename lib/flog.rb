@@ -101,9 +101,7 @@ class Flog < SexpProcessor
     Dir.new(dir).each {|file| flog_file(file) }
   end
   
-  def flog(ruby)  # TODO:  characterize
-    # ruby = file == "-" ? $stdin.read : File.read(file)  # from original flog_files
-    file = "x"  # TODO: fix.x 
+  def flog(ruby, file)
     begin
       process_parse_tree(ruby, file)
     rescue SyntaxError => e
