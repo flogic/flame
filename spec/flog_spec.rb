@@ -186,6 +186,11 @@ describe Flog do
         it 'should not raise an exception' do
           lambda { @flog.flog('string') }.should_not raise_error
         end
+        
+        it 'should not process the failing code' do
+          @flog.expects(:process).never
+          @flog.flog('string')
+        end
       end
       
       describe 'when the string has no erb snippets' do
