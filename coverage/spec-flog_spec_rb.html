@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:29:55 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:30:00 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>177</tt>
+      <td class='lines_total'><tt>200</tt>
         </td>
-      <td class='lines_code'><tt>143</tt>
+      <td class='lines_code'><tt>163</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -771,10 +771,33 @@ span.run100 {
 </span><span class="inferred0"><a name="line171"></a>171     end
 </span><span class="inferred1"><a name="line172"></a>172   end
 </span><span class="inferred0"><a name="line173"></a>173 
-</span><span class="marked1"><a name="line174"></a>174   describe 'when flogging a string' do
-</span><span class="inferred0"><a name="line175"></a>175     
-</span><span class="inferred1"><a name="line176"></a>176   end
-</span><span class="inferred0"><a name="line177"></a>177 end
+</span><span class="marked1"><a name="line174"></a>174   describe 'when flogging a Ruby string' do
+</span><span class="marked0"><a name="line175"></a>175     describe 'when the string has a syntax error' do
+</span><span class="marked1"><a name="line176"></a>176       before :each do
+</span><span class="marked0"><a name="line177"></a>177         @flog.stubs(:process_parse_tree).raises(SyntaxError.new(&quot;&lt;% foo %&gt;&quot;))
+</span><span class="inferred1"><a name="line178"></a>178       end
+</span><span class="inferred0"><a name="line179"></a>179       
+</span><span class="marked1"><a name="line180"></a>180       describe 'when the string has erb snippets' do
+</span><span class="marked0"><a name="line181"></a>181         it 'should warn about skipping' do
+</span><span class="marked1"><a name="line182"></a>182           @flog.expects(:warn).at_least_once
+</span><span class="marked0"><a name="line183"></a>183           @flog.flog('string')
+</span><span class="inferred1"><a name="line184"></a>184         end
+</span><span class="inferred0"><a name="line185"></a>185         
+</span><span class="marked1"><a name="line186"></a>186         it 'should not raise an exception' do
+</span><span class="marked0"><a name="line187"></a>187           lambda { @flog.flog('string') }.should_not raise_error
+</span><span class="inferred1"><a name="line188"></a>188         end
+</span><span class="inferred0"><a name="line189"></a>189       end
+</span><span class="inferred1"><a name="line190"></a>190       
+</span><span class="marked0"><a name="line191"></a>191       describe 'when the string has no erb snippets' do
+</span><span class="marked1"><a name="line192"></a>192         it 'should raise a SyntaxError exception'
+</span><span class="inferred0"><a name="line193"></a>193       end
+</span><span class="inferred1"><a name="line194"></a>194     end
+</span><span class="inferred0"><a name="line195"></a>195     
+</span><span class="marked1"><a name="line196"></a>196     describe 'when the string contains valid Ruby' do
+</span><span class="marked0"><a name="line197"></a>197       it 'needs more specs'
+</span><span class="inferred1"><a name="line198"></a>198     end
+</span><span class="inferred0"><a name="line199"></a>199   end
+</span><span class="inferred1"><a name="line200"></a>200 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
