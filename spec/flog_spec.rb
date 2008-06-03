@@ -172,6 +172,10 @@ describe Flog do
   end
 
   describe 'when flogging a Ruby string' do
+    it 'should require both a Ruby string and a filename' do
+      lambda { @flog.flog('string') }.should raise_error(ArgumentError)
+    end
+    
     describe 'when the string has a syntax error' do
       before :each do
         @flog.stubs(:process_parse_tree).raises(SyntaxError.new("<% foo %>"))
