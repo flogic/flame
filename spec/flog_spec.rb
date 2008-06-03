@@ -14,6 +14,8 @@ describe Flog do
     it 'should succeed if given no arguments' do
       lambda { Flog.new }.should_not raise_error
     end
+    
+    it 'should not initialize a ParseTree instance'
   end
   
   describe 'after initializing' do
@@ -31,6 +33,14 @@ describe Flog do
     it 'should not have any calls yet' do
       @flog.calls.should == {}
     end
+    
+    it 'should have a means of accessing its parse tree' do
+      @flog.should respond_to(:parse_tree)
+    end
+  end
+  
+  describe 'when accessing the parse tree' do
+    it 'should create a new ParseTree if none currently exists'
   end
   
   describe "when flogging a list of files" do

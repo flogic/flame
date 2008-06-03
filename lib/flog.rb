@@ -66,7 +66,7 @@ class Flog < SexpProcessor
   @@no_class = :main
   @@no_method = :none
 
-  attr_reader :calls
+  attr_reader :calls, :parse_tree
 
   def initialize
     super
