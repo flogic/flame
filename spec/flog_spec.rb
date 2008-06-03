@@ -138,7 +138,7 @@ describe Flog do
         end
         
         it 'should flog the contents of the file' do
-          @flog.expects(:flog).with('data')
+          @flog.expects(:flog).with('data', @file)
           @flog.flog_file(@file)
         end
       end
