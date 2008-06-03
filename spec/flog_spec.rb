@@ -210,7 +210,21 @@ describe Flog do
     end
     
     describe 'when the string contains valid Ruby' do
-      it 'needs more specs'
+      before :each do
+        @flog.stubs(:process_parse_tree)
+      end
+      
+      it 'should process the parse tree for the string' do
+        @flog.expects(:process_parse_tree)
+        @flog.flog('string')
+      end
+      
+      it 'should provide the string to the parse tree processor'      
+      it 'should provide the filename to the parse tree processor'
     end
+  end
+  
+  describe 'when processing a ruby parse tree' do
+    it 'needs more specs'    
   end
 end
