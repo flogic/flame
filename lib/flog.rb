@@ -108,7 +108,7 @@ class Flog < SexpProcessor
   end
   
   def process_parse_tree(ruby, file)
-    sexp = @pt.parse_tree_for_string(ruby, file)
+    sexp = parse_tree.parse_tree_for_string(ruby, file)
     process Sexp.from_array(sexp).first
   end
   
