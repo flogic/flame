@@ -69,6 +69,7 @@ describe Flog do
         @flog.parse_tree
       end
       
+      #### HERE
       it 'should not attempt to create a new ParseTree instance' do
         ParseTree.expects(:new).never
         @flog.parse_tree
