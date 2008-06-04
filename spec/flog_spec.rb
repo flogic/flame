@@ -45,7 +45,6 @@ describe Flog do
   describe 'when accessing the parse tree' do
     before :each do
       @parse_tree = stub('parse tree')
-      ParseTree.stubs(:new).returns(@parse_tree)
     end
     
     describe 'for the first time' do
@@ -60,22 +59,21 @@ describe Flog do
       end
       
       it 'should return a ParseTree instance' do
+        ParseTree.stubs(:new).returns(@parse_tree)
         @flog.parse_tree.should == @parse_tree
       end
     end
     
     describe 'after the parse tree has been initialized' do
-      before :each do
-        @flog.parse_tree
-      end
-      
-      #### HERE
       it 'should not attempt to create a new ParseTree instance' do
+        @flog.parse_tree
         ParseTree.expects(:new).never
         @flog.parse_tree
       end
       
       it 'should return a ParseTree instance' do
+        ParseTree.stubs(:new).returns(@parse_tree)
+        @flog.parse_tree
         @flog.parse_tree.should == @parse_tree
       end
     end
