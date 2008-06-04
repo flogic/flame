@@ -15,6 +15,13 @@ rescue LoadError
   require 'mocha'
 end
 
+
+module Spec::Example::ExampleGroupMethods
+  def currently(name, &block)
+    it("*** CURRENTLY *** #{name}", &block)
+  end
+end
+
 Spec::Runner.configure do |config|
   config.mock_with :mocha
 end
