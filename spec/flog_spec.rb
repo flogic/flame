@@ -388,7 +388,10 @@ describe Flog do
         lambda { @flog.process_parse_tree('string', 'file') }.should raise_error(SyntaxError)
       end
       
-      it 'should not attempt to process the parse tree'
+      it 'should not attempt to process the parse tree' do
+        @flog.expects(:process).never
+        lambda { @flog.process_parse_tree('string', 'file') }
+      end
     end
   end
 end
