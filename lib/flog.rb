@@ -112,6 +112,32 @@ class Flog < SexpProcessor
     process Sexp.from_array(sexp).first
   end
   
+  def report io = $stdout
+    current = 0
+    total_score = self.total
+    max = total_score * THRESHOLD
+    totals = self.totals
+
+    io.puts "Total Flog = %.1f (%.1f flog / method)" % [total_score, self.average]
+    io.puts
+
+    exit 0 if $s
+
+    @calls.sort_by { |k,v| -totals[k] }.each do |klass_method, calls|
+      next if $m and klass_method =~ /##{@@no_method}/
+      total = totals[klass_method]
+      io.puts "%s: (%.1f)" % [klass_method, total]
+      calls.sort_by { |k,v| -v }.each do |call, count|
+        io.puts "  %6.1f: %s" % [count, call]
+      end
+
+      current += total
+      break if current >= max
+    end
+  ensure
+    self.reset
+  end
+
   def add_to_score(name, score)
     @calls["#{self.klass_name}##{self.method_name}"][name] += score * @multiplier
   end
@@ -144,32 +170,6 @@ class Flog < SexpProcessor
 
   def method_name
     @methods.first || @@no_method
-  end
-
-  def report io = $stdout
-    current = 0
-    total_score = self.total
-    max = total_score * THRESHOLD
-    totals = self.totals
-
-    io.puts "Total Flog = %.1f (%.1f flog / method)" % [total_score, self.average]
-    io.puts
-
-    exit 0 if $s
-
-    @calls.sort_by { |k,v| -totals[k] }.each do |klass_method, calls|
-      next if $m and klass_method =~ /##{@@no_method}/
-      total = totals[klass_method]
-      io.puts "%s: (%.1f)" % [klass_method, total]
-      calls.sort_by { |k,v| -v }.each do |call, count|
-        io.puts "  %6.1f: %s" % [count, call]
-      end
-
-      current += total
-      break if current >= max
-    end
-  ensure
-    self.reset
   end
 
   def reset
