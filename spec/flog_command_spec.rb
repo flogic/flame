@@ -47,7 +47,7 @@ describe 'flog command' do
       run_command
     end
     
-    it "CURRENTLY passes '-' (for the file path) to flog_files on the instance" do
+    currently "should pass '-' (for the file path) to flog_files on the instance" do
       @flog.expects(:flog_files).with(['-'])
       run_command
     end
@@ -73,7 +73,7 @@ describe 'flog command' do
         self.stubs(:puts).returns(nil)
       end
     
-      it "should display help information" do
+      currently "should display help information" do
         self.expects(:puts).at_least_once
         run_command
       end
@@ -108,7 +108,7 @@ describe 'flog command' do
           $I = nil
         end
         
-        it '(currently) should not modify the include path' do
+        currently 'should not modify the include path' do
           run_command
           $:.should == @paths
         end
