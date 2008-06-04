@@ -34,7 +34,7 @@ describe Flog do
       @flog.context.should == []  
     end
     
-    it 'should not have any calls yet' do
+    currently 'should not have any calls yet' do
       @flog.calls.should == {}
     end
     
@@ -54,7 +54,7 @@ describe Flog do
         @flog.parse_tree
       end
       
-      it 'should leave newlines off when creating the ParseTree instance' do
+      currently 'should leave newlines off when creating the ParseTree instance' do
         ParseTree.expects(:new).with(false)
         @flog.parse_tree
       end
@@ -82,7 +82,7 @@ describe Flog do
   
   describe "when flogging a list of files" do
     describe 'when no files are specified' do
-      it 'should not raise an exception' do
+      currently 'should not raise an exception' do
         lambda { @flog.flog_files }.should_not raise_error
       end
       
@@ -149,7 +149,7 @@ describe Flog do
             $v = false
           end
           
-          it 'should note which file is being flogged' do
+          currently 'should note which file is being flogged' do
             @flog.expects(:warn)
             @flog.flog_file('-')
           end
@@ -160,7 +160,7 @@ describe Flog do
             $v = false
           end
           
-          it 'should note which file is being flogged' do
+          currently 'should note which file is being flogged' do
             @flog.expects(:warn).never
             @flog.flog_file('-')
           end          
@@ -224,7 +224,7 @@ describe Flog do
             $v = false
           end
           
-          it 'should note which file is being flogged' do
+          currently 'should note which file is being flogged' do
             @flog.expects(:warn)
             @flog.flog_file(@file)
           end
@@ -235,7 +235,7 @@ describe Flog do
             $v = false
           end
           
-          it 'should note which file is being flogged' do
+          currently 'should note which file is being flogged' do
             @flog.expects(:warn).never
             @flog.flog_file(@file)
           end          
@@ -281,12 +281,12 @@ describe Flog do
       end
       
       describe 'when the string has erb snippets' do
-        it 'should warn about skipping' do
+        currently 'should warn about skipping' do
           @flog.expects(:warn).at_least_once
           @flog.flog('string', 'filename')
         end
         
-        it 'should not raise an exception' do
+        currently 'should not raise an exception' do
           lambda { @flog.flog('string', 'filename') }.should_not raise_error
         end
         
@@ -337,11 +337,11 @@ describe Flog do
       ParseTree.stubs(:new).returns(@parse_tree)
     end
     
-    currently 'should require both a ruby string and a filename' do
+    it 'should require both a ruby string and a filename' do
       lambda { @flog.process_parse_tree('string') }.should raise_error(ArgumentError)
     end
     
-    currently 'should compute the parse tree for the ruby string' do
+    it 'should compute the parse tree for the ruby string' do
       Sexp.stubs(:from_array).returns(['1', '2'])
       @parse_tree.expects(:parse_tree_for_string).returns(@sexp)
       @flog.process_parse_tree('string', 'file')
