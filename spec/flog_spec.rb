@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 require 'flog'
+require 'sexp_processor'
 
 describe Flog do
   before :each do
@@ -330,8 +331,10 @@ describe Flog do
   
   describe 'when processing a ruby parse tree' do
     before :each do
-      @parse_tree = stub('parse tree')
-      @flog.stubs(:parse_tree).returns(@parse_tree)
+      @flog.stubs(:process)
+      @sexp = stub('s-expressions')
+      @parse_tree = stub('parse tree', :parse_tree_for_string => @sexp)
+      ParseTree.stubs(:new).returns(@parse_tree)
     end
     
     it 'should require both a ruby string and a filename' do
@@ -339,23 +342,52 @@ describe Flog do
     end
     
     it 'should compute the parse tree for the ruby string' do
-      @parse_tree.expects(:parse_tree_for_string)
+      Sexp.stubs(:from_array).returns(['1', '2'])
+      @parse_tree.expects(:parse_tree_for_string).returns(@sexp)
       @flog.process_parse_tree('string', 'file')
     end
     
     it 'should use both the ruby string and the filename when computing the parse tree' do
-      @parse_tree.expects(:parse_tree_for_string).with('string', 'file')
+      Sexp.stubs(:from_array).returns(['1', '2'])
+      @parse_tree.expects(:parse_tree_for_string).with('string', 'file').returns(@sexp)
       @flog.process_parse_tree('string', 'file')      
     end
     
     describe 'if the ruby string is valid' do
-      it 'should convert the parse tree into a list of S-expressions'
-      it 'should process the list of S-expressions'
-      it 'should start processing at the first S-expression'
+      before :each do
+        @parse_tree = stub('parse tree', :parse_tree_for_string => @sexp)
+        @flog.stubs(:process)
+        @flog.stubs(:parse_tree).returns(@parse_tree)        
+      end
+      
+      it 'should convert the parse tree into a list of S-expressions' do
+        Sexp.expects(:from_array).with(@sexp).returns(['1', '2'])
+        @flog.process_parse_tree('string', 'file')
+      end
+      
+      it 'should process the list of S-expressions' do
+        @flog.expects(:process)
+        @flog.process_parse_tree('string', 'file')
+      end
+      
+      it 'should start processing at the first S-expression' do
+        Sexp.stubs(:from_array).returns(['1', '2'])
+        @flog.expects(:process).with('1')
+        @flog.process_parse_tree('string', 'file')        
+      end
     end
     
     describe 'if the ruby string is invalid' do
-      it 'should fail'
+      before :each do
+        @parse_tree = stub('parse tree')
+        @flog.stubs(:parse_tree).returns(@parse_tree)        
+        @parse_tree.stubs(:parse_tree_for_string).raises(SyntaxError)
+      end
+      
+      it 'should fail' do
+        lambda { @flog.process_parse_tree('string', 'file') }.should raise_error(SyntaxError)
+      end
+      
       it 'should not attempt to process the parse tree'
     end
   end
