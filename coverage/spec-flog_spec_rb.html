@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:32:09 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:32:16 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>346</tt>
+      <td class='lines_total'><tt>362</tt>
         </td>
-      <td class='lines_code'><tt>282</tt>
+      <td class='lines_code'><tt>295</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -929,21 +929,37 @@ span.run100 {
 </span><span class="inferred1"><a name="line329"></a>329   end
 </span><span class="inferred0"><a name="line330"></a>330   
 </span><span class="marked1"><a name="line331"></a>331   describe 'when processing a ruby parse tree' do
-</span><span class="marked0"><a name="line332"></a>332     it 'should compute the parse tree for the ruby string'
-</span><span class="marked1"><a name="line333"></a>333     it 'should use both the ruby string and the filename when computing the parse tree'
-</span><span class="inferred0"><a name="line334"></a>334     
-</span><span class="marked1"><a name="line335"></a>335     describe 'if the ruby string is valid' do
-</span><span class="marked0"><a name="line336"></a>336       it 'should convert the parse tree into a list of S-expressions'
-</span><span class="marked1"><a name="line337"></a>337       it 'should process the list of S-expressions'
-</span><span class="marked0"><a name="line338"></a>338       it 'should start processing at the first S-expression'
+</span><span class="marked0"><a name="line332"></a>332     before :each do
+</span><span class="marked1"><a name="line333"></a>333       @parse_tree = stub('parse tree')
+</span><span class="marked0"><a name="line334"></a>334       @flog.stubs(:parse_tree).returns(@parse_tree)
+</span><span class="inferred1"><a name="line335"></a>335     end
+</span><span class="inferred0"><a name="line336"></a>336     
+</span><span class="marked1"><a name="line337"></a>337     it 'should require both a ruby string and a filename' do
+</span><span class="marked0"><a name="line338"></a>338       lambda { @flog.process_parse_tree('string') }.should raise_error(ArgumentError)
 </span><span class="inferred1"><a name="line339"></a>339     end
 </span><span class="inferred0"><a name="line340"></a>340     
-</span><span class="marked1"><a name="line341"></a>341     describe 'if the ruby string is invalid' do
-</span><span class="marked0"><a name="line342"></a>342       it 'should fail'
-</span><span class="marked1"><a name="line343"></a>343       it 'should not attempt to process the parse tree'
+</span><span class="marked1"><a name="line341"></a>341     it 'should compute the parse tree for the ruby string' do
+</span><span class="marked0"><a name="line342"></a>342       @parse_tree.expects(:parse_tree_for_string)
+</span><span class="marked1"><a name="line343"></a>343       @flog.process_parse_tree('string', 'file')
 </span><span class="inferred0"><a name="line344"></a>344     end
-</span><span class="inferred1"><a name="line345"></a>345   end
-</span><span class="inferred0"><a name="line346"></a>346 end
+</span><span class="inferred1"><a name="line345"></a>345     
+</span><span class="marked0"><a name="line346"></a>346     it 'should use both the ruby string and the filename when computing the parse tree' do
+</span><span class="marked1"><a name="line347"></a>347       @parse_tree.expects(:parse_tree_for_string).with('string', 'file')
+</span><span class="marked0"><a name="line348"></a>348       @flog.process_parse_tree('string', 'file')      
+</span><span class="inferred1"><a name="line349"></a>349     end
+</span><span class="inferred0"><a name="line350"></a>350     
+</span><span class="marked1"><a name="line351"></a>351     describe 'if the ruby string is valid' do
+</span><span class="marked0"><a name="line352"></a>352       it 'should convert the parse tree into a list of S-expressions'
+</span><span class="marked1"><a name="line353"></a>353       it 'should process the list of S-expressions'
+</span><span class="marked0"><a name="line354"></a>354       it 'should start processing at the first S-expression'
+</span><span class="inferred1"><a name="line355"></a>355     end
+</span><span class="inferred0"><a name="line356"></a>356     
+</span><span class="marked1"><a name="line357"></a>357     describe 'if the ruby string is invalid' do
+</span><span class="marked0"><a name="line358"></a>358       it 'should fail'
+</span><span class="marked1"><a name="line359"></a>359       it 'should not attempt to process the parse tree'
+</span><span class="inferred0"><a name="line360"></a>360     end
+</span><span class="inferred1"><a name="line361"></a>361   end
+</span><span class="inferred0"><a name="line362"></a>362 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>

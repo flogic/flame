@@ -329,8 +329,24 @@ describe Flog do
   end
   
   describe 'when processing a ruby parse tree' do
-    it 'should compute the parse tree for the ruby string'
-    it 'should use both the ruby string and the filename when computing the parse tree'
+    before :each do
+      @parse_tree = stub('parse tree')
+      @flog.stubs(:parse_tree).returns(@parse_tree)
+    end
+    
+    it 'should require both a ruby string and a filename' do
+      lambda { @flog.process_parse_tree('string') }.should raise_error(ArgumentError)
+    end
+    
+    it 'should compute the parse tree for the ruby string' do
+      @parse_tree.expects(:parse_tree_for_string)
+      @flog.process_parse_tree('string', 'file')
+    end
+    
+    it 'should use both the ruby string and the filename when computing the parse tree' do
+      @parse_tree.expects(:parse_tree_for_string).with('string', 'file')
+      @flog.process_parse_tree('string', 'file')      
+    end
     
     describe 'if the ruby string is valid' do
       it 'should convert the parse tree into a list of S-expressions'
