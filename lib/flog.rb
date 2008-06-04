@@ -78,7 +78,7 @@ class Flog < SexpProcessor
   end
   
   def parse_tree
-    @parse_tree = ParseTree.new(false)
+    @parse_tree ||= ParseTree.new(false)
   end
 
   def flog_files *files
