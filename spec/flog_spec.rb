@@ -337,11 +337,11 @@ describe Flog do
       ParseTree.stubs(:new).returns(@parse_tree)
     end
     
-    it 'should require both a ruby string and a filename' do
+    currently 'should require both a ruby string and a filename' do
       lambda { @flog.process_parse_tree('string') }.should raise_error(ArgumentError)
     end
     
-    it 'should compute the parse tree for the ruby string' do
+    currently 'should compute the parse tree for the ruby string' do
       Sexp.stubs(:from_array).returns(['1', '2'])
       @parse_tree.expects(:parse_tree_for_string).returns(@sexp)
       @flog.process_parse_tree('string', 'file')
@@ -360,17 +360,17 @@ describe Flog do
         @flog.stubs(:parse_tree).returns(@parse_tree)        
       end
       
-      it 'should convert the parse tree into a list of S-expressions' do
+      currently 'should convert the parse tree into a list of S-expressions' do
         Sexp.expects(:from_array).with(@sexp).returns(['1', '2'])
         @flog.process_parse_tree('string', 'file')
       end
       
-      it 'should process the list of S-expressions' do
+      currently 'should process the list of S-expressions' do
         @flog.expects(:process)
         @flog.process_parse_tree('string', 'file')
       end
       
-      it 'should start processing at the first S-expression' do
+      currently 'should start processing at the first S-expression' do
         Sexp.stubs(:from_array).returns(['1', '2'])
         @flog.expects(:process).with('1')
         @flog.process_parse_tree('string', 'file')        
@@ -384,11 +384,11 @@ describe Flog do
         @parse_tree.stubs(:parse_tree_for_string).raises(SyntaxError)
       end
       
-      it 'should fail' do
+      currently 'should fail' do
         lambda { @flog.process_parse_tree('string', 'file') }.should raise_error(SyntaxError)
       end
       
-      it 'should not attempt to process the parse tree' do
+      currently 'should not attempt to process the parse tree' do
         @flog.expects(:process).never
         lambda { @flog.process_parse_tree('string', 'file') }
       end
