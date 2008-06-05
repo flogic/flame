@@ -394,4 +394,25 @@ describe Flog do
       end
     end
   end
+  
+  describe 'when generating a report' do
+    currently 'allows for an io handle'
+    currently 'defaults the io handle to stdout'
+    currently 'computes the total flog score'
+    currently 'retrieves the set of total statistics'
+    
+    currently 'outputs the total flog score'
+    currently 'computes the average flog score'
+    currently 'outputs the average flog score'
+    
+    describe 'when summary mode is set' do
+      currently 'exits with status 0'
+      currently 'does not produce a call listing'
+      it 'should not retrieve the set of total statistics'
+    end
+    
+    describe 'when summary mode is not set' do
+      
+    end
+  end
 end
