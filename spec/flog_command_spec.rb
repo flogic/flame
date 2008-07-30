@@ -12,11 +12,6 @@ describe 'flog command' do
     eval File.read(File.join(File.dirname(__FILE__), *%w[.. bin flog]))
   end
   
-  it 'should validate the -a option'
-  it 'should validate the -m option'
-  it 'should validate the -s option'
-  it 'should validate the -v option'
-  
   describe 'when no command-line arguments are specified' do
     before :each do
       Object.send(:remove_const, :ARGV)
@@ -132,5 +127,11 @@ describe 'flog command' do
         run_command
       end
     end
+
+    it 'should validate the -a option'
+    it 'should validate the -m option'
+    it 'should validate the -s option'
+    it 'should validate the -v option'
+
   end
 end
