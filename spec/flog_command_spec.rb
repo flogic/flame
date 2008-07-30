@@ -2,11 +2,6 @@ require File.dirname(__FILE__) + '/spec_helper.rb'
 require 'flog'
 
 describe 'flog command' do
-  before :all do
-    path = File.join(File.dirname(__FILE__), *%w[.. bin])
-    ENV['PATH'] = [path, ENV['PATH']].join(':')
-  end
-
   before :each do
     @flog = stub('Flog', :flog_files => true, :report => true)
     Flog.stubs(:new).returns(@flog)
