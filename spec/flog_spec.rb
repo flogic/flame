@@ -388,6 +388,12 @@ describe Flog do
     end
   end
   
+  describe 'when adding to the current flog score' do
+    it 'should require both a name and a score' do
+      lambda { @flog.add_to_score('foo') }.should raise_error(ArgumentError)
+    end
+  end
+  
   describe 'when generating a report' do
     currently 'allows for an io handle'
     currently 'defaults the io handle to stdout'

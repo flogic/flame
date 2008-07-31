@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:33:42 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:33:56 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>411</tt>
+      <td class='lines_total'><tt>417</tt>
         </td>
-      <td class='lines_code'><tt>335</tt>
+      <td class='lines_code'><tt>340</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -988,27 +988,33 @@ span.run100 {
 </span><span class="inferred0"><a name="line388"></a>388     end
 </span><span class="inferred1"><a name="line389"></a>389   end
 </span><span class="inferred0"><a name="line390"></a>390   
-</span><span class="marked1"><a name="line391"></a>391   describe 'when generating a report' do
-</span><span class="marked0"><a name="line392"></a>392     currently 'allows for an io handle'
-</span><span class="marked1"><a name="line393"></a>393     currently 'defaults the io handle to stdout'
-</span><span class="marked0"><a name="line394"></a>394     currently 'computes the total flog score'
-</span><span class="marked1"><a name="line395"></a>395     currently 'retrieves the set of total statistics'
-</span><span class="inferred0"><a name="line396"></a>396     
-</span><span class="marked1"><a name="line397"></a>397     currently 'outputs the total flog score'
-</span><span class="marked0"><a name="line398"></a>398     currently 'computes the average flog score'
-</span><span class="marked1"><a name="line399"></a>399     currently 'outputs the average flog score'
-</span><span class="inferred0"><a name="line400"></a>400     
-</span><span class="marked1"><a name="line401"></a>401     describe 'when summary mode is set' do
-</span><span class="marked0"><a name="line402"></a>402       currently 'exits with status 0'
-</span><span class="marked1"><a name="line403"></a>403       currently 'does not produce a call listing'
-</span><span class="marked0"><a name="line404"></a>404       it 'should not retrieve the set of total statistics'
-</span><span class="inferred1"><a name="line405"></a>405     end
+</span><span class="marked1"><a name="line391"></a>391   describe 'when adding to the current flog score' do
+</span><span class="marked0"><a name="line392"></a>392     it 'should require both a name and a score' do
+</span><span class="marked1"><a name="line393"></a>393       lambda { @flog.add_to_score('foo') }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line394"></a>394     end
+</span><span class="inferred1"><a name="line395"></a>395   end
+</span><span class="inferred0"><a name="line396"></a>396   
+</span><span class="marked1"><a name="line397"></a>397   describe 'when generating a report' do
+</span><span class="marked0"><a name="line398"></a>398     currently 'allows for an io handle'
+</span><span class="marked1"><a name="line399"></a>399     currently 'defaults the io handle to stdout'
+</span><span class="marked0"><a name="line400"></a>400     currently 'computes the total flog score'
+</span><span class="marked1"><a name="line401"></a>401     currently 'retrieves the set of total statistics'
+</span><span class="inferred0"><a name="line402"></a>402     
+</span><span class="marked1"><a name="line403"></a>403     currently 'outputs the total flog score'
+</span><span class="marked0"><a name="line404"></a>404     currently 'computes the average flog score'
+</span><span class="marked1"><a name="line405"></a>405     currently 'outputs the average flog score'
 </span><span class="inferred0"><a name="line406"></a>406     
-</span><span class="marked1"><a name="line407"></a>407     describe 'when summary mode is not set' do
-</span><span class="inferred0"><a name="line408"></a>408       
-</span><span class="inferred1"><a name="line409"></a>409     end
-</span><span class="inferred0"><a name="line410"></a>410   end
-</span><span class="inferred1"><a name="line411"></a>411 end
+</span><span class="marked1"><a name="line407"></a>407     describe 'when summary mode is set' do
+</span><span class="marked0"><a name="line408"></a>408       currently 'exits with status 0'
+</span><span class="marked1"><a name="line409"></a>409       currently 'does not produce a call listing'
+</span><span class="marked0"><a name="line410"></a>410       it 'should not retrieve the set of total statistics'
+</span><span class="inferred1"><a name="line411"></a>411     end
+</span><span class="inferred0"><a name="line412"></a>412     
+</span><span class="marked1"><a name="line413"></a>413     describe 'when summary mode is not set' do
+</span><span class="inferred0"><a name="line414"></a>414       
+</span><span class="inferred1"><a name="line415"></a>415     end
+</span><span class="inferred0"><a name="line416"></a>416   end
+</span><span class="inferred1"><a name="line417"></a>417 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
