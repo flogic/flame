@@ -22,6 +22,7 @@ class Flog < SexpProcessor
     :alias => 2,
     :assignment => 1,
     :block => 1,
+    :block_pass => 1,
     :branch => 1,
     :lit_fixnum => 0.25,
     :sclass => 5,
@@ -256,7 +257,7 @@ class Flog < SexpProcessor
     arg = exp.shift
     call = exp.shift
 
-    add_to_score :block_pass, OTHER_SCORES[:block]
+    add_to_score :block_pass, OTHER_SCORES[:block_pass]
 
     case arg.first
     when :lvar, :dvar, :ivar, :cvar, :self, :const, :nil then
