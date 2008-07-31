@@ -96,7 +96,7 @@ class Flog < SexpProcessor
   end
   
   def flog_directory(dir)
-    Dir.new(dir).each {|file| flog_file(file) }
+    Dir["#{dir}/**/*.rb"].each {|file| flog_file(file) }
   end
   
   def flog(ruby, file)

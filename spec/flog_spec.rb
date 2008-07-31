@@ -173,7 +173,7 @@ describe Flog do
           @file = File.dirname(__FILE__)
         end
 
-        it 'should expand the files in the directory' do
+        it 'should expand the files under the directory' do
           @flog.expects(:flog_directory)
           @flog.flog_file(@file)
         end
@@ -246,27 +246,20 @@ describe Flog do
 
   describe 'when flogging a directory' do
     before :each do
-      @files = ['a', 'b', 'c', 'd']
+      @files = ['a.rb', '/foo/b.rb', '/foo/bar/c.rb', '/foo/bar/baz/d.rb']
       @dir = File.dirname(__FILE__)
+      Dir.stubs(:[]).returns(@files)
+    end
+    
+    it 'should get the list of ruby files under the directory' do
       @flog.stubs(:flog_file)
-      Dir.stubs(:new).returns(@files)
-    end
-    
-    it 'should get the list of files in the directory' do
-      Dir.expects(:new).returns(@files)
+      Dir.expects(:[]).returns(@files)
       @flog.flog_directory(@dir)
     end
     
-    it 'should call flog_file once for each file in the directory' do
-      @flog.expects(:flog_file).times(@files.size)
+    it "should call flog_file once for each file in the directory" do
+      @files.each {|f| @flog.expects(:flog_file).with(f) }
       @flog.flog_directory(@dir)
-    end
-    
-    it 'should pass the filename to flog_file for each file in the directory' do
-      @files.each do |file|
-        @flog.expects(:flog_file).with(file)
-      end
-      @flog.flog_directory(@dir)      
     end
   end
 
