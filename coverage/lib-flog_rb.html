@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:33:20 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:33:26 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -575,20 +575,20 @@ span.run100 {
         </td>
       <td class='lines_code'><tt>403</tt>
         </td>
-      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>72.7%</tt>
+      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>81.7%</tt>
               &nbsp;</td>
-            <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='73'/>
-                  <td class='uncovered' width='27'/>
+            <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='82'/>
+                  <td class='uncovered' width='18'/>
                   </tr>
                 </table>
               </td>
             </tr>
           </table>
         </td>
-      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_code'>68.7%</tt>
+      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_code'>78.7%</tt>
               &nbsp;</td>
-            <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='69'/>
-                  <td class='uncovered' width='31'/>
+            <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='79'/>
+                  <td class='uncovered' width='21'/>
                   </tr>
                 </table>
               </td>
@@ -696,7 +696,7 @@ span.run100 {
 </span><span class="inferred0"><a name="line96"></a> 96   end
 </span><span class="inferred1"><a name="line97"></a> 97   
 </span><span class="marked0"><a name="line98"></a> 98   def flog_directory(dir)
-</span><span class="marked1"><a name="line99"></a> 99     Dir.new(dir).each {|file| flog_file(file) }
+</span><span class="marked1"><a name="line99"></a> 99     Dir[&quot;#{dir}/**/*.rb&quot;].each {|file| flog_file(file) }
 </span><span class="marked0"><a name="line100"></a>100   end
 </span><span class="inferred1"><a name="line101"></a>101   
 </span><span class="marked0"><a name="line102"></a>102   def flog(ruby, file)
@@ -852,13 +852,13 @@ span.run100 {
 </span><span class="inferred0"><a name="line252"></a>252 
 </span><span class="inferred1"><a name="line253"></a>253   # [:block_pass, [:lit, :blah], [:fcall, :foo]]
 </span><span class="marked0"><a name="line254"></a>254   def process_block_pass(exp)
-</span><span class="uncovered1"><a name="line255"></a>255     arg = exp.shift
-</span><span class="uncovered0"><a name="line256"></a>256     call = exp.shift
-</span><span class="uncovered1"><a name="line257"></a>257 
-</span><span class="uncovered0"><a name="line258"></a>258     add_to_score :block_pass, OTHER_SCORES[:block]
-</span><span class="uncovered1"><a name="line259"></a>259 
-</span><span class="uncovered0"><a name="line260"></a>260     case arg.first
-</span><span class="uncovered1"><a name="line261"></a>261     when :lvar, :dvar, :ivar, :cvar, :self, :const, :nil then
+</span><span class="marked1"><a name="line255"></a>255     arg = exp.shift
+</span><span class="marked0"><a name="line256"></a>256     call = exp.shift
+</span><span class="inferred1"><a name="line257"></a>257 
+</span><span class="marked0"><a name="line258"></a>258     add_to_score :block_pass, OTHER_SCORES[:block]
+</span><span class="inferred1"><a name="line259"></a>259 
+</span><span class="marked0"><a name="line260"></a>260     case arg.first
+</span><span class="marked1"><a name="line261"></a>261     when :lvar, :dvar, :ivar, :cvar, :self, :const, :nil then
 </span><span class="uncovered0"><a name="line262"></a>262       # do nothing
 </span><span class="uncovered1"><a name="line263"></a>263     when :lit, :call then
 </span><span class="uncovered0"><a name="line264"></a>264       add_to_score :to_proc_normal, OTHER_SCORES[:to_proc_normal]
@@ -867,12 +867,12 @@ span.run100 {
 </span><span class="uncovered1"><a name="line267"></a>267     else
 </span><span class="uncovered0"><a name="line268"></a>268       raise({:block_pass =&gt; [arg, call]}.inspect)
 </span><span class="uncovered1"><a name="line269"></a>269     end
-</span><span class="uncovered0"><a name="line270"></a>270 
-</span><span class="uncovered1"><a name="line271"></a>271     process arg
-</span><span class="uncovered0"><a name="line272"></a>272     process call
-</span><span class="uncovered1"><a name="line273"></a>273 
-</span><span class="uncovered0"><a name="line274"></a>274     s()
-</span><span class="uncovered1"><a name="line275"></a>275   end
+</span><span class="inferred0"><a name="line270"></a>270 
+</span><span class="marked1"><a name="line271"></a>271     process arg
+</span><span class="marked0"><a name="line272"></a>272     process call
+</span><span class="inferred1"><a name="line273"></a>273 
+</span><span class="marked0"><a name="line274"></a>274     s()
+</span><span class="inferred1"><a name="line275"></a>275   end
 </span><span class="inferred0"><a name="line276"></a>276 
 </span><span class="marked1"><a name="line277"></a>277   def process_call(exp)
 </span><span class="marked0"><a name="line278"></a>278     bad_dog! 0.2 do
@@ -899,14 +899,14 @@ span.run100 {
 </span><span class="uncovered1"><a name="line299"></a>299   end
 </span><span class="inferred0"><a name="line300"></a>300 
 </span><span class="marked1"><a name="line301"></a>301   def process_class(exp)
-</span><span class="uncovered0"><a name="line302"></a>302     self.klass exp.shift do
-</span><span class="uncovered1"><a name="line303"></a>303       bad_dog! 1.0 do
-</span><span class="uncovered0"><a name="line304"></a>304         supr = process exp.shift
-</span><span class="uncovered1"><a name="line305"></a>305       end
-</span><span class="uncovered0"><a name="line306"></a>306       bleed exp
-</span><span class="uncovered1"><a name="line307"></a>307     end
-</span><span class="uncovered0"><a name="line308"></a>308     s()
-</span><span class="uncovered1"><a name="line309"></a>309   end
+</span><span class="marked0"><a name="line302"></a>302     self.klass exp.shift do
+</span><span class="marked1"><a name="line303"></a>303       bad_dog! 1.0 do
+</span><span class="marked0"><a name="line304"></a>304         supr = process exp.shift
+</span><span class="inferred1"><a name="line305"></a>305       end
+</span><span class="marked0"><a name="line306"></a>306       bleed exp
+</span><span class="inferred1"><a name="line307"></a>307     end
+</span><span class="marked0"><a name="line308"></a>308     s()
+</span><span class="inferred1"><a name="line309"></a>309   end
 </span><span class="inferred0"><a name="line310"></a>310 
 </span><span class="marked1"><a name="line311"></a>311   def process_dasgn_curr(exp)
 </span><span class="marked0"><a name="line312"></a>312     add_to_score :assignment, OTHER_SCORES[:assignment]
@@ -958,18 +958,18 @@ span.run100 {
 </span><span class="marked0"><a name="line358"></a>358   def process_iter(exp)
 </span><span class="marked1"><a name="line359"></a>359     context = (self.context - [:class, :module, :scope])
 </span><span class="marked0"><a name="line360"></a>360     if context.uniq.sort_by {|s|s.to_s} == [:block, :iter] then
-</span><span class="uncovered1"><a name="line361"></a>361       recv = exp.first
-</span><span class="uncovered0"><a name="line362"></a>362       if recv[0] == :call and recv[1] == nil and recv.arglist[1] and [:lit, :str].include? recv.arglist[1][0] then
-</span><span class="uncovered1"><a name="line363"></a>363         msg = recv[2]
-</span><span class="uncovered0"><a name="line364"></a>364         submsg = recv.arglist[1][1]
-</span><span class="uncovered1"><a name="line365"></a>365         self.method submsg do
-</span><span class="uncovered0"><a name="line366"></a>366           self.klass msg do
-</span><span class="uncovered1"><a name="line367"></a>367             bleed exp
-</span><span class="uncovered0"><a name="line368"></a>368           end
-</span><span class="uncovered1"><a name="line369"></a>369         end
-</span><span class="uncovered0"><a name="line370"></a>370         return s()
-</span><span class="uncovered1"><a name="line371"></a>371       end
-</span><span class="uncovered0"><a name="line372"></a>372     end
+</span><span class="marked1"><a name="line361"></a>361       recv = exp.first
+</span><span class="marked0"><a name="line362"></a>362       if recv[0] == :call and recv[1] == nil and recv.arglist[1] and [:lit, :str].include? recv.arglist[1][0] then
+</span><span class="marked1"><a name="line363"></a>363         msg = recv[2]
+</span><span class="marked0"><a name="line364"></a>364         submsg = recv.arglist[1][1]
+</span><span class="marked1"><a name="line365"></a>365         self.method submsg do
+</span><span class="marked0"><a name="line366"></a>366           self.klass msg do
+</span><span class="marked1"><a name="line367"></a>367             bleed exp
+</span><span class="inferred0"><a name="line368"></a>368           end
+</span><span class="inferred1"><a name="line369"></a>369         end
+</span><span class="marked0"><a name="line370"></a>370         return s()
+</span><span class="inferred1"><a name="line371"></a>371       end
+</span><span class="inferred0"><a name="line372"></a>372     end
 </span><span class="inferred1"><a name="line373"></a>373 
 </span><span class="marked0"><a name="line374"></a>374     add_to_score :branch, OTHER_SCORES[:branch]
 </span><span class="inferred1"><a name="line375"></a>375 
@@ -1028,12 +1028,12 @@ span.run100 {
 </span><span class="inferred0"><a name="line428"></a>428   end
 </span><span class="inferred1"><a name="line429"></a>429 
 </span><span class="marked0"><a name="line430"></a>430   def process_rescue(exp)
-</span><span class="uncovered1"><a name="line431"></a>431     add_to_score :branch, OTHER_SCORES[:branch]
-</span><span class="uncovered0"><a name="line432"></a>432     bad_dog! 0.1 do
-</span><span class="uncovered1"><a name="line433"></a>433       bleed exp
-</span><span class="uncovered0"><a name="line434"></a>434     end
-</span><span class="uncovered1"><a name="line435"></a>435     s()
-</span><span class="uncovered0"><a name="line436"></a>436   end
+</span><span class="marked1"><a name="line431"></a>431     add_to_score :branch, OTHER_SCORES[:branch]
+</span><span class="marked0"><a name="line432"></a>432     bad_dog! 0.1 do
+</span><span class="marked1"><a name="line433"></a>433       bleed exp
+</span><span class="inferred0"><a name="line434"></a>434     end
+</span><span class="marked1"><a name="line435"></a>435     s()
+</span><span class="inferred0"><a name="line436"></a>436   end
 </span><span class="inferred1"><a name="line437"></a>437 
 </span><span class="marked0"><a name="line438"></a>438   def process_sclass(exp)
 </span><span class="marked1"><a name="line439"></a>439     bad_dog! 0.5 do
@@ -1080,11 +1080,11 @@ span.run100 {
 </span><span class="uncovered0"><a name="line480"></a>480   end
 </span><span class="inferred1"><a name="line481"></a>481 
 </span><span class="marked0"><a name="line482"></a>482   def process_yield(exp)
-</span><span class="uncovered1"><a name="line483"></a>483     add_to_score :yield, OTHER_SCORES[:yield]
-</span><span class="uncovered0"><a name="line484"></a>484     bleed exp
-</span><span class="uncovered1"><a name="line485"></a>485     s()
-</span><span class="uncovered0"><a name="line486"></a>486   end
-</span><span class="uncovered1"><a name="line487"></a>487 end
+</span><span class="marked1"><a name="line483"></a>483     add_to_score :yield, OTHER_SCORES[:yield]
+</span><span class="marked0"><a name="line484"></a>484     bleed exp
+</span><span class="marked1"><a name="line485"></a>485     s()
+</span><span class="inferred0"><a name="line486"></a>486   end
+</span><span class="inferred1"><a name="line487"></a>487 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
