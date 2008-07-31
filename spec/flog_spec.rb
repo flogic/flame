@@ -423,19 +423,31 @@ describe Flog do
     end
   end
   
-  describe 'when generating a report' do
-    currently 'allows for an io handle'
-    currently 'defaults the io handle to stdout'
-    currently 'computes the total flog score'
-    currently 'retrieves the set of total statistics'
+  describe 'when computing the average per-call flog score' do
+    it 'should not allow arguments' do
+      lambda { @flog.average('foo') }.should raise_error(ArgumentError)
+    end
     
-    currently 'outputs the total flog score'
-    currently 'computes the average flog score'
-    currently 'outputs the average flog score'
+    it 'should return the total flog score divided by the number of calls' do
+      @flog.stubs(:total).returns(100.0)
+      @flog.stubs(:calls).returns({ :bar => {}, :foo => {} })
+      @flog.average.should be_close(100.0/2, 0.00000000001)
+    end
+  end
+  
+  describe 'when generating a report' do
+    it 'allows specifying an io handle'
+    it 'defaults the io handle to stdout'
+    it 'computes the total flog score'
+    it 'retrieves the set of total statistics'
+    
+    it 'outputs the total flog score'
+    it 'computes the average flog score'
+    it 'outputs the average flog score'
     
     describe 'when summary mode is set' do
-      currently 'exits with status 0'
-      currently 'does not produce a call listing'
+      it 'exits with status 0'
+      it 'does not produce a call listing'
       it 'should not retrieve the set of total statistics'
     end
     
