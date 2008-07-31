@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:33:26 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:33:33 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_integration_spec_rb.html'>spec/flog_integration_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>61</tt>
+      <td class='lines_total'><tt>81</tt>
         </td>
-      <td class='lines_code'><tt>50</tt>
+      <td class='lines_code'><tt>66</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -626,39 +626,59 @@ span.run100 {
 </span><span class="marked0"><a name="line26"></a>26       it 'should not fail when flogging the given input' do
 </span><span class="marked1"><a name="line27"></a>27         lambda { @flog.flog_files(fixture_files(@files)) }.should_not raise_error
 </span><span class="inferred0"><a name="line28"></a>28       end
-</span><span class="inferred1"><a name="line29"></a>29     end
-</span><span class="inferred0"><a name="line30"></a>30   
-</span><span class="marked1"><a name="line31"></a>31     describe 'when given a simple file' do
-</span><span class="marked0"><a name="line32"></a>32       before :each do
-</span><span class="marked1"><a name="line33"></a>33         @files = ['/simple/simple.rb']
-</span><span class="inferred0"><a name="line34"></a>34       end
-</span><span class="inferred1"><a name="line35"></a>35     
-</span><span class="marked0"><a name="line36"></a>36       it 'should not fail when flogging the given input' do
-</span><span class="marked1"><a name="line37"></a>37         lambda { @flog.flog_files(fixture_files(@files)) }.should_not raise_error
-</span><span class="inferred0"><a name="line38"></a>38       end
-</span><span class="inferred1"><a name="line39"></a>39     end
-</span><span class="inferred0"><a name="line40"></a>40   
-</span><span class="marked1"><a name="line41"></a>41     describe 'when given a directory of files' do
-</span><span class="marked0"><a name="line42"></a>42       before :each do
-</span><span class="marked1"><a name="line43"></a>43         @files = ['/directory/']      
-</span><span class="inferred0"><a name="line44"></a>44       end
-</span><span class="inferred1"><a name="line45"></a>45     
-</span><span class="marked0"><a name="line46"></a>46       it 'should not fail when flogging the given input' do
-</span><span class="marked1"><a name="line47"></a>47         lambda { @flog.flog_files(fixture_files(@files)) }.should_not raise_error
+</span><span class="inferred1"><a name="line29"></a>29       
+</span><span class="marked0"><a name="line30"></a>30       it 'should report an overall flog score of 0' do
+</span><span class="marked1"><a name="line31"></a>31         @flog.flog_files(fixture_files(@files))
+</span><span class="marked0"><a name="line32"></a>32         @flog.total.should be_close(0.0, 0.0000000001)
+</span><span class="inferred1"><a name="line33"></a>33       end
+</span><span class="inferred0"><a name="line34"></a>34     end
+</span><span class="inferred1"><a name="line35"></a>35   
+</span><span class="marked0"><a name="line36"></a>36     describe 'when given a simple file' do
+</span><span class="marked1"><a name="line37"></a>37       before :each do
+</span><span class="marked0"><a name="line38"></a>38         @files = ['/simple/simple.rb']
+</span><span class="inferred1"><a name="line39"></a>39       end
+</span><span class="inferred0"><a name="line40"></a>40     
+</span><span class="marked1"><a name="line41"></a>41       it 'should not fail when flogging the given input' do
+</span><span class="marked0"><a name="line42"></a>42         lambda { @flog.flog_files(fixture_files(@files)) }.should_not raise_error
+</span><span class="inferred1"><a name="line43"></a>43       end
+</span><span class="inferred0"><a name="line44"></a>44 
+</span><span class="marked1"><a name="line45"></a>45       it 'should report an overall flog score of 235.694161066381' do
+</span><span class="marked0"><a name="line46"></a>46         @flog.flog_files(fixture_files(@files))
+</span><span class="marked1"><a name="line47"></a>47         @flog.total.should be_close(235.694161066381, 0.0000000001)
 </span><span class="inferred0"><a name="line48"></a>48       end
 </span><span class="inferred1"><a name="line49"></a>49     end
 </span><span class="inferred0"><a name="line50"></a>50   
-</span><span class="marked1"><a name="line51"></a>51     describe 'when given a collection of files' do
+</span><span class="marked1"><a name="line51"></a>51     describe 'when given a directory of files' do
 </span><span class="marked0"><a name="line52"></a>52       before :each do
-</span><span class="marked1"><a name="line53"></a>53         @files = ['/collection/']      
+</span><span class="marked1"><a name="line53"></a>53         @files = ['/directory/']      
 </span><span class="inferred0"><a name="line54"></a>54       end
-</span><span class="inferred1"><a name="line55"></a>55 
+</span><span class="inferred1"><a name="line55"></a>55     
 </span><span class="marked0"><a name="line56"></a>56       it 'should not fail when flogging the given input' do
 </span><span class="marked1"><a name="line57"></a>57         lambda { @flog.flog_files(fixture_files(@files)) }.should_not raise_error
 </span><span class="inferred0"><a name="line58"></a>58       end
-</span><span class="inferred1"><a name="line59"></a>59     end
-</span><span class="inferred0"><a name="line60"></a>60   end
-</span><span class="inferred1"><a name="line61"></a>61 end
+</span><span class="inferred1"><a name="line59"></a>59 
+</span><span class="marked0"><a name="line60"></a>60       it 'should report an overall flog score of 209.977217342726' do
+</span><span class="marked1"><a name="line61"></a>61         @flog.flog_files(fixture_files(@files))
+</span><span class="marked0"><a name="line62"></a>62         @flog.total.should be_close(209.977217342726, 0.0000000001)        
+</span><span class="inferred1"><a name="line63"></a>63       end
+</span><span class="inferred0"><a name="line64"></a>64     end
+</span><span class="inferred1"><a name="line65"></a>65   
+</span><span class="marked0"><a name="line66"></a>66     describe 'when given a collection of files' do
+</span><span class="marked1"><a name="line67"></a>67       before :each do
+</span><span class="marked0"><a name="line68"></a>68         @files = ['/collection/']      
+</span><span class="inferred1"><a name="line69"></a>69       end
+</span><span class="inferred0"><a name="line70"></a>70 
+</span><span class="marked1"><a name="line71"></a>71       it 'should not fail when flogging the given input' do
+</span><span class="marked0"><a name="line72"></a>72         lambda { @flog.flog_files(fixture_files(@files)) }.should_not raise_error
+</span><span class="inferred1"><a name="line73"></a>73       end
+</span><span class="inferred0"><a name="line74"></a>74 
+</span><span class="marked1"><a name="line75"></a>75       it 'should report an overall flog score of 981.137760580242' do
+</span><span class="marked0"><a name="line76"></a>76         @flog.flog_files(fixture_files(@files))
+</span><span class="marked1"><a name="line77"></a>77         @flog.total.should be_close(981.137760580242, 0.0000000001)
+</span><span class="inferred0"><a name="line78"></a>78       end
+</span><span class="inferred1"><a name="line79"></a>79     end
+</span><span class="inferred0"><a name="line80"></a>80   end
+</span><span class="inferred1"><a name="line81"></a>81 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>

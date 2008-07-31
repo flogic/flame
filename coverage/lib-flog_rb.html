@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:33:26 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:33:33 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -575,20 +575,20 @@ span.run100 {
         </td>
       <td class='lines_code'><tt>403</tt>
         </td>
-      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>81.7%</tt>
+      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>86.7%</tt>
               &nbsp;</td>
-            <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='82'/>
-                  <td class='uncovered' width='18'/>
+            <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='87'/>
+                  <td class='uncovered' width='13'/>
                   </tr>
                 </table>
               </td>
             </tr>
           </table>
         </td>
-      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_code'>78.7%</tt>
+      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_code'>84.4%</tt>
               &nbsp;</td>
-            <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='79'/>
-                  <td class='uncovered' width='21'/>
+            <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='84'/>
+                  <td class='uncovered' width='16'/>
                   </tr>
                 </table>
               </td>
@@ -779,36 +779,36 @@ span.run100 {
 </span><span class="inferred1"><a name="line179"></a>179   end
 </span><span class="inferred0"><a name="line180"></a>180 
 </span><span class="marked1"><a name="line181"></a>181   def total
-</span><span class="uncovered0"><a name="line182"></a>182     self.totals unless @total_score # calculates total_score as well
-</span><span class="uncovered1"><a name="line183"></a>183 
-</span><span class="uncovered0"><a name="line184"></a>184     @total_score
-</span><span class="uncovered1"><a name="line185"></a>185   end
+</span><span class="marked0"><a name="line182"></a>182     self.totals unless @total_score # calculates total_score as well
+</span><span class="inferred1"><a name="line183"></a>183 
+</span><span class="marked0"><a name="line184"></a>184     @total_score
+</span><span class="inferred1"><a name="line185"></a>185   end
 </span><span class="inferred0"><a name="line186"></a>186 
 </span><span class="marked1"><a name="line187"></a>187   def average
 </span><span class="uncovered0"><a name="line188"></a>188     self.total / self.calls.size
 </span><span class="uncovered1"><a name="line189"></a>189   end
 </span><span class="inferred0"><a name="line190"></a>190 
 </span><span class="marked1"><a name="line191"></a>191   def totals
-</span><span class="uncovered0"><a name="line192"></a>192     unless @totals then
-</span><span class="uncovered1"><a name="line193"></a>193       @total_score = 0
-</span><span class="uncovered0"><a name="line194"></a>194       @totals = Hash.new(0)
-</span><span class="uncovered1"><a name="line195"></a>195       self.calls.each do |meth, tally|
-</span><span class="uncovered0"><a name="line196"></a>196         next if $m and meth =~ /##{@@no_method}$/
-</span><span class="uncovered1"><a name="line197"></a>197         a, b, c = 0, 0, 0
-</span><span class="uncovered0"><a name="line198"></a>198         tally.each do |cat, score|
-</span><span class="uncovered1"><a name="line199"></a>199           case cat
-</span><span class="uncovered0"><a name="line200"></a>200           when :assignment then a += score
-</span><span class="uncovered1"><a name="line201"></a>201           when :branch     then b += score
-</span><span class="uncovered0"><a name="line202"></a>202           else                  c += score
-</span><span class="uncovered1"><a name="line203"></a>203           end
-</span><span class="uncovered0"><a name="line204"></a>204         end
-</span><span class="uncovered1"><a name="line205"></a>205         score = Math.sqrt(a*a + b*b + c*c)
-</span><span class="uncovered0"><a name="line206"></a>206         @totals[meth] = score
-</span><span class="uncovered1"><a name="line207"></a>207         @total_score += score
-</span><span class="uncovered0"><a name="line208"></a>208       end
-</span><span class="uncovered1"><a name="line209"></a>209     end
-</span><span class="uncovered0"><a name="line210"></a>210     @totals
-</span><span class="uncovered1"><a name="line211"></a>211   end
+</span><span class="marked0"><a name="line192"></a>192     unless @totals then
+</span><span class="marked1"><a name="line193"></a>193       @total_score = 0
+</span><span class="marked0"><a name="line194"></a>194       @totals = Hash.new(0)
+</span><span class="marked1"><a name="line195"></a>195       self.calls.each do |meth, tally|
+</span><span class="marked0"><a name="line196"></a>196         next if $m and meth =~ /##{@@no_method}$/
+</span><span class="marked1"><a name="line197"></a>197         a, b, c = 0, 0, 0
+</span><span class="marked0"><a name="line198"></a>198         tally.each do |cat, score|
+</span><span class="marked1"><a name="line199"></a>199           case cat
+</span><span class="marked0"><a name="line200"></a>200           when :assignment then a += score
+</span><span class="marked1"><a name="line201"></a>201           when :branch     then b += score
+</span><span class="marked0"><a name="line202"></a>202           else                  c += score
+</span><span class="inferred1"><a name="line203"></a>203           end
+</span><span class="inferred0"><a name="line204"></a>204         end
+</span><span class="marked1"><a name="line205"></a>205         score = Math.sqrt(a*a + b*b + c*c)
+</span><span class="marked0"><a name="line206"></a>206         @totals[meth] = score
+</span><span class="marked1"><a name="line207"></a>207         @total_score += score
+</span><span class="inferred0"><a name="line208"></a>208       end
+</span><span class="inferred1"><a name="line209"></a>209     end
+</span><span class="marked0"><a name="line210"></a>210     @totals
+</span><span class="inferred1"><a name="line211"></a>211   end
 </span><span class="inferred0"><a name="line212"></a>212 
 </span><span class="inferred1"><a name="line213"></a>213   ############################################################
 </span><span class="inferred0"><a name="line214"></a>214   # Process Methods:
