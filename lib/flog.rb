@@ -112,11 +112,15 @@ class Flog < SexpProcessor
     process Sexp.from_array(sexp).first
   end
   
+  def add_to_score(name)
+    @calls["#{self.klass_name}##{self.method_name}"][name] += SCORES[name] * @multiplier
+  end
+  
   def report io = $stdout
-    current = 0
+    current = 0   # can be moved lower
     total_score = self.total
-    max = total_score * THRESHOLD
-    totals = self.totals
+    max = total_score * THRESHOLD  # can be moved lower
+    totals = self.totals  # can be moved lower
 
     io.puts "Total Flog = %.1f (%.1f flog / method)" % [total_score, self.average]
     io.puts
@@ -136,10 +140,6 @@ class Flog < SexpProcessor
     end
   ensure
     self.reset
-  end
-
-  def add_to_score(name)
-    @calls["#{self.klass_name}##{self.method_name}"][name] += SCORES[name] * @multiplier
   end
 
   def bad_dog! bonus
