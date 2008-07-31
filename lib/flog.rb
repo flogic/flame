@@ -116,6 +116,10 @@ class Flog < SexpProcessor
     @calls["#{self.klass_name}##{self.method_name}"][name] += SCORES[name] * @multiplier
   end
   
+  def average
+    self.total / self.calls.size
+  end
+  
   def report io = $stdout
     current = 0   # can be moved lower
     total_score = self.total
@@ -182,10 +186,6 @@ class Flog < SexpProcessor
     self.totals unless @total_score # calculates total_score as well
 
     @total_score
-  end
-
-  def average
-    self.total / self.calls.size
   end
 
   def totals
