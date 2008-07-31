@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:34:37 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:34:47 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>446</tt>
+      <td class='lines_total'><tt>458</tt>
         </td>
-      <td class='lines_code'><tt>364</tt>
+      <td class='lines_code'><tt>374</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -1023,27 +1023,39 @@ span.run100 {
 </span><span class="inferred0"><a name="line423"></a>423     end
 </span><span class="inferred1"><a name="line424"></a>424   end
 </span><span class="inferred0"><a name="line425"></a>425   
-</span><span class="marked1"><a name="line426"></a>426   describe 'when generating a report' do
-</span><span class="marked0"><a name="line427"></a>427     currently 'allows for an io handle'
-</span><span class="marked1"><a name="line428"></a>428     currently 'defaults the io handle to stdout'
-</span><span class="marked0"><a name="line429"></a>429     currently 'computes the total flog score'
-</span><span class="marked1"><a name="line430"></a>430     currently 'retrieves the set of total statistics'
-</span><span class="inferred0"><a name="line431"></a>431     
-</span><span class="marked1"><a name="line432"></a>432     currently 'outputs the total flog score'
-</span><span class="marked0"><a name="line433"></a>433     currently 'computes the average flog score'
-</span><span class="marked1"><a name="line434"></a>434     currently 'outputs the average flog score'
-</span><span class="inferred0"><a name="line435"></a>435     
-</span><span class="marked1"><a name="line436"></a>436     describe 'when summary mode is set' do
-</span><span class="marked0"><a name="line437"></a>437       currently 'exits with status 0'
-</span><span class="marked1"><a name="line438"></a>438       currently 'does not produce a call listing'
-</span><span class="marked0"><a name="line439"></a>439       it 'should not retrieve the set of total statistics'
-</span><span class="inferred1"><a name="line440"></a>440     end
-</span><span class="inferred0"><a name="line441"></a>441     
-</span><span class="marked1"><a name="line442"></a>442     describe 'when summary mode is not set' do
-</span><span class="inferred0"><a name="line443"></a>443       
-</span><span class="inferred1"><a name="line444"></a>444     end
-</span><span class="inferred0"><a name="line445"></a>445   end
-</span><span class="inferred1"><a name="line446"></a>446 end
+</span><span class="marked1"><a name="line426"></a>426   describe 'when computing the average per-call flog score' do
+</span><span class="marked0"><a name="line427"></a>427     it 'should not allow arguments' do
+</span><span class="marked1"><a name="line428"></a>428       lambda { @flog.average('foo') }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line429"></a>429     end
+</span><span class="inferred1"><a name="line430"></a>430     
+</span><span class="marked0"><a name="line431"></a>431     it 'should return the total flog score divided by the number of calls' do
+</span><span class="marked1"><a name="line432"></a>432       @flog.stubs(:total).returns(100.0)
+</span><span class="marked0"><a name="line433"></a>433       @flog.stubs(:calls).returns({ :bar =&gt; {}, :foo =&gt; {} })
+</span><span class="marked1"><a name="line434"></a>434       @flog.average.should be_close(100.0/2, 0.00000000001)
+</span><span class="inferred0"><a name="line435"></a>435     end
+</span><span class="inferred1"><a name="line436"></a>436   end
+</span><span class="inferred0"><a name="line437"></a>437   
+</span><span class="marked1"><a name="line438"></a>438   describe 'when generating a report' do
+</span><span class="marked0"><a name="line439"></a>439     it 'allows specifying an io handle'
+</span><span class="marked1"><a name="line440"></a>440     it 'defaults the io handle to stdout'
+</span><span class="marked0"><a name="line441"></a>441     it 'computes the total flog score'
+</span><span class="marked1"><a name="line442"></a>442     it 'retrieves the set of total statistics'
+</span><span class="inferred0"><a name="line443"></a>443     
+</span><span class="marked1"><a name="line444"></a>444     it 'outputs the total flog score'
+</span><span class="marked0"><a name="line445"></a>445     it 'computes the average flog score'
+</span><span class="marked1"><a name="line446"></a>446     it 'outputs the average flog score'
+</span><span class="inferred0"><a name="line447"></a>447     
+</span><span class="marked1"><a name="line448"></a>448     describe 'when summary mode is set' do
+</span><span class="marked0"><a name="line449"></a>449       it 'exits with status 0'
+</span><span class="marked1"><a name="line450"></a>450       it 'does not produce a call listing'
+</span><span class="marked0"><a name="line451"></a>451       it 'should not retrieve the set of total statistics'
+</span><span class="inferred1"><a name="line452"></a>452     end
+</span><span class="inferred0"><a name="line453"></a>453     
+</span><span class="marked1"><a name="line454"></a>454     describe 'when summary mode is not set' do
+</span><span class="inferred0"><a name="line455"></a>455       
+</span><span class="inferred1"><a name="line456"></a>456     end
+</span><span class="inferred0"><a name="line457"></a>457   end
+</span><span class="inferred1"><a name="line458"></a>458 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
