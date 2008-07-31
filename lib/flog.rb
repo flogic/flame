@@ -67,6 +67,7 @@ class Flog < SexpProcessor
   @@no_method = :none
 
   attr_reader :calls
+  attr_accessor :multiplier
 
   def initialize
     super

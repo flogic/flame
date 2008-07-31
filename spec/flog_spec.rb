@@ -388,9 +388,38 @@ describe Flog do
     end
   end
   
+  describe 'multiplier' do
+    it 'should be possible to determine the current value of the multiplier' do
+      @flog.should respond_to(:multiplier)
+    end
+  
+    it 'should be possible to set the current value of the multiplier' do
+      @flog.multiplier = 10
+      @flog.multiplier.should == 10
+    end
+  end
+  
   describe 'when adding to the current flog score' do
-    it 'should require both a name and a score' do
+    before :each do
+      @flog.multiplier = 1
+      @flog.stubs(:klass_name).returns('foo')
+      @flog.stubs(:method_name).returns('bar')
+      @flog.calls['foo#bar'] = { 'baz' => 0 }
+    end
+    
+    it 'should require both an operation name and a score' do
       lambda { @flog.add_to_score('foo') }.should raise_error(ArgumentError)
+    end
+    
+    it 'should update the score for the current class, method, and operation' do
+      @flog.add_to_score('baz', 10)
+      @flog.calls['foo#bar']['baz'].should_not == 0
+    end
+    
+    it 'should use the multiplier when updating the current call score' do
+      @flog.multiplier = 10
+      @flog.add_to_score('baz', 10)
+      @flog.calls['foo#bar']['baz'].should == 100
     end
   end
   
