@@ -29,17 +29,17 @@ class Flog < SexpProcessor
                 :super => 1,
                 :to_proc_icky! => 10,
                 :to_proc_normal => 5,
-                :yield => 1)
+                :yield => 1,
 
   # eval forms
-  SCORES.merge!(:define_method => 5,
+                :define_method => 5,
                 :eval => 5,
                 :module_eval => 5,
                 :class_eval => 5,
-                :instance_eval => 5)
+                :instance_eval => 5,
 
   # various "magic" usually used for "clever code"
-  SCORES.merge!(:alias_method => 2,
+                :alias_method => 2,
                 :extend => 2,
                 :include => 2,
                 :instance_method => 2,
@@ -58,10 +58,10 @@ class Flog < SexpProcessor
                 :public_method_defined? => 2,
                 :remove_method => 2,
                 :send => 3,
-                :undef_method => 2)
+                :undef_method => 2,
 
   # calls I don't like and usually see being abused
-  SCORES.merge!(:inject => 2)
+                :inject => 2)
 
   @@no_class = :main
   @@no_method = :none
