@@ -22,9 +22,7 @@ describe Flog do
     end
   end
   
-  describe 'after initializing' do
-    it 'may need to verify more state than these specs currently do'
-    
+  describe 'after initializing' do    
     it 'should return an SexpProcessor' do
       @flog.should be_a_kind_of(SexpProcessor)
     end
@@ -34,12 +32,40 @@ describe Flog do
       @flog.context.should == []  
     end
     
-    currently 'should not have any calls yet' do
+    it 'should have no current class' do
+      @flog.class_name.should == :main
+    end
+    
+    it 'should have no current method' do
+      @flog.method_name.should == :none
+    end
+    
+    it 'should not have any calls yet' do
       @flog.calls.should == {}
     end
     
     it 'should have a means of accessing its parse tree' do
       @flog.should respond_to(:parse_tree)
+    end
+    
+    it 'should not have any totals yet' do
+      @flog.totals.should == {}
+    end
+    
+    it 'should have a 0 total score' do
+      @flog.total.should == 0.0
+    end
+    
+    it 'should have a multiplier of 1' do
+      @flog.multiplier.should == 1.0
+    end
+    
+    currently "should have 'auto shift type' set to true" do
+      @flog.auto_shift_type.should be_true
+    end
+
+    currently "should have 'require empty' set to false" do
+      @flog.require_empty.should be_false
     end
   end
   

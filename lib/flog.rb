@@ -14,8 +14,9 @@ class Flog < SexpProcessor
   include UnifiedRuby
 
   THRESHOLD = 0.60
-  SCORES = Hash.new(1)
   BRANCHING = [ :and, :case, :else, :if, :or, :rescue, :until, :when, :while ]
+
+  SCORES = Hash.new(1)
 
   # various non-call constructs
   SCORES.merge!(:alias => 2,
