@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:39:53 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:40:04 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>775</tt>
+      <td class='lines_total'><tt>821</tt>
         </td>
-      <td class='lines_code'><tt>631</tt>
+      <td class='lines_code'><tt>669</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -1304,75 +1304,121 @@ span.run100 {
 </span><span class="inferred0"><a name="line704"></a>704     end
 </span><span class="inferred1"><a name="line705"></a>705   end
 </span><span class="inferred0"><a name="line706"></a>706   
-</span><span class="marked1"><a name="line707"></a>707   describe 'when requesting totals' do
-</span><span class="marked0"><a name="line708"></a>708     it 'should not accept any arguments' do
-</span><span class="marked1"><a name="line709"></a>709       lambda { @flog.totals('foo') }.should raise_error(ArgumentError)
-</span><span class="inferred0"><a name="line710"></a>710     end
-</span><span class="inferred1"><a name="line711"></a>711     
-</span><span class="marked0"><a name="line712"></a>712     describe 'when called the first time' do
-</span><span class="marked1"><a name="line713"></a>713       it 'should access calls data' do
-</span><span class="marked0"><a name="line714"></a>714         @flog.expects(:calls).returns({})
-</span><span class="marked1"><a name="line715"></a>715         @flog.totals
-</span><span class="inferred0"><a name="line716"></a>716       end
-</span><span class="inferred1"><a name="line717"></a>717       
-</span><span class="marked0"><a name="line718"></a>718       it 'should return the totals data' do
-</span><span class="marked1"><a name="line719"></a>719         @flog.totals.should == {}
-</span><span class="inferred0"><a name="line720"></a>720       end
-</span><span class="inferred1"><a name="line721"></a>721       
-</span><span class="marked0"><a name="line722"></a>722       it 'will compute scores for any tallies for non-default methods'
-</span><span class="marked1"><a name="line723"></a>723       it 'will include non-default method data in totals'
-</span><span class="marked0"><a name="line724"></a>724       it 'will adjust total score with tallies from non-default methods'
-</span><span class="inferred1"><a name="line725"></a>725       
-</span><span class="marked0"><a name="line726"></a>726       describe 'when $m is set' do
-</span><span class="marked1"><a name="line727"></a>727         currently 'will not compute scores for any tallies for the default method'
-</span><span class="marked0"><a name="line728"></a>728         currently 'will not include default method data in totals'
-</span><span class="marked1"><a name="line729"></a>729         currently 'will not adjust total score with tallies from default methods'
-</span><span class="inferred0"><a name="line730"></a>730       end
-</span><span class="inferred1"><a name="line731"></a>731       
-</span><span class="marked0"><a name="line732"></a>732       describe 'when $m is not set' do
-</span><span class="marked1"><a name="line733"></a>733         it 'will compute scores for any tallies for the default method'
-</span><span class="marked0"><a name="line734"></a>734         it 'will include default method data in totals'
-</span><span class="marked1"><a name="line735"></a>735         it 'will adjust total score with talles from default methods'
-</span><span class="inferred0"><a name="line736"></a>736       end
-</span><span class="inferred1"><a name="line737"></a>737     end
-</span><span class="inferred0"><a name="line738"></a>738     
-</span><span class="marked1"><a name="line739"></a>739     describe 'when called after the first time' do
-</span><span class="marked0"><a name="line740"></a>740       before :each do
-</span><span class="marked1"><a name="line741"></a>741         @flog.totals
-</span><span class="inferred0"><a name="line742"></a>742       end
-</span><span class="inferred1"><a name="line743"></a>743       
-</span><span class="marked0"><a name="line744"></a>744       it 'should not access calls data' do
-</span><span class="marked1"><a name="line745"></a>745         @flog.expects(:calls).never
-</span><span class="marked0"><a name="line746"></a>746         @flog.totals        
-</span><span class="inferred1"><a name="line747"></a>747       end
-</span><span class="inferred0"><a name="line748"></a>748       
-</span><span class="marked1"><a name="line749"></a>749       it 'should return the totals data' do
-</span><span class="marked0"><a name="line750"></a>750         @flog.totals.should == {}
+</span><span class="marked1"><a name="line707"></a>707   describe 'when compiling summaries for a method' do
+</span><span class="marked0"><a name="line708"></a>708     before :each do
+</span><span class="marked1"><a name="line709"></a>709       @tally = { :foo =&gt; 0.0 }
+</span><span class="marked0"><a name="line710"></a>710       @method = 'foo'
+</span><span class="marked1"><a name="line711"></a>711       @score = 42.0
+</span><span class="inferred0"><a name="line712"></a>712       
+</span><span class="marked1"><a name="line713"></a>713       @flog.stubs(:score_method).returns(@score)
+</span><span class="marked0"><a name="line714"></a>714       @flog.stubs(:record_method_score)
+</span><span class="marked1"><a name="line715"></a>715       @flog.stubs(:increment_total_score_by)
+</span><span class="inferred0"><a name="line716"></a>716     end
+</span><span class="inferred1"><a name="line717"></a>717     
+</span><span class="marked0"><a name="line718"></a>718     it 'should require a method name and a tally' do
+</span><span class="marked1"><a name="line719"></a>719       lambda { @flog.summarize_method('foo') }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line720"></a>720     end
+</span><span class="inferred1"><a name="line721"></a>721     
+</span><span class="marked0"><a name="line722"></a>722     it 'should compute a score for the method, based on the tally' do
+</span><span class="marked1"><a name="line723"></a>723       @flog.expects(:score_method).with(@tally)
+</span><span class="marked0"><a name="line724"></a>724       @flog.summarize_method(@method, @tally)
+</span><span class="inferred1"><a name="line725"></a>725     end
+</span><span class="inferred0"><a name="line726"></a>726     
+</span><span class="marked1"><a name="line727"></a>727     it 'should record the score for the method' do
+</span><span class="marked0"><a name="line728"></a>728       @flog.expects(:record_method_score).with(@method, @score)
+</span><span class="marked1"><a name="line729"></a>729       @flog.summarize_method(@method, @tally)      
+</span><span class="inferred0"><a name="line730"></a>730     end
+</span><span class="inferred1"><a name="line731"></a>731     
+</span><span class="marked0"><a name="line732"></a>732     it 'should update the overall flog score' do
+</span><span class="marked1"><a name="line733"></a>733       @flog.expects(:increment_total_score_by).with(@score)
+</span><span class="marked0"><a name="line734"></a>734       @flog.summarize_method(@method, @tally)            
+</span><span class="inferred1"><a name="line735"></a>735     end
+</span><span class="inferred0"><a name="line736"></a>736 
+</span><span class="marked1"><a name="line737"></a>737     describe 'ignoring non-method code and given a non-method tally' do
+</span><span class="marked0"><a name="line738"></a>738       it 'should not compute a score for the tally' do
+</span><span class="marked1"><a name="line739"></a>739         @flog.expects(:score_method).never
+</span><span class="marked0"><a name="line740"></a>740         @flog.summarize_method(@method, @tally)
+</span><span class="inferred1"><a name="line741"></a>741       end
+</span><span class="inferred0"><a name="line742"></a>742       
+</span><span class="marked1"><a name="line743"></a>743       it 'should not record a score based on the tally' do
+</span><span class="marked0"><a name="line744"></a>744         @flog.expects(:record_method_score).never
+</span><span class="marked1"><a name="line745"></a>745         @flog.summarize_method(@method, @tally)      
+</span><span class="inferred0"><a name="line746"></a>746       end
+</span><span class="inferred1"><a name="line747"></a>747       
+</span><span class="marked0"><a name="line748"></a>748       it 'should not update the overall flog score' do
+</span><span class="marked1"><a name="line749"></a>749         @flog.expects(:increment_total_score_by).never
+</span><span class="marked0"><a name="line750"></a>750         @flog.summarize_method(@method, @tally)            
 </span><span class="inferred1"><a name="line751"></a>751       end
-</span><span class="inferred0"><a name="line752"></a>752     end
+</span><span class="inferred0"><a name="line752"></a>752     end    
 </span><span class="inferred1"><a name="line753"></a>753   end
 </span><span class="inferred0"><a name="line754"></a>754   
-</span><span class="marked1"><a name="line755"></a>755   describe 'when generating a report' do
-</span><span class="marked0"><a name="line756"></a>756     it 'allows specifying an io handle'
-</span><span class="marked1"><a name="line757"></a>757     it 'defaults the io handle to stdout'
-</span><span class="marked0"><a name="line758"></a>758     it 'computes the total flog score'
-</span><span class="marked1"><a name="line759"></a>759     it 'retrieves the set of total statistics'
-</span><span class="inferred0"><a name="line760"></a>760     
-</span><span class="marked1"><a name="line761"></a>761     it 'outputs the total flog score'
-</span><span class="marked0"><a name="line762"></a>762     it 'computes the average flog score'
-</span><span class="marked1"><a name="line763"></a>763     it 'outputs the average flog score'
-</span><span class="inferred0"><a name="line764"></a>764     
-</span><span class="marked1"><a name="line765"></a>765     describe 'when summary mode is set' do
-</span><span class="marked0"><a name="line766"></a>766       it 'exits with status 0'
-</span><span class="marked1"><a name="line767"></a>767       it 'does not produce a call listing'
-</span><span class="marked0"><a name="line768"></a>768       it 'should not retrieve the set of total statistics'
-</span><span class="inferred1"><a name="line769"></a>769     end
-</span><span class="inferred0"><a name="line770"></a>770     
-</span><span class="marked1"><a name="line771"></a>771     describe 'when summary mode is not set' do
-</span><span class="inferred0"><a name="line772"></a>772       
-</span><span class="inferred1"><a name="line773"></a>773     end
-</span><span class="inferred0"><a name="line774"></a>774   end
-</span><span class="inferred1"><a name="line775"></a>775 end
+</span><span class="marked1"><a name="line755"></a>755   describe 'when requesting totals' do
+</span><span class="marked0"><a name="line756"></a>756     it 'should not accept any arguments' do
+</span><span class="marked1"><a name="line757"></a>757       lambda { @flog.totals('foo') }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line758"></a>758     end
+</span><span class="inferred1"><a name="line759"></a>759     
+</span><span class="marked0"><a name="line760"></a>760     describe 'when called the first time' do
+</span><span class="marked1"><a name="line761"></a>761       it 'should access calls data' do
+</span><span class="marked0"><a name="line762"></a>762         @flog.expects(:calls).returns({})
+</span><span class="marked1"><a name="line763"></a>763         @flog.totals
+</span><span class="inferred0"><a name="line764"></a>764       end
+</span><span class="inferred1"><a name="line765"></a>765       
+</span><span class="marked0"><a name="line766"></a>766       it &quot;will compile a summary for each method from the method's tally&quot; do
+</span><span class="marked1"><a name="line767"></a>767         @calls = { :foo =&gt; 1.0, :bar =&gt; 2.0, :baz =&gt; 3.0 }
+</span><span class="marked0"><a name="line768"></a>768         @flog.stubs(:calls).returns(@calls)
+</span><span class="marked1"><a name="line769"></a>769         @calls.each do |meth, tally|
+</span><span class="marked0"><a name="line770"></a>770           @flog.expects(:summarize_method).with(meth, tally)
+</span><span class="inferred1"><a name="line771"></a>771         end
+</span><span class="marked0"><a name="line772"></a>772         @flog.totals
+</span><span class="inferred1"><a name="line773"></a>773       end
+</span><span class="inferred0"><a name="line774"></a>774       
+</span><span class="marked1"><a name="line775"></a>775       it 'should return the totals data' do
+</span><span class="marked0"><a name="line776"></a>776         @flog.totals.should == {}
+</span><span class="inferred1"><a name="line777"></a>777       end      
+</span><span class="inferred0"><a name="line778"></a>778     end
+</span><span class="inferred1"><a name="line779"></a>779     
+</span><span class="marked0"><a name="line780"></a>780     describe 'when called after the first time' do
+</span><span class="marked1"><a name="line781"></a>781       before :each do
+</span><span class="marked0"><a name="line782"></a>782         @flog.totals
+</span><span class="inferred1"><a name="line783"></a>783       end
+</span><span class="inferred0"><a name="line784"></a>784       
+</span><span class="marked1"><a name="line785"></a>785       it 'should not access calls data' do
+</span><span class="marked0"><a name="line786"></a>786         @flog.expects(:calls).never
+</span><span class="marked1"><a name="line787"></a>787         @flog.totals        
+</span><span class="inferred0"><a name="line788"></a>788       end
+</span><span class="inferred1"><a name="line789"></a>789       
+</span><span class="marked0"><a name="line790"></a>790       it 'should not compile method summaries' do
+</span><span class="marked1"><a name="line791"></a>791         @flog.expects(:summarize_method).never
+</span><span class="marked0"><a name="line792"></a>792         @flog.totals
+</span><span class="inferred1"><a name="line793"></a>793       end
+</span><span class="inferred0"><a name="line794"></a>794       
+</span><span class="marked1"><a name="line795"></a>795       it 'should return the totals data' do
+</span><span class="marked0"><a name="line796"></a>796         @flog.totals.should == {}
+</span><span class="inferred1"><a name="line797"></a>797       end
+</span><span class="inferred0"><a name="line798"></a>798     end
+</span><span class="inferred1"><a name="line799"></a>799   end
+</span><span class="inferred0"><a name="line800"></a>800   
+</span><span class="marked1"><a name="line801"></a>801   describe 'when generating a report' do
+</span><span class="marked0"><a name="line802"></a>802     it 'allows specifying an io handle'
+</span><span class="marked1"><a name="line803"></a>803     it 'defaults the io handle to stdout'
+</span><span class="marked0"><a name="line804"></a>804     it 'computes the total flog score'
+</span><span class="marked1"><a name="line805"></a>805     it 'retrieves the set of total statistics'
+</span><span class="inferred0"><a name="line806"></a>806     
+</span><span class="marked1"><a name="line807"></a>807     it 'outputs the total flog score'
+</span><span class="marked0"><a name="line808"></a>808     it 'computes the average flog score'
+</span><span class="marked1"><a name="line809"></a>809     it 'outputs the average flog score'
+</span><span class="inferred0"><a name="line810"></a>810     
+</span><span class="marked1"><a name="line811"></a>811     describe 'when summary mode is set' do
+</span><span class="marked0"><a name="line812"></a>812       it 'exits with status 0'
+</span><span class="marked1"><a name="line813"></a>813       it 'does not produce a call listing'
+</span><span class="marked0"><a name="line814"></a>814       it 'should not retrieve the set of total statistics'
+</span><span class="inferred1"><a name="line815"></a>815     end
+</span><span class="inferred0"><a name="line816"></a>816     
+</span><span class="marked1"><a name="line817"></a>817     describe 'when summary mode is not set' do
+</span><span class="inferred0"><a name="line818"></a>818       
+</span><span class="inferred1"><a name="line819"></a>819     end
+</span><span class="inferred0"><a name="line820"></a>820   end
+</span><span class="inferred1"><a name="line821"></a>821 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
