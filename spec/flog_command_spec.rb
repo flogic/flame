@@ -12,6 +12,19 @@ describe 'flog command' do
     eval File.read(File.join(File.dirname(__FILE__), *%w[.. bin flog]))
   end
   
+  describe 'usage' do
+    it 'should take no arguments' do
+      run_command
+      lambda { usage('foo') }.should raise_error(ArgumentError)
+    end
+    
+    it 'should output a usage message' do
+      run_command
+      self.expects(:puts).at_least_once
+      usage
+    end
+  end
+  
   describe 'when no command-line arguments are specified' do
     before :each do
       Object.send(:remove_const, :ARGV)
@@ -56,11 +69,11 @@ describe 'flog command' do
       end
       
       before :each do
-        self.stubs(:puts).returns(nil)
+        self.stubs(:usage).returns(nil)
       end
     
       currently "should display help information" do
-        self.expects(:puts).at_least_once
+        self.expects(:usage)
         run_command
       end
       
@@ -99,8 +112,15 @@ describe 'flog command' do
           $:.should == @paths
         end
         
-        it 'should display usage'
-        it 'should not create a Flog instance'
+        it 'should display usage' do
+          self.expects(:usage)
+          run_command
+        end
+        
+        it 'should not create a Flog instance' do
+          Flog.expects(:new).never
+          run_command
+        end
       end
       
       describe 'when -I is given a string' do
