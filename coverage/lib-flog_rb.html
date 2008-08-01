@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:42:50 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:43:03 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -629,17 +629,17 @@ span.run100 {
 </span><span class="inferred1"><a name="line29"></a> 29                 :super =&gt; 1,
 </span><span class="inferred0"><a name="line30"></a> 30                 :to_proc_icky! =&gt; 10,
 </span><span class="inferred1"><a name="line31"></a> 31                 :to_proc_normal =&gt; 5,
-</span><span class="inferred0"><a name="line32"></a> 32                 :yield =&gt; 1)
+</span><span class="inferred0"><a name="line32"></a> 32                 :yield =&gt; 1,
 </span><span class="inferred1"><a name="line33"></a> 33 
 </span><span class="inferred0"><a name="line34"></a> 34   # eval forms
-</span><span class="marked1"><a name="line35"></a> 35   SCORES.merge!(:define_method =&gt; 5,
+</span><span class="inferred1"><a name="line35"></a> 35                 :define_method =&gt; 5,
 </span><span class="inferred0"><a name="line36"></a> 36                 :eval =&gt; 5,
 </span><span class="inferred1"><a name="line37"></a> 37                 :module_eval =&gt; 5,
 </span><span class="inferred0"><a name="line38"></a> 38                 :class_eval =&gt; 5,
-</span><span class="inferred1"><a name="line39"></a> 39                 :instance_eval =&gt; 5)
+</span><span class="inferred1"><a name="line39"></a> 39                 :instance_eval =&gt; 5,
 </span><span class="inferred0"><a name="line40"></a> 40 
 </span><span class="inferred1"><a name="line41"></a> 41   # various &quot;magic&quot; usually used for &quot;clever code&quot;
-</span><span class="marked0"><a name="line42"></a> 42   SCORES.merge!(:alias_method =&gt; 2,
+</span><span class="inferred0"><a name="line42"></a> 42                 :alias_method =&gt; 2,
 </span><span class="inferred1"><a name="line43"></a> 43                 :extend =&gt; 2,
 </span><span class="inferred0"><a name="line44"></a> 44                 :include =&gt; 2,
 </span><span class="inferred1"><a name="line45"></a> 45                 :instance_method =&gt; 2,
@@ -658,10 +658,10 @@ span.run100 {
 </span><span class="inferred0"><a name="line58"></a> 58                 :public_method_defined? =&gt; 2,
 </span><span class="inferred1"><a name="line59"></a> 59                 :remove_method =&gt; 2,
 </span><span class="inferred0"><a name="line60"></a> 60                 :send =&gt; 3,
-</span><span class="inferred1"><a name="line61"></a> 61                 :undef_method =&gt; 2)
+</span><span class="inferred1"><a name="line61"></a> 61                 :undef_method =&gt; 2,
 </span><span class="inferred0"><a name="line62"></a> 62 
 </span><span class="inferred1"><a name="line63"></a> 63   # calls I don't like and usually see being abused
-</span><span class="marked0"><a name="line64"></a> 64   SCORES.merge!(:inject =&gt; 2)
+</span><span class="inferred0"><a name="line64"></a> 64                 :inject =&gt; 2)
 </span><span class="inferred1"><a name="line65"></a> 65 
 </span><span class="marked0"><a name="line66"></a> 66   @@no_class = :main
 </span><span class="marked1"><a name="line67"></a> 67   @@no_method = :none
