@@ -224,7 +224,7 @@ class Flog < SexpProcessor
 
   def report(io = $stdout)
     output_summary(io)
-    exit 0 if $s  # TODO:  this should eventually not be an exit(), as this should just be a library
+    return if $s
     
     if $a
       output_details(io)

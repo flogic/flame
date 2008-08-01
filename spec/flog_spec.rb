@@ -1026,30 +1026,17 @@ describe Flog do
       
       it 'produces an output summary on the i/o handle' do
         @flog.expects(:output_summary).with('handle')
-        begin
-          @flog.report('handle')
-        rescue SystemExit
-        end
-      end
-      
-      currently 'exits with status 0' do
-        lambda { @flog.report('handle') }.should raise_error(SystemExit)
+        @flog.report('handle')
       end
       
       it 'does not output a detailed report' do
         @flog.expects(:output_details).never
-        begin
-          @flog.report('handle')
-        rescue SystemExit
-        end
+        @flog.report('handle')
       end
       
       currently 'should reset statistics when finished' do
         @flog.expects(:reset)
-        begin
-          @flog.report('handle')
-        rescue SystemExit
-        end
+        @flog.report('handle')
       end
     end
     
@@ -1065,11 +1052,6 @@ describe Flog do
         @flog.report('handle')
       end
       
-      currently 'should not exit' do
-        @flog.expects(:exit).never
-        @flog.report('handle')
-      end
-
       it 'should generate a detailed report of method complexity on the i/o handle' do
         @flog.expects(:output_details).with {|handle, max| handle == 'handle' }
         @flog.report('handle')
