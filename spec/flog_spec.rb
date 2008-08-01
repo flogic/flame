@@ -296,6 +296,7 @@ describe Flog do
     
     describe 'when the string has a syntax error' do
       before :each do
+        @flog.stubs(:warn)
         @flog.stubs(:process_parse_tree).raises(SyntaxError.new("<% foo %>"))
       end
       

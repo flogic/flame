@@ -130,6 +130,7 @@ describe 'flog command' do
     
     describe 'when -I is not given a string' do
       before :each do
+        self.stubs(:usage)
         $I = 234  # ruby -s, ftw
       end
       
