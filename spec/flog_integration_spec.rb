@@ -8,12 +8,7 @@ describe Flog do
   end
 
   describe 'flog_files' do
-    def fixture_files(paths)
-      paths.collect do |path|
-        File.expand_path(File.dirname(__FILE__) + '/../spec_fixtures/' + path)
-      end
-    end
-    
+
     before :each do
       @flog = Flog.new
     end

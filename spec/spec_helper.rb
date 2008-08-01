@@ -26,4 +26,11 @@ Spec::Runner.configure do |config|
   config.mock_with :mocha
 end
 
+def fixture_files(paths)
+  paths.collect do |path|
+    File.expand_path(File.dirname(__FILE__) + '/../spec_fixtures/' + path)
+  end
+end
+
+
 $:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
