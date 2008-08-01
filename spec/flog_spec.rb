@@ -798,13 +798,49 @@ describe Flog do
     end
   end
   
+  describe 'producing a report summary' do
+    before :each do
+      @handle = stub('io handle)', :puts => nil)
+      @flog.stubs(:total).returns(@total_score = 42.0)
+      @flog.stubs(:average).returns(@average_score = 1.0)
+    end
+    
+    it 'should require an io handle' do
+      lambda { @flog.output_summary }.should raise_error(ArgumentError)
+    end
+
+    it 'computes the total flog score' do
+      @flog.expects(:total).returns 42.0
+      @flog.output_summary(@handle)
+    end 
+    
+    it 'computes the average flog score' do
+      @flog.expects(:average).returns 1.0
+      @flog.output_summary(@handle)
+    end
+    
+    it 'outputs the total flog score to the handle' do
+      @handle.expects(:puts).with do |string|
+        string =~ Regexp.new(Regexp.escape("%.1f" % @total_score))
+      end
+      @flog.output_summary(@handle)
+    end
+    
+    it 'outputs the average flog score to the handle' do
+      @handle.expects(:puts).with do |string|
+        string =~ Regexp.new(Regexp.escape("%.1f" % @average_score))
+      end
+      @flog.output_summary(@handle)
+    end
+  end
+  
   describe 'when generating a report' do
     before :each do
       @handle = stub('io handle)', :puts => nil)
       @flog.stubs(:calls).returns({})
       @flog.stubs(:total).returns(@total_score = 42.0)
       @flog.stubs(:average).returns(@average_score = 1.0)
-      @flog.stubs(:exit)
+      @flog.stubs(:output_summary)
     end
     
     it 'allows specifying an i/o handle' do
@@ -825,7 +861,7 @@ describe Flog do
       end
       
       it 'defaults the io handle to stdout' do
-        $stdout.expects(:puts)
+        @flog.expects(:output_summary).with($stdout)
         @flog.report
       end
     end
@@ -835,48 +871,40 @@ describe Flog do
         $s = true
       end
       
-      it 'retrieves the set of total statistics' do
-        @flog.expects(:totals)
-        @flog.report(@handle)
-      end
-      
-      it 'computes the total flog score' do
-        @flog.expects(:total).returns 42.0
-        @flog.report(@handle)
-      end 
-      
-      it 'computes the average flog score' do
-        @flog.expects(:average).returns 1.0
-        @flog.report(@handle)
-      end
-      
-      it 'outputs the total flog score to the handle' do
-        @handle.expects(:puts).with do |string|
-          string =~ Regexp.new(Regexp.escape("%.1f" % @total_score))
+      it 'does not retrieve the set of total statistics' do
+        @flog.expects(:totals).never
+        begin
+          @flog.report(@handle)
+        rescue SystemExit
         end
-        @flog.report(@handle)
       end
       
-      it 'outputs the average flog score to the handle' do
-        @handle.expects(:puts).with do |string|
-          string =~ Regexp.new(Regexp.escape("%.1f" % @average_score))
+      it 'produces an output summary on the i/o handle' do
+        @flog.expects(:output_summary).with(@handle)
+        begin
+          @flog.report(@handle)
+        rescue SystemExit
         end
-        @flog.report(@handle)        
       end
       
       it 'exits with status 0' do
-        @flog.expects(:exit)
-        @flog.report(@handle)
+        lambda { @flog.report(@handle) }.should raise_error(SystemExit)
       end
       
       it 'does not produce a call listing' do
         @flog.expects(:calls).never
-        @flog.report(@handle)        
+        begin
+          @flog.report(@handle)
+        rescue SystemExit
+        end
       end
       
       currently 'should reset statistics when finished' do
         @flog.expects(:reset)
-        @flog.report(@handle)
+        begin
+          @flog.report(@handle)
+        rescue SystemExit
+        end
       end
     end
     
@@ -890,28 +918,9 @@ describe Flog do
         @flog.report(@handle)
       end
       
-      it 'computes the total flog score' do
-        @flog.expects(:total).returns 42.0
+      it 'produces an output summary on the i/o handle' do
+        @flog.expects(:output_summary).with(@handle)
         @flog.report(@handle)
-      end 
-      
-      it 'computes the average flog score' do
-        @flog.expects(:average).returns 1.0
-        @flog.report(@handle)
-      end
-      
-      it 'outputs the total flog score to the handle' do
-        @handle.expects(:puts).with do |string|
-          string =~ Regexp.new(Regexp.escape("%.1f" % @total_score))
-        end
-        @flog.report(@handle)
-      end
-      
-      it 'outputs the average flog score to the handle' do
-        @handle.expects(:puts).with do |string|
-          string =~ Regexp.new(Regexp.escape("%.1f" % @average_score))
-        end
-        @flog.report(@handle)        
       end
       
       it 'should not exit' do

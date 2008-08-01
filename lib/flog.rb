@@ -200,15 +200,18 @@ class Flog < SexpProcessor
     @totals
   end
 
+  def output_summary(io)
+    io.puts "Total Flog = %.1f (%.1f flog / method)\n" % [self.total, self.average]
+  end
+
   def report io = $stdout
-    current = 0   # can be moved lower
-    total_score = self.total
-    max = total_score * THRESHOLD  # can be moved lower
-    totals = self.totals  # can be moved lower
-
-    io.puts "Total Flog = %.1f (%.1f flog / method)\n" % [total_score, self.average]
-
+    output_summary(io)
     exit 0 if $s
+
+    current = 0
+    total_score = self.total
+    max = total_score * THRESHOLD
+    totals = self.totals
 
     @calls.sort_by { |k,v| -totals[k] }.each do |class_method, calls|
       next if $m and class_method =~ /##{@@no_method}/
