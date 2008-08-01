@@ -175,7 +175,7 @@ describe Flog do
             $v = false
           end
           
-          currently 'should note which file is being flogged' do
+          it 'should note which file is being flogged' do
             @flog.expects(:warn)
             @flog.flog_file('-')
           end
@@ -186,7 +186,7 @@ describe Flog do
             $v = false
           end
           
-          currently 'should note which file is being flogged' do
+          it 'should not note which file is being flogged' do
             @flog.expects(:warn).never
             @flog.flog_file('-')
           end          
@@ -250,7 +250,7 @@ describe Flog do
             $v = false
           end
           
-          currently 'should note which file is being flogged' do
+          it 'should note which file is being flogged' do
             @flog.expects(:warn)
             @flog.flog_file(@file)
           end
@@ -261,7 +261,7 @@ describe Flog do
             $v = false
           end
           
-          currently 'should not note which file is being flogged' do
+          it 'should not note which file is being flogged' do
             @flog.expects(:warn).never
             @flog.flog_file(@file)
           end          
@@ -302,11 +302,11 @@ describe Flog do
       
       describe 'when the string has erb snippets' do
         currently 'should warn about skipping' do
-          @flog.expects(:warn).at_least_once
+          @flog.expects(:warn)
           @flog.flog('string', 'filename')
         end
         
-        currently 'should not raise an exception' do
+        it 'should not raise an exception' do
           lambda { @flog.flog('string', 'filename') }.should_not raise_error
         end
         
@@ -380,17 +380,17 @@ describe Flog do
         @flog.stubs(:parse_tree).returns(@parse_tree)        
       end
       
-      currently 'should convert the parse tree into a list of S-expressions' do
+      it 'should convert the parse tree into a list of S-expressions' do
         Sexp.expects(:from_array).with(@sexp).returns(['1', '2'])
         @flog.process_parse_tree('string', 'file')
       end
       
-      currently 'should process the list of S-expressions' do
+      it 'should process the list of S-expressions' do
         @flog.expects(:process)
         @flog.process_parse_tree('string', 'file')
       end
       
-      currently 'should start processing at the first S-expression' do
+      it 'should start processing at the first S-expression' do
         Sexp.stubs(:from_array).returns(['1', '2'])
         @flog.expects(:process).with('1')
         @flog.process_parse_tree('string', 'file')        
@@ -404,11 +404,11 @@ describe Flog do
         @parse_tree.stubs(:parse_tree_for_string).raises(SyntaxError)
       end
       
-      currently 'should fail' do
+      it 'should fail' do
         lambda { @flog.process_parse_tree('string', 'file') }.should raise_error(SyntaxError)
       end
       
-      currently 'should not attempt to process the parse tree' do
+      it 'should not attempt to process the parse tree' do
         @flog.expects(:process).never
         lambda { @flog.process_parse_tree('string', 'file') }
       end
@@ -1034,7 +1034,7 @@ describe Flog do
         @flog.report('handle')
       end
       
-      currently 'should reset statistics when finished' do
+      it 'should reset statistics when finished' do
         @flog.expects(:reset)
         @flog.report('handle')
       end

@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:44:46 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:44:59 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -707,7 +707,7 @@ span.run100 {
 </span><span class="marked0"><a name="line107"></a>107       self.stubs(:usage).returns(nil)
 </span><span class="inferred1"><a name="line108"></a>108     end
 </span><span class="inferred0"><a name="line109"></a>109   
-</span><span class="marked1"><a name="line110"></a>110     currently &quot;should display help information&quot; do
+</span><span class="marked1"><a name="line110"></a>110     it &quot;should display help information&quot; do
 </span><span class="marked0"><a name="line111"></a>111       self.expects(:usage)
 </span><span class="marked1"><a name="line112"></a>112       run_command
 </span><span class="inferred0"><a name="line113"></a>113     end
@@ -743,7 +743,7 @@ span.run100 {
 </span><span class="marked0"><a name="line143"></a>143         $I = nil
 </span><span class="inferred1"><a name="line144"></a>144       end
 </span><span class="inferred0"><a name="line145"></a>145       
-</span><span class="marked1"><a name="line146"></a>146       currently 'should not modify the include path' do
+</span><span class="marked1"><a name="line146"></a>146       it 'should not modify the include path' do
 </span><span class="marked0"><a name="line147"></a>147         run_command
 </span><span class="marked1"><a name="line148"></a>148         $:.should == @paths
 </span><span class="inferred0"><a name="line149"></a>149       end

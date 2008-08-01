@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:44:48 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:45:01 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -775,7 +775,7 @@ span.run100 {
 </span><span class="marked1"><a name="line175"></a> 175             $v = false
 </span><span class="inferred0"><a name="line176"></a> 176           end
 </span><span class="inferred1"><a name="line177"></a> 177           
-</span><span class="marked0"><a name="line178"></a> 178           currently 'should note which file is being flogged' do
+</span><span class="marked0"><a name="line178"></a> 178           it 'should note which file is being flogged' do
 </span><span class="marked1"><a name="line179"></a> 179             @flog.expects(:warn)
 </span><span class="marked0"><a name="line180"></a> 180             @flog.flog_file('-')
 </span><span class="inferred1"><a name="line181"></a> 181           end
@@ -786,7 +786,7 @@ span.run100 {
 </span><span class="marked0"><a name="line186"></a> 186             $v = false
 </span><span class="inferred1"><a name="line187"></a> 187           end
 </span><span class="inferred0"><a name="line188"></a> 188           
-</span><span class="marked1"><a name="line189"></a> 189           currently 'should note which file is being flogged' do
+</span><span class="marked1"><a name="line189"></a> 189           it 'should not note which file is being flogged' do
 </span><span class="marked0"><a name="line190"></a> 190             @flog.expects(:warn).never
 </span><span class="marked1"><a name="line191"></a> 191             @flog.flog_file('-')
 </span><span class="inferred0"><a name="line192"></a> 192           end          
@@ -850,7 +850,7 @@ span.run100 {
 </span><span class="marked0"><a name="line250"></a> 250             $v = false
 </span><span class="inferred1"><a name="line251"></a> 251           end
 </span><span class="inferred0"><a name="line252"></a> 252           
-</span><span class="marked1"><a name="line253"></a> 253           currently 'should note which file is being flogged' do
+</span><span class="marked1"><a name="line253"></a> 253           it 'should note which file is being flogged' do
 </span><span class="marked0"><a name="line254"></a> 254             @flog.expects(:warn)
 </span><span class="marked1"><a name="line255"></a> 255             @flog.flog_file(@file)
 </span><span class="inferred0"><a name="line256"></a> 256           end
@@ -861,7 +861,7 @@ span.run100 {
 </span><span class="marked1"><a name="line261"></a> 261             $v = false
 </span><span class="inferred0"><a name="line262"></a> 262           end
 </span><span class="inferred1"><a name="line263"></a> 263           
-</span><span class="marked0"><a name="line264"></a> 264           currently 'should not note which file is being flogged' do
+</span><span class="marked0"><a name="line264"></a> 264           it 'should not note which file is being flogged' do
 </span><span class="marked1"><a name="line265"></a> 265             @flog.expects(:warn).never
 </span><span class="marked0"><a name="line266"></a> 266             @flog.flog_file(@file)
 </span><span class="inferred1"><a name="line267"></a> 267           end          
@@ -902,11 +902,11 @@ span.run100 {
 </span><span class="inferred0"><a name="line302"></a> 302       
 </span><span class="marked1"><a name="line303"></a> 303       describe 'when the string has erb snippets' do
 </span><span class="marked0"><a name="line304"></a> 304         currently 'should warn about skipping' do
-</span><span class="marked1"><a name="line305"></a> 305           @flog.expects(:warn).at_least_once
+</span><span class="marked1"><a name="line305"></a> 305           @flog.expects(:warn)
 </span><span class="marked0"><a name="line306"></a> 306           @flog.flog('string', 'filename')
 </span><span class="inferred1"><a name="line307"></a> 307         end
 </span><span class="inferred0"><a name="line308"></a> 308         
-</span><span class="marked1"><a name="line309"></a> 309         currently 'should not raise an exception' do
+</span><span class="marked1"><a name="line309"></a> 309         it 'should not raise an exception' do
 </span><span class="marked0"><a name="line310"></a> 310           lambda { @flog.flog('string', 'filename') }.should_not raise_error
 </span><span class="inferred1"><a name="line311"></a> 311         end
 </span><span class="inferred0"><a name="line312"></a> 312         
@@ -980,17 +980,17 @@ span.run100 {
 </span><span class="marked0"><a name="line380"></a> 380         @flog.stubs(:parse_tree).returns(@parse_tree)        
 </span><span class="inferred1"><a name="line381"></a> 381       end
 </span><span class="inferred0"><a name="line382"></a> 382       
-</span><span class="marked1"><a name="line383"></a> 383       currently 'should convert the parse tree into a list of S-expressions' do
+</span><span class="marked1"><a name="line383"></a> 383       it 'should convert the parse tree into a list of S-expressions' do
 </span><span class="marked0"><a name="line384"></a> 384         Sexp.expects(:from_array).with(@sexp).returns(['1', '2'])
 </span><span class="marked1"><a name="line385"></a> 385         @flog.process_parse_tree('string', 'file')
 </span><span class="inferred0"><a name="line386"></a> 386       end
 </span><span class="inferred1"><a name="line387"></a> 387       
-</span><span class="marked0"><a name="line388"></a> 388       currently 'should process the list of S-expressions' do
+</span><span class="marked0"><a name="line388"></a> 388       it 'should process the list of S-expressions' do
 </span><span class="marked1"><a name="line389"></a> 389         @flog.expects(:process)
 </span><span class="marked0"><a name="line390"></a> 390         @flog.process_parse_tree('string', 'file')
 </span><span class="inferred1"><a name="line391"></a> 391       end
 </span><span class="inferred0"><a name="line392"></a> 392       
-</span><span class="marked1"><a name="line393"></a> 393       currently 'should start processing at the first S-expression' do
+</span><span class="marked1"><a name="line393"></a> 393       it 'should start processing at the first S-expression' do
 </span><span class="marked0"><a name="line394"></a> 394         Sexp.stubs(:from_array).returns(['1', '2'])
 </span><span class="marked1"><a name="line395"></a> 395         @flog.expects(:process).with('1')
 </span><span class="marked0"><a name="line396"></a> 396         @flog.process_parse_tree('string', 'file')        
@@ -1004,11 +1004,11 @@ span.run100 {
 </span><span class="marked0"><a name="line404"></a> 404         @parse_tree.stubs(:parse_tree_for_string).raises(SyntaxError)
 </span><span class="inferred1"><a name="line405"></a> 405       end
 </span><span class="inferred0"><a name="line406"></a> 406       
-</span><span class="marked1"><a name="line407"></a> 407       currently 'should fail' do
+</span><span class="marked1"><a name="line407"></a> 407       it 'should fail' do
 </span><span class="marked0"><a name="line408"></a> 408         lambda { @flog.process_parse_tree('string', 'file') }.should raise_error(SyntaxError)
 </span><span class="inferred1"><a name="line409"></a> 409       end
 </span><span class="inferred0"><a name="line410"></a> 410       
-</span><span class="marked1"><a name="line411"></a> 411       currently 'should not attempt to process the parse tree' do
+</span><span class="marked1"><a name="line411"></a> 411       it 'should not attempt to process the parse tree' do
 </span><span class="marked0"><a name="line412"></a> 412         @flog.expects(:process).never
 </span><span class="marked1"><a name="line413"></a> 413         lambda { @flog.process_parse_tree('string', 'file') }
 </span><span class="inferred0"><a name="line414"></a> 414       end
@@ -1634,7 +1634,7 @@ span.run100 {
 </span><span class="marked0"><a name="line1034"></a>1034         @flog.report('handle')
 </span><span class="inferred1"><a name="line1035"></a>1035       end
 </span><span class="inferred0"><a name="line1036"></a>1036       
-</span><span class="marked1"><a name="line1037"></a>1037       currently 'should reset statistics when finished' do
+</span><span class="marked1"><a name="line1037"></a>1037       it 'should reset statistics when finished' do
 </span><span class="marked0"><a name="line1038"></a>1038         @flog.expects(:reset)
 </span><span class="marked1"><a name="line1039"></a>1039         @flog.report('handle')
 </span><span class="inferred0"><a name="line1040"></a>1040       end

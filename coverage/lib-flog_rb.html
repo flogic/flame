@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:44:46 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:44:59 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -699,8 +699,8 @@ span.run100 {
 </span><span class="marked1"><a name="line99"></a> 99     process_parse_tree(ruby, file)
 </span><span class="inferred0"><a name="line100"></a>100   rescue SyntaxError =&gt; e
 </span><span class="marked1"><a name="line101"></a>101     raise e unless e.inspect =~ /&lt;%|%&gt;/
-</span><span class="marked0"><a name="line102"></a>102     warn e.inspect + &quot; at &quot; + e.backtrace.first(5).join(', ')
-</span><span class="marked1"><a name="line103"></a>103     warn &quot;...stupid lemmings and their bad erb templates... skipping&quot;
+</span><span class="inferred0"><a name="line102"></a>102     warn e.inspect + &quot; at &quot; + e.backtrace.first(5).join(', ') + 
+</span><span class="marked1"><a name="line103"></a>103       &quot;\n...stupid lemmings and their bad erb templates... skipping&quot;
 </span><span class="marked0"><a name="line104"></a>104   end
 </span><span class="inferred1"><a name="line105"></a>105   
 </span><span class="marked0"><a name="line106"></a>106   def process_parse_tree(ruby, file)
