@@ -126,7 +126,7 @@ class Flog < SexpProcessor
     @multiplier -= bonus
   end
 
-  def bleed exp
+  def analyze_list exp
     process exp.shift until exp.empty?
   end
 
@@ -245,7 +245,7 @@ class Flog < SexpProcessor
 
   def process_block(exp)
     bad_dog! 0.1 do
-      bleed exp
+      analyze_list exp
     end
     s()
   end
@@ -292,7 +292,7 @@ class Flog < SexpProcessor
     add_to_score :branch
     process exp.shift # recv
     bad_dog! 0.1 do
-      bleed exp
+      analyze_list exp
     end
     s()
   end
@@ -302,7 +302,7 @@ class Flog < SexpProcessor
       bad_dog! 1.0 do
         supr = process exp.shift
       end
-      bleed exp
+      analyze_list exp
     end
     s()
   end
@@ -316,7 +316,7 @@ class Flog < SexpProcessor
 
   def process_defn(exp)
     self.method exp.shift do
-      bleed exp
+      analyze_list exp
     end
     s()
   end
@@ -324,7 +324,7 @@ class Flog < SexpProcessor
   def process_defs(exp)
     process exp.shift
     self.method exp.shift do
-      bleed exp
+      analyze_list exp
     end
     s()
   end
@@ -332,7 +332,7 @@ class Flog < SexpProcessor
   def process_else(exp)
     add_to_score :branch
     bad_dog! 0.1 do
-      bleed exp
+      analyze_list exp
     end
     s()
   end
@@ -363,7 +363,7 @@ class Flog < SexpProcessor
         submsg = recv.arglist[1][1]
         self.method submsg do
           self.klass msg do
-            bleed exp
+            analyze_list exp
           end
         end
         return s()
@@ -375,7 +375,7 @@ class Flog < SexpProcessor
     process exp.shift # no penalty for LHS
 
     bad_dog! 0.1 do
-      bleed exp
+      analyze_list exp
     end
 
     s()
@@ -412,7 +412,7 @@ class Flog < SexpProcessor
 
   def process_module(exp)
     self.klass exp.shift do
-      bleed exp
+      analyze_list exp
     end
     s()
   end
@@ -429,7 +429,7 @@ class Flog < SexpProcessor
   def process_rescue(exp)
     add_to_score :branch
     bad_dog! 0.1 do
-      bleed exp
+      analyze_list exp
     end
     s()
   end
@@ -437,7 +437,7 @@ class Flog < SexpProcessor
   def process_sclass(exp)
     bad_dog! 0.5 do
       recv = process exp.shift
-      bleed exp
+      analyze_list exp
     end
 
     add_to_score :sclass
@@ -446,7 +446,7 @@ class Flog < SexpProcessor
 
   def process_super(exp)
     add_to_score :super
-    bleed exp
+    analyze_list exp
     s()
   end
 
@@ -463,7 +463,7 @@ class Flog < SexpProcessor
   def process_when(exp)
     add_to_score :branch
     bad_dog! 0.1 do
-      bleed exp
+      analyze_list exp
     end
     s()
   end
@@ -480,7 +480,7 @@ class Flog < SexpProcessor
 
   def process_yield(exp)
     add_to_score :yield
-    bleed exp
+    analyze_list exp
     s()
   end
 end

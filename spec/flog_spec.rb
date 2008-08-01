@@ -491,7 +491,7 @@ describe Flog do
   
   describe 'when computing complexity of all remaining opcodes' do
     it 'should require a list of opcodes' do
-      lambda { @flog.bleed }.should raise_error(ArgumentError)
+      lambda { @flog.analyze_list }.should raise_error(ArgumentError)
     end
     
     it 'should process each opcode' do
@@ -500,7 +500,7 @@ describe Flog do
          @flog.expects(:process).with(opcode)
       end
       
-      @flog.bleed @opcodes
+      @flog.analyze_list @opcodes
     end
   end
   
