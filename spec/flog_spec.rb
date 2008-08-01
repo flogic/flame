@@ -1041,11 +1041,26 @@ describe Flog do
       end
 
       describe 'when flogging all methods in the system' do
-        it 'should not limit the detailed report'
+        before :each do
+          $a = true
+        end
+        
+        it 'should not limit the detailed report' do
+          @flog.expects(:output_details).with('handle')
+          @flog.report('handle')
+        end
       end
       
       describe 'when flogging only the most expensive methods in the system' do
-        it 'should limit the detailed report to the Flog threshold'
+        before :each do
+          $a = false
+        end
+        
+        it 'should limit the detailed report to the Flog threshold' do
+          @flog.stubs(:total).returns(3.45)
+          @flog.expects(:output_details).with('handle', 3.45 * 0.60)
+          @flog.report('handle')
+        end
       end
       
       it 'should reset statistics when finished' do

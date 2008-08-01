@@ -13,7 +13,7 @@ class Flog < SexpProcessor
 
   include UnifiedRuby
 
-  THRESHOLD = $a ? 1.0 : 0.60
+  THRESHOLD = 0.60
   SCORES = Hash.new(1)
   BRANCHING = [ :and, :case, :else, :if, :or, :rescue, :until, :when, :while ]
 
@@ -229,7 +229,12 @@ class Flog < SexpProcessor
   def report io = $stdout
     output_summary(io)
     exit 0 if $s  # TODO:  this should eventually not be an exit(), as this should just be a library
-    output_details(io, self.total * THRESHOLD)    
+    
+    if $a
+      output_details(io)
+    else
+      output_details(io, self.total * THRESHOLD)
+    end    
   ensure
     self.reset
   end
