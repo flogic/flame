@@ -70,7 +70,7 @@ class Flog < SexpProcessor
     @method_stack = []
     self.auto_shift_type = true
     self.require_empty = false # HACK
-    self.reset
+    reset
   end
   
   def parse_tree
@@ -109,11 +109,11 @@ class Flog < SexpProcessor
   end
   
   def add_to_score(name)
-    @calls["#{self.class_name}##{self.method_name}"][name] += SCORES[name] * @multiplier
+    @calls["#{class_name}##{method_name}"][name] += SCORES[name] * @multiplier
   end
   
   def average
-    self.total / self.calls.size
+    total / calls.size
   end
   
   def penalize_by bonus
@@ -153,7 +153,7 @@ class Flog < SexpProcessor
   end
 
   def total
-    self.totals unless @total_score # calculates total_score as well
+    totals unless @total_score # calculates total_score as well
 
     @total_score
   end
@@ -191,19 +191,19 @@ class Flog < SexpProcessor
     unless @totals then
       @total_score = 0
       @totals = Hash.new(0)
-      self.calls.each {|meth, tally| summarize_method(meth, tally) }
+      calls.each {|meth, tally| summarize_method(meth, tally) }
     end
     @totals
   end
 
   def output_summary(io)
-    io.puts "Total Flog = %.1f (%.1f flog / method)\n" % [self.total, self.average]
+    io.puts "Total Flog = %.1f (%.1f flog / method)\n" % [total, average]
   end
 
   def output_method_details(io, class_method, call_list)
     return 0 if $m and class_method =~ /##{@@no_method}/
     
-    total = self.totals[class_method]
+    total = totals[class_method]
     io.puts "%s: (%.1f)" % [class_method, total]
 
     call_list.sort_by { |k,v| -v }.each do |call, count|
@@ -214,9 +214,9 @@ class Flog < SexpProcessor
   end
 
   def output_details(io, max = nil)
-    totals = self.totals
+    my_totals = totals
     current = 0
-    calls.sort_by { |k,v| -totals[k] }.each do |class_method, call_list|
+    calls.sort_by { |k,v| -my_totals[k] }.each do |class_method, call_list|
       current += output_method_details(io, class_method, call_list)
       break if max and current >= max
     end
@@ -229,10 +229,10 @@ class Flog < SexpProcessor
     if $a
       output_details(io)
     else
-      output_details(io, self.total * THRESHOLD)
+      output_details(io, total * THRESHOLD)
     end    
   ensure
-    self.reset
+    reset
   end
 
   ############################################################
