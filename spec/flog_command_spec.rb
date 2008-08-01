@@ -37,14 +37,10 @@ describe 'flog command' do
       run_command
     end
     
-    currently "should pass '-' (for the file path) to flog_files on the instance" do
+    it "should pass '-' (for the file path) to flog_files on the instance" do
       @flog.expects(:flog_files).with(['-'])
       run_command
     end
-    
-    it 'should show the usage message'
-    it 'should exit with status 0'
-    it 'should not create a Flog instance'
   end
   
   describe "since the script assumes it was called with 'ruby -s'" do
