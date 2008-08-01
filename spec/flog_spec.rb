@@ -681,6 +681,18 @@ describe Flog do
     end
   end
   
+  describe 'when recording a total for a method' do
+    # guess what, @totals and @calls could be refactored to be first-class objects
+    it 'should require a method and a score' do
+      lambda { @flog.record_method_score('foo') }.should raise_error(ArgumentError)
+    end
+    
+    it 'should set the total score for the provided method' do
+      @flog.record_method_score('foo', 20)
+      @flog.totals['foo'].should == 20
+    end
+  end
+  
   describe 'when requesting totals' do
     it 'should not accept any arguments' do
       lambda { @flog.totals('foo') }.should raise_error(ArgumentError)
@@ -728,7 +740,7 @@ describe Flog do
       end
     end
   end
-
+  
   describe 'when generating a report' do
     it 'allows specifying an io handle'
     it 'defaults the io handle to stdout'

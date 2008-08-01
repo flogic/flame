@@ -173,6 +173,11 @@ class Flog < SexpProcessor
     end
     Math.sqrt(a*a + b*b + c*c)
   end
+  
+  def record_method_score(method, score)
+    @totals ||= Hash.new(0)
+    @totals[method] = score
+  end
 
   def totals
     unless @totals then
@@ -181,7 +186,7 @@ class Flog < SexpProcessor
       self.calls.each do |meth, tally|
         next if $m and meth =~ /##{@@no_method}$/
         score = score_method(tally)
-        @totals[meth] = score
+        record_method_score(meth, score)
         @total_score += score
       end
     end
