@@ -66,11 +66,11 @@ class Flog < SexpProcessor
   @@no_method = :none
 
   attr_reader :calls
-  attr_accessor :multiplier, :klasses, :method_stack
+  attr_accessor :multiplier, :class_stack, :method_stack
 
   def initialize
     super
-    @klasses = []
+    @class_stack = []
     @method_stack = []
     self.auto_shift_type = true
     self.require_empty = false # HACK
@@ -131,13 +131,13 @@ class Flog < SexpProcessor
   end
 
   def klass name
-    @klasses.unshift name
+    @class_stack.unshift name
     yield
-    @klasses.shift
+    @class_stack.shift
   end
 
   def klass_name
-    @klasses.first || @@no_class
+    @class_stack.first || @@no_class
   end
 
   def method name

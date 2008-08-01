@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:35:55 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:36:05 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -999,14 +999,14 @@ span.run100 {
 </span><span class="inferred0"><a name="line399"></a>399     end
 </span><span class="inferred1"><a name="line400"></a>400   end
 </span><span class="inferred0"><a name="line401"></a>401   
-</span><span class="marked1"><a name="line402"></a>402   describe 'klasses' do
+</span><span class="marked1"><a name="line402"></a>402   describe 'class_stack' do
 </span><span class="marked0"><a name="line403"></a>403     it 'should be possible to determine the current value of the class stack' do
-</span><span class="marked1"><a name="line404"></a>404       @flog.should respond_to(:klasses)
+</span><span class="marked1"><a name="line404"></a>404       @flog.should respond_to(:class_stack)
 </span><span class="inferred0"><a name="line405"></a>405     end
 </span><span class="inferred1"><a name="line406"></a>406   
 </span><span class="marked0"><a name="line407"></a>407     it 'should be possible to set the current value of the class stack' do
-</span><span class="marked1"><a name="line408"></a>408       @flog.klasses = [ 'name' ]
-</span><span class="marked0"><a name="line409"></a>409       @flog.klasses.should == [ 'name' ]
+</span><span class="marked1"><a name="line408"></a>408       @flog.class_stack = [ 'name' ]
+</span><span class="marked0"><a name="line409"></a>409       @flog.class_stack.should == [ 'name' ]
 </span><span class="inferred1"><a name="line410"></a>410     end
 </span><span class="inferred0"><a name="line411"></a>411   end
 </span><span class="inferred1"><a name="line412"></a>412   
@@ -1122,32 +1122,32 @@ span.run100 {
 </span><span class="inferred1"><a name="line522"></a>522     end
 </span><span class="inferred0"><a name="line523"></a>523     
 </span><span class="marked1"><a name="line524"></a>524     it 'should update the class stack when recursing' do
-</span><span class="marked0"><a name="line525"></a>525       @flog.klasses = []
+</span><span class="marked0"><a name="line525"></a>525       @flog.class_stack = []
 </span><span class="marked1"><a name="line526"></a>526       @flog.klass 'name' do
-</span><span class="marked0"><a name="line527"></a>527         @flog.klasses.should == ['name']
+</span><span class="marked0"><a name="line527"></a>527         @flog.class_stack.should == ['name']
 </span><span class="inferred1"><a name="line528"></a>528       end
 </span><span class="inferred0"><a name="line529"></a>529     end
 </span><span class="inferred1"><a name="line530"></a>530     
 </span><span class="marked0"><a name="line531"></a>531     it 'when it is done it should restore the class stack to its original value' do
-</span><span class="marked1"><a name="line532"></a>532       @flog.klasses = []
+</span><span class="marked1"><a name="line532"></a>532       @flog.class_stack = []
 </span><span class="marked0"><a name="line533"></a>533       @flog.klass 'name' do
 </span><span class="inferred1"><a name="line534"></a>534       end
-</span><span class="marked0"><a name="line535"></a>535       @flog.klasses.should == []
+</span><span class="marked0"><a name="line535"></a>535       @flog.class_stack.should == []
 </span><span class="inferred1"><a name="line536"></a>536     end
 </span><span class="inferred0"><a name="line537"></a>537   end
 </span><span class="inferred1"><a name="line538"></a>538   
 </span><span class="marked0"><a name="line539"></a>539   describe 'when looking up the name of the class currently under analysis' do
 </span><span class="marked1"><a name="line540"></a>540     it 'should not take any arguments' do
-</span><span class="marked0"><a name="line541"></a>541       lambda { @flog.klasses('foo') }.should raise_error(ArgumentError)
+</span><span class="marked0"><a name="line541"></a>541       lambda { @flog.class_stack('foo') }.should raise_error(ArgumentError)
 </span><span class="inferred1"><a name="line542"></a>542     end
 </span><span class="inferred0"><a name="line543"></a>543     
 </span><span class="marked1"><a name="line544"></a>544     it 'should return the most recent class entered' do
-</span><span class="marked0"><a name="line545"></a>545       @flog.klasses = [:foo, :bar, :baz]
+</span><span class="marked0"><a name="line545"></a>545       @flog.class_stack = [:foo, :bar, :baz]
 </span><span class="marked1"><a name="line546"></a>546       @flog.klass_name.should == :foo
 </span><span class="inferred0"><a name="line547"></a>547     end
 </span><span class="inferred1"><a name="line548"></a>548     
 </span><span class="marked0"><a name="line549"></a>549     it 'should return the default class if no classes entered' do
-</span><span class="marked1"><a name="line550"></a>550       @flog.klasses = []
+</span><span class="marked1"><a name="line550"></a>550       @flog.class_stack = []
 </span><span class="marked0"><a name="line551"></a>551       @flog.klass_name.should == :main
 </span><span class="inferred1"><a name="line552"></a>552     end
 </span><span class="inferred0"><a name="line553"></a>553   end

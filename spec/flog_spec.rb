@@ -399,14 +399,14 @@ describe Flog do
     end
   end
   
-  describe 'klasses' do
+  describe 'class_stack' do
     it 'should be possible to determine the current value of the class stack' do
-      @flog.should respond_to(:klasses)
+      @flog.should respond_to(:class_stack)
     end
   
     it 'should be possible to set the current value of the class stack' do
-      @flog.klasses = [ 'name' ]
-      @flog.klasses.should == [ 'name' ]
+      @flog.class_stack = [ 'name' ]
+      @flog.class_stack.should == [ 'name' ]
     end
   end
   
@@ -522,32 +522,32 @@ describe Flog do
     end
     
     it 'should update the class stack when recursing' do
-      @flog.klasses = []
+      @flog.class_stack = []
       @flog.klass 'name' do
-        @flog.klasses.should == ['name']
+        @flog.class_stack.should == ['name']
       end
     end
     
     it 'when it is done it should restore the class stack to its original value' do
-      @flog.klasses = []
+      @flog.class_stack = []
       @flog.klass 'name' do
       end
-      @flog.klasses.should == []
+      @flog.class_stack.should == []
     end
   end
   
   describe 'when looking up the name of the class currently under analysis' do
     it 'should not take any arguments' do
-      lambda { @flog.klasses('foo') }.should raise_error(ArgumentError)
+      lambda { @flog.class_stack('foo') }.should raise_error(ArgumentError)
     end
     
     it 'should return the most recent class entered' do
-      @flog.klasses = [:foo, :bar, :baz]
+      @flog.class_stack = [:foo, :bar, :baz]
       @flog.klass_name.should == :foo
     end
     
     it 'should return the default class if no classes entered' do
-      @flog.klasses = []
+      @flog.class_stack = []
       @flog.klass_name.should == :main
     end
   end
