@@ -208,23 +208,27 @@ class Flog < SexpProcessor
     output_summary(io)
     exit 0 if $s
 
-    total_score = self.total
+    max = self.total * THRESHOLD
+
+    # will Extract Method here, passing in max
     totals = self.totals
-
-    max = total_score * THRESHOLD
     current = 0
-
-    calls.sort_by { |k,v| -totals[k] }.each do |class_method, calls|
+    calls.sort_by { |k,v| -totals[k] }.each do |class_method, call_list|
       next if $m and class_method =~ /##{@@no_method}/
       total = totals[class_method]
       io.puts "%s: (%.1f)" % [class_method, total]
-      calls.sort_by { |k,v| -v }.each do |call, count|
+
+      # and here is a likely next Extract Method candidate
+      call_list.sort_by { |k,v| -v }.each do |call, count|
         io.puts "  %6.1f: %s" % [count, call]
       end
-
+      # end extraction
+      
       current += total
       break if current >= max
     end
+    ### end extraction
+    
   ensure
     self.reset
   end
