@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:41:36 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:41:48 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,11 +571,11 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>939</tt>
+      <td class='lines_total'><tt>948</tt>
         </td>
-      <td class='lines_code'><tt>768</tt>
+      <td class='lines_code'><tt>775</tt>
         </td>
-      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>98.6%</tt>
+      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>98.9%</tt>
               &nbsp;</td>
             <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='99'/>
                   <td class='uncovered' width='1'/>
@@ -585,10 +585,10 @@ span.run100 {
             </tr>
           </table>
         </td>
-      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_code'>98.3%</tt>
+      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_code'>98.7%</tt>
               &nbsp;</td>
-            <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='98'/>
-                  <td class='uncovered' width='2'/>
+            <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='99'/>
+                  <td class='uncovered' width='1'/>
                   </tr>
                 </table>
               </td>
@@ -1398,7 +1398,7 @@ span.run100 {
 </span><span class="inferred1"><a name="line798"></a>798     end
 </span><span class="inferred0"><a name="line799"></a>799   end
 </span><span class="inferred1"><a name="line800"></a>800   
-</span><span class="marked0"><a name="line801"></a>801   describe 'producing a report summary' do
+</span><span class="marked0"><a name="line801"></a>801   describe 'when producing a report summary' do
 </span><span class="marked1"><a name="line802"></a>802     before :each do
 </span><span class="marked0"><a name="line803"></a>803       @handle = stub('io handle)', :puts =&gt; nil)
 </span><span class="marked1"><a name="line804"></a>804       @flog.stubs(:total).returns(@total_score = 42.0)
@@ -1434,109 +1434,118 @@ span.run100 {
 </span><span class="inferred1"><a name="line834"></a>834     end
 </span><span class="inferred0"><a name="line835"></a>835   end
 </span><span class="inferred1"><a name="line836"></a>836   
-</span><span class="marked0"><a name="line837"></a>837   describe 'when generating a report' do
+</span><span class="marked0"><a name="line837"></a>837   describe 'when producing a detailed call summary report' do
 </span><span class="marked1"><a name="line838"></a>838     before :each do
 </span><span class="marked0"><a name="line839"></a>839       @handle = stub('io handle)', :puts =&gt; nil)
 </span><span class="marked1"><a name="line840"></a>840       @flog.stubs(:calls).returns({})
 </span><span class="marked0"><a name="line841"></a>841       @flog.stubs(:total).returns(@total_score = 42.0)
 </span><span class="marked1"><a name="line842"></a>842       @flog.stubs(:average).returns(@average_score = 1.0)
-</span><span class="marked0"><a name="line843"></a>843       @flog.stubs(:output_summary)
-</span><span class="inferred1"><a name="line844"></a>844     end
-</span><span class="inferred0"><a name="line845"></a>845     
-</span><span class="marked1"><a name="line846"></a>846     it 'allows specifying an i/o handle' do
-</span><span class="marked0"><a name="line847"></a>847       lambda { @flog.report @handle }.should_not raise_error(ArgumentError)
-</span><span class="inferred1"><a name="line848"></a>848     end
-</span><span class="inferred0"><a name="line849"></a>849     
-</span><span class="marked1"><a name="line850"></a>850     it 'allows running the report without a specified i/o handle' do
-</span><span class="marked0"><a name="line851"></a>851       lambda { @flog.report }.should_not raise_error(ArgumentError)
-</span><span class="inferred1"><a name="line852"></a>852     end
-</span><span class="inferred0"><a name="line853"></a>853     
-</span><span class="marked1"><a name="line854"></a>854     describe 'and no i/o handle is specified' do
-</span><span class="marked0"><a name="line855"></a>855       before :each do
-</span><span class="marked1"><a name="line856"></a>856         @old_stdout, $stdout = $stdout, stub('io handle', :puts =&gt; nil, :write =&gt; nil)
-</span><span class="inferred0"><a name="line857"></a>857       end
-</span><span class="inferred1"><a name="line858"></a>858       
-</span><span class="marked0"><a name="line859"></a>859       after :each do
-</span><span class="marked1"><a name="line860"></a>860         $stdout = @old_stdout
-</span><span class="inferred0"><a name="line861"></a>861       end
-</span><span class="inferred1"><a name="line862"></a>862       
-</span><span class="marked0"><a name="line863"></a>863       it 'defaults the io handle to stdout' do
-</span><span class="marked1"><a name="line864"></a>864         @flog.expects(:output_summary).with($stdout)
-</span><span class="marked0"><a name="line865"></a>865         @flog.report
-</span><span class="inferred1"><a name="line866"></a>866       end
-</span><span class="inferred0"><a name="line867"></a>867     end
-</span><span class="inferred1"><a name="line868"></a>868 
-</span><span class="marked0"><a name="line869"></a>869     describe 'and producing a summary report' do
-</span><span class="marked1"><a name="line870"></a>870       before :each do
-</span><span class="marked0"><a name="line871"></a>871         $s = true
-</span><span class="inferred1"><a name="line872"></a>872       end
-</span><span class="inferred0"><a name="line873"></a>873       
-</span><span class="marked1"><a name="line874"></a>874       it 'does not retrieve the set of total statistics' do
-</span><span class="marked0"><a name="line875"></a>875         @flog.expects(:totals).never
-</span><span class="marked1"><a name="line876"></a>876         begin
-</span><span class="marked0"><a name="line877"></a>877           @flog.report(@handle)
-</span><span class="uncovered1"><a name="line878"></a>878         rescue SystemExit
-</span><span class="uncovered0"><a name="line879"></a>879         end
-</span><span class="uncovered1"><a name="line880"></a>880       end
-</span><span class="inferred0"><a name="line881"></a>881       
-</span><span class="marked1"><a name="line882"></a>882       it 'produces an output summary on the i/o handle' do
-</span><span class="marked0"><a name="line883"></a>883         @flog.expects(:output_summary).with(@handle)
-</span><span class="marked1"><a name="line884"></a>884         begin
-</span><span class="marked0"><a name="line885"></a>885           @flog.report(@handle)
-</span><span class="uncovered1"><a name="line886"></a>886         rescue SystemExit
-</span><span class="uncovered0"><a name="line887"></a>887         end
-</span><span class="uncovered1"><a name="line888"></a>888       end
-</span><span class="inferred0"><a name="line889"></a>889       
-</span><span class="marked1"><a name="line890"></a>890       it 'exits with status 0' do
-</span><span class="marked0"><a name="line891"></a>891         lambda { @flog.report(@handle) }.should raise_error(SystemExit)
-</span><span class="inferred1"><a name="line892"></a>892       end
-</span><span class="inferred0"><a name="line893"></a>893       
-</span><span class="marked1"><a name="line894"></a>894       it 'does not produce a call listing' do
-</span><span class="marked0"><a name="line895"></a>895         @flog.expects(:calls).never
-</span><span class="marked1"><a name="line896"></a>896         begin
-</span><span class="marked0"><a name="line897"></a>897           @flog.report(@handle)
-</span><span class="uncovered1"><a name="line898"></a>898         rescue SystemExit
-</span><span class="uncovered0"><a name="line899"></a>899         end
-</span><span class="uncovered1"><a name="line900"></a>900       end
-</span><span class="inferred0"><a name="line901"></a>901       
-</span><span class="marked1"><a name="line902"></a>902       currently 'should reset statistics when finished' do
-</span><span class="marked0"><a name="line903"></a>903         @flog.expects(:reset)
-</span><span class="marked1"><a name="line904"></a>904         begin
-</span><span class="marked0"><a name="line905"></a>905           @flog.report(@handle)
-</span><span class="uncovered1"><a name="line906"></a>906         rescue SystemExit
-</span><span class="uncovered0"><a name="line907"></a>907         end
-</span><span class="uncovered1"><a name="line908"></a>908       end
-</span><span class="uncovered0"><a name="line909"></a>909     end
-</span><span class="inferred1"><a name="line910"></a>910     
-</span><span class="marked0"><a name="line911"></a>911     describe 'and producing a full report' do
-</span><span class="marked1"><a name="line912"></a>912       before :each do
-</span><span class="marked0"><a name="line913"></a>913         $s = false
-</span><span class="inferred1"><a name="line914"></a>914       end
-</span><span class="inferred0"><a name="line915"></a>915       
-</span><span class="marked1"><a name="line916"></a>916       it 'retrieves the set of total statistics' do
-</span><span class="marked0"><a name="line917"></a>917         @flog.expects(:totals)
-</span><span class="marked1"><a name="line918"></a>918         @flog.report(@handle)
-</span><span class="inferred0"><a name="line919"></a>919       end
-</span><span class="inferred1"><a name="line920"></a>920       
-</span><span class="marked0"><a name="line921"></a>921       it 'produces an output summary on the i/o handle' do
-</span><span class="marked1"><a name="line922"></a>922         @flog.expects(:output_summary).with(@handle)
-</span><span class="marked0"><a name="line923"></a>923         @flog.report(@handle)
-</span><span class="inferred1"><a name="line924"></a>924       end
-</span><span class="inferred0"><a name="line925"></a>925       
-</span><span class="marked1"><a name="line926"></a>926       it 'should not exit' do
-</span><span class="marked0"><a name="line927"></a>927         @flog.expects(:exit).never
-</span><span class="marked1"><a name="line928"></a>928         @flog.report(@handle)
-</span><span class="inferred0"><a name="line929"></a>929       end
-</span><span class="inferred1"><a name="line930"></a>930       
-</span><span class="marked0"><a name="line931"></a>931       it 'should reset statistics when finished' do
-</span><span class="marked1"><a name="line932"></a>932         @flog.expects(:reset)
-</span><span class="marked0"><a name="line933"></a>933         @flog.report(@handle)
-</span><span class="inferred1"><a name="line934"></a>934       end
-</span><span class="inferred0"><a name="line935"></a>935       
-</span><span class="marked1"><a name="line936"></a>936       it 'should have more specs about detailed output report'
-</span><span class="inferred0"><a name="line937"></a>937     end
-</span><span class="inferred1"><a name="line938"></a>938   end
-</span><span class="inferred0"><a name="line939"></a>939 end
+</span><span class="inferred0"><a name="line843"></a>843     end
+</span><span class="inferred1"><a name="line844"></a>844     
+</span><span class="marked0"><a name="line845"></a>845     it 'should require an i/o handle' do
+</span><span class="marked1"><a name="line846"></a>846       lambda { @flog.output_details }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line847"></a>847     end
+</span><span class="inferred1"><a name="line848"></a>848     
+</span><span class="marked0"><a name="line849"></a>849     it 'should allow a threshold on the amount of detail to report' do
+</span><span class="marked1"><a name="line850"></a>850       lambda { @flog.output_details(@handle, 300) }.should_not raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line851"></a>851     end
+</span><span class="inferred1"><a name="line852"></a>852       
+</span><span class="marked0"><a name="line853"></a>853     it 'retrieves the set of total statistics' do
+</span><span class="marked1"><a name="line854"></a>854       @flog.expects(:totals)
+</span><span class="marked0"><a name="line855"></a>855       @flog.output_details(@handle)
+</span><span class="inferred1"><a name="line856"></a>856     end
+</span><span class="inferred0"><a name="line857"></a>857     
+</span><span class="marked1"><a name="line858"></a>858     it 'should have more specs'
+</span><span class="inferred0"><a name="line859"></a>859   end
+</span><span class="inferred1"><a name="line860"></a>860   
+</span><span class="marked0"><a name="line861"></a>861   describe 'when generating a report' do    
+</span><span class="marked1"><a name="line862"></a>862     it 'allows specifying an i/o handle' do
+</span><span class="marked0"><a name="line863"></a>863       lambda { @flog.report 'handle' }.should_not raise_error(ArgumentError)
+</span><span class="inferred1"><a name="line864"></a>864     end
+</span><span class="inferred0"><a name="line865"></a>865     
+</span><span class="marked1"><a name="line866"></a>866     it 'allows running the report without a specified i/o handle' do
+</span><span class="marked0"><a name="line867"></a>867       lambda { @flog.report }.should_not raise_error(ArgumentError)
+</span><span class="inferred1"><a name="line868"></a>868     end
+</span><span class="inferred0"><a name="line869"></a>869     
+</span><span class="marked1"><a name="line870"></a>870     describe 'and no i/o handle is specified' do      
+</span><span class="marked0"><a name="line871"></a>871       it 'defaults the io handle to stdout' do
+</span><span class="marked1"><a name="line872"></a>872         @flog.expects(:output_summary).with($stdout)
+</span><span class="marked0"><a name="line873"></a>873         @flog.report
+</span><span class="inferred1"><a name="line874"></a>874       end
+</span><span class="inferred0"><a name="line875"></a>875     end
+</span><span class="inferred1"><a name="line876"></a>876 
+</span><span class="marked0"><a name="line877"></a>877     describe 'and producing a summary report' do
+</span><span class="marked1"><a name="line878"></a>878       before :each do
+</span><span class="marked0"><a name="line879"></a>879         $s = true
+</span><span class="marked1"><a name="line880"></a>880         @flog.stubs(:output_summary)
+</span><span class="inferred0"><a name="line881"></a>881       end
+</span><span class="inferred1"><a name="line882"></a>882       
+</span><span class="marked0"><a name="line883"></a>883       it 'produces an output summary on the i/o handle' do
+</span><span class="marked1"><a name="line884"></a>884         @flog.expects(:output_summary).with('handle')
+</span><span class="marked0"><a name="line885"></a>885         begin
+</span><span class="marked1"><a name="line886"></a>886           @flog.report('handle')
+</span><span class="uncovered0"><a name="line887"></a>887         rescue SystemExit
+</span><span class="uncovered1"><a name="line888"></a>888         end
+</span><span class="uncovered0"><a name="line889"></a>889       end
+</span><span class="inferred1"><a name="line890"></a>890       
+</span><span class="marked0"><a name="line891"></a>891       currently 'exits with status 0' do
+</span><span class="marked1"><a name="line892"></a>892         lambda { @flog.report('handle') }.should raise_error(SystemExit)
+</span><span class="inferred0"><a name="line893"></a>893       end
+</span><span class="inferred1"><a name="line894"></a>894       
+</span><span class="marked0"><a name="line895"></a>895       it 'does not output a detailed report' do
+</span><span class="marked1"><a name="line896"></a>896         @flog.expects(:output_details).never
+</span><span class="marked0"><a name="line897"></a>897         begin
+</span><span class="marked1"><a name="line898"></a>898           @flog.report('handle')
+</span><span class="uncovered0"><a name="line899"></a>899         rescue SystemExit
+</span><span class="uncovered1"><a name="line900"></a>900         end
+</span><span class="uncovered0"><a name="line901"></a>901       end
+</span><span class="inferred1"><a name="line902"></a>902       
+</span><span class="marked0"><a name="line903"></a>903       currently 'should reset statistics when finished' do
+</span><span class="marked1"><a name="line904"></a>904         @flog.expects(:reset)
+</span><span class="marked0"><a name="line905"></a>905         begin
+</span><span class="marked1"><a name="line906"></a>906           @flog.report('handle')
+</span><span class="uncovered0"><a name="line907"></a>907         rescue SystemExit
+</span><span class="uncovered1"><a name="line908"></a>908         end
+</span><span class="uncovered0"><a name="line909"></a>909       end
+</span><span class="uncovered1"><a name="line910"></a>910     end
+</span><span class="inferred0"><a name="line911"></a>911     
+</span><span class="marked1"><a name="line912"></a>912     describe 'and producing a full report' do
+</span><span class="marked0"><a name="line913"></a>913       before :each do
+</span><span class="marked1"><a name="line914"></a>914         $s = false
+</span><span class="marked0"><a name="line915"></a>915         @flog.stubs(:output_summary)
+</span><span class="marked1"><a name="line916"></a>916         @flog.stubs(:output_details)
+</span><span class="inferred0"><a name="line917"></a>917       end
+</span><span class="inferred1"><a name="line918"></a>918       
+</span><span class="marked0"><a name="line919"></a>919       it 'produces an output summary on the i/o handle' do
+</span><span class="marked1"><a name="line920"></a>920         @flog.expects(:output_summary).with('handle')
+</span><span class="marked0"><a name="line921"></a>921         @flog.report('handle')
+</span><span class="inferred1"><a name="line922"></a>922       end
+</span><span class="inferred0"><a name="line923"></a>923       
+</span><span class="marked1"><a name="line924"></a>924       currently 'should not exit' do
+</span><span class="marked0"><a name="line925"></a>925         @flog.expects(:exit).never
+</span><span class="marked1"><a name="line926"></a>926         @flog.report('handle')
+</span><span class="inferred0"><a name="line927"></a>927       end
+</span><span class="inferred1"><a name="line928"></a>928 
+</span><span class="marked0"><a name="line929"></a>929       it 'should generate a detailed report of method complexity on the i/o handle' do
+</span><span class="marked1"><a name="line930"></a>930         @flog.expects(:output_details).with {|handle, max| handle == 'handle' }
+</span><span class="marked0"><a name="line931"></a>931         @flog.report('handle')
+</span><span class="inferred1"><a name="line932"></a>932       end
+</span><span class="inferred0"><a name="line933"></a>933 
+</span><span class="marked1"><a name="line934"></a>934       describe 'when flogging all methods in the system' do
+</span><span class="marked0"><a name="line935"></a>935         it 'should not limit the detailed report'
+</span><span class="inferred1"><a name="line936"></a>936       end
+</span><span class="inferred0"><a name="line937"></a>937       
+</span><span class="marked1"><a name="line938"></a>938       describe 'when flogging only the most expensive methods in the system' do
+</span><span class="marked0"><a name="line939"></a>939         it 'should limit the detailed report to the Flog threshold'
+</span><span class="inferred1"><a name="line940"></a>940       end
+</span><span class="inferred0"><a name="line941"></a>941       
+</span><span class="marked1"><a name="line942"></a>942       it 'should reset statistics when finished' do
+</span><span class="marked0"><a name="line943"></a>943         @flog.expects(:reset)
+</span><span class="marked1"><a name="line944"></a>944         @flog.report(@handle)
+</span><span class="inferred0"><a name="line945"></a>945       end
+</span><span class="inferred1"><a name="line946"></a>946     end
+</span><span class="inferred0"><a name="line947"></a>947   end
+</span><span class="inferred1"><a name="line948"></a>948 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>

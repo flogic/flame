@@ -798,7 +798,7 @@ describe Flog do
     end
   end
   
-  describe 'producing a report summary' do
+  describe 'when producing a report summary' do
     before :each do
       @handle = stub('io handle)', :puts => nil)
       @flog.stubs(:total).returns(@total_score = 42.0)
@@ -834,32 +834,40 @@ describe Flog do
     end
   end
   
-  describe 'when generating a report' do
+  describe 'when producing a detailed call summary report' do
     before :each do
       @handle = stub('io handle)', :puts => nil)
       @flog.stubs(:calls).returns({})
       @flog.stubs(:total).returns(@total_score = 42.0)
       @flog.stubs(:average).returns(@average_score = 1.0)
-      @flog.stubs(:output_summary)
     end
     
+    it 'should require an i/o handle' do
+      lambda { @flog.output_details }.should raise_error(ArgumentError)
+    end
+    
+    it 'should allow a threshold on the amount of detail to report' do
+      lambda { @flog.output_details(@handle, 300) }.should_not raise_error(ArgumentError)
+    end
+      
+    it 'retrieves the set of total statistics' do
+      @flog.expects(:totals)
+      @flog.output_details(@handle)
+    end
+    
+    it 'should have more specs'
+  end
+  
+  describe 'when generating a report' do    
     it 'allows specifying an i/o handle' do
-      lambda { @flog.report @handle }.should_not raise_error(ArgumentError)
+      lambda { @flog.report 'handle' }.should_not raise_error(ArgumentError)
     end
     
     it 'allows running the report without a specified i/o handle' do
       lambda { @flog.report }.should_not raise_error(ArgumentError)
     end
     
-    describe 'and no i/o handle is specified' do
-      before :each do
-        @old_stdout, $stdout = $stdout, stub('io handle', :puts => nil, :write => nil)
-      end
-      
-      after :each do
-        $stdout = @old_stdout
-      end
-      
+    describe 'and no i/o handle is specified' do      
       it 'defaults the io handle to stdout' do
         @flog.expects(:output_summary).with($stdout)
         @flog.report
@@ -869,32 +877,25 @@ describe Flog do
     describe 'and producing a summary report' do
       before :each do
         $s = true
-      end
-      
-      it 'does not retrieve the set of total statistics' do
-        @flog.expects(:totals).never
-        begin
-          @flog.report(@handle)
-        rescue SystemExit
-        end
+        @flog.stubs(:output_summary)
       end
       
       it 'produces an output summary on the i/o handle' do
-        @flog.expects(:output_summary).with(@handle)
+        @flog.expects(:output_summary).with('handle')
         begin
-          @flog.report(@handle)
+          @flog.report('handle')
         rescue SystemExit
         end
       end
       
-      it 'exits with status 0' do
-        lambda { @flog.report(@handle) }.should raise_error(SystemExit)
+      currently 'exits with status 0' do
+        lambda { @flog.report('handle') }.should raise_error(SystemExit)
       end
       
-      it 'does not produce a call listing' do
-        @flog.expects(:calls).never
+      it 'does not output a detailed report' do
+        @flog.expects(:output_details).never
         begin
-          @flog.report(@handle)
+          @flog.report('handle')
         rescue SystemExit
         end
       end
@@ -902,7 +903,7 @@ describe Flog do
       currently 'should reset statistics when finished' do
         @flog.expects(:reset)
         begin
-          @flog.report(@handle)
+          @flog.report('handle')
         rescue SystemExit
         end
       end
@@ -911,29 +912,37 @@ describe Flog do
     describe 'and producing a full report' do
       before :each do
         $s = false
-      end
-      
-      it 'retrieves the set of total statistics' do
-        @flog.expects(:totals)
-        @flog.report(@handle)
+        @flog.stubs(:output_summary)
+        @flog.stubs(:output_details)
       end
       
       it 'produces an output summary on the i/o handle' do
-        @flog.expects(:output_summary).with(@handle)
-        @flog.report(@handle)
+        @flog.expects(:output_summary).with('handle')
+        @flog.report('handle')
       end
       
-      it 'should not exit' do
+      currently 'should not exit' do
         @flog.expects(:exit).never
-        @flog.report(@handle)
+        @flog.report('handle')
+      end
+
+      it 'should generate a detailed report of method complexity on the i/o handle' do
+        @flog.expects(:output_details).with {|handle, max| handle == 'handle' }
+        @flog.report('handle')
+      end
+
+      describe 'when flogging all methods in the system' do
+        it 'should not limit the detailed report'
+      end
+      
+      describe 'when flogging only the most expensive methods in the system' do
+        it 'should limit the detailed report to the Flog threshold'
       end
       
       it 'should reset statistics when finished' do
         @flog.expects(:reset)
         @flog.report(@handle)
       end
-      
-      it 'should have more specs about detailed output report'
     end
   end
 end
