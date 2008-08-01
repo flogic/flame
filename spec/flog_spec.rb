@@ -410,6 +410,17 @@ describe Flog do
     end
   end
   
+  describe 'method_stack' do
+    it 'should be possible to determine the current value of the method stack' do
+      @flog.should respond_to(:method_stack)
+    end
+  
+    it 'should be possible to set the current value of the method stack' do
+      @flog.method_stack = [ 'name' ]
+      @flog.method_stack.should == [ 'name' ]
+    end
+  end
+  
   describe 'when adding to the current flog score' do
     before :each do
       @flog.multiplier = 1
@@ -538,6 +549,38 @@ describe Flog do
     it 'should return the default class if no classes entered' do
       @flog.klasses = []
       @flog.klass_name.should == :main
+    end
+  end
+
+  describe 'when recording the current method being analyzed' do
+    it 'should require a method name' do
+      lambda { @flog.method }.should raise_error(ArgumentError)
+    end
+    
+    it 'should require a block during which the class name is in effect' do
+      lambda { @flog.method('name') }.should raise_error(LocalJumpError)
+    end
+    
+    it 'should recursively analyze the provided code block' do
+      @flog.method 'name' do
+        @foo = true
+      end
+      
+      @foo.should be_true
+    end
+    
+    it 'should update the class stack when recursing' do
+      @flog.method_stack = []
+      @flog.method 'name' do
+        @flog.method_stack.should == ['name']
+      end
+    end
+    
+    it 'when it is done it should restore the class stack to its original value' do
+      @flog.method_stack = []
+      @flog.method 'name' do
+      end
+      @flog.method_stack.should == []
     end
   end
 

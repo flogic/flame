@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:35:44 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:35:55 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>564</tt>
+      <td class='lines_total'><tt>607</tt>
         </td>
-      <td class='lines_code'><tt>460</tt>
+      <td class='lines_code'><tt>495</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -1010,158 +1010,201 @@ span.run100 {
 </span><span class="inferred1"><a name="line410"></a>410     end
 </span><span class="inferred0"><a name="line411"></a>411   end
 </span><span class="inferred1"><a name="line412"></a>412   
-</span><span class="marked0"><a name="line413"></a>413   describe 'when adding to the current flog score' do
-</span><span class="marked1"><a name="line414"></a>414     before :each do
-</span><span class="marked0"><a name="line415"></a>415       @flog.multiplier = 1
-</span><span class="marked1"><a name="line416"></a>416       @flog.stubs(:klass_name).returns('foo')
-</span><span class="marked0"><a name="line417"></a>417       @flog.stubs(:method_name).returns('bar')
-</span><span class="marked1"><a name="line418"></a>418       @flog.calls['foo#bar'] = { :alias =&gt; 0 }
-</span><span class="inferred0"><a name="line419"></a>419     end
-</span><span class="inferred1"><a name="line420"></a>420     
-</span><span class="marked0"><a name="line421"></a>421     it 'should require an operation name' do
-</span><span class="marked1"><a name="line422"></a>422       lambda { @flog.add_to_score() }.should raise_error(ArgumentError)
-</span><span class="inferred0"><a name="line423"></a>423     end
-</span><span class="inferred1"><a name="line424"></a>424     
-</span><span class="marked0"><a name="line425"></a>425     it 'should update the score for the current class, method, and operation' do
-</span><span class="marked1"><a name="line426"></a>426       @flog.add_to_score(:alias)
-</span><span class="marked0"><a name="line427"></a>427       @flog.calls['foo#bar'][:alias].should_not == 0
-</span><span class="inferred1"><a name="line428"></a>428     end
-</span><span class="inferred0"><a name="line429"></a>429     
-</span><span class="marked1"><a name="line430"></a>430     it 'should use the multiplier when updating the current call score' do
-</span><span class="marked0"><a name="line431"></a>431       @flog.multiplier = 10
-</span><span class="marked1"><a name="line432"></a>432       @flog.add_to_score(:alias)
-</span><span class="marked0"><a name="line433"></a>433       @flog.calls['foo#bar'][:alias].should == 10*Flog::SCORES[:alias]
+</span><span class="marked0"><a name="line413"></a>413   describe 'method_stack' do
+</span><span class="marked1"><a name="line414"></a>414     it 'should be possible to determine the current value of the method stack' do
+</span><span class="marked0"><a name="line415"></a>415       @flog.should respond_to(:method_stack)
+</span><span class="inferred1"><a name="line416"></a>416     end
+</span><span class="inferred0"><a name="line417"></a>417   
+</span><span class="marked1"><a name="line418"></a>418     it 'should be possible to set the current value of the method stack' do
+</span><span class="marked0"><a name="line419"></a>419       @flog.method_stack = [ 'name' ]
+</span><span class="marked1"><a name="line420"></a>420       @flog.method_stack.should == [ 'name' ]
+</span><span class="inferred0"><a name="line421"></a>421     end
+</span><span class="inferred1"><a name="line422"></a>422   end
+</span><span class="inferred0"><a name="line423"></a>423   
+</span><span class="marked1"><a name="line424"></a>424   describe 'when adding to the current flog score' do
+</span><span class="marked0"><a name="line425"></a>425     before :each do
+</span><span class="marked1"><a name="line426"></a>426       @flog.multiplier = 1
+</span><span class="marked0"><a name="line427"></a>427       @flog.stubs(:klass_name).returns('foo')
+</span><span class="marked1"><a name="line428"></a>428       @flog.stubs(:method_name).returns('bar')
+</span><span class="marked0"><a name="line429"></a>429       @flog.calls['foo#bar'] = { :alias =&gt; 0 }
+</span><span class="inferred1"><a name="line430"></a>430     end
+</span><span class="inferred0"><a name="line431"></a>431     
+</span><span class="marked1"><a name="line432"></a>432     it 'should require an operation name' do
+</span><span class="marked0"><a name="line433"></a>433       lambda { @flog.add_to_score() }.should raise_error(ArgumentError)
 </span><span class="inferred1"><a name="line434"></a>434     end
-</span><span class="inferred0"><a name="line435"></a>435   end
-</span><span class="inferred1"><a name="line436"></a>436   
-</span><span class="marked0"><a name="line437"></a>437   describe 'when computing the average per-call flog score' do
-</span><span class="marked1"><a name="line438"></a>438     it 'should not allow arguments' do
-</span><span class="marked0"><a name="line439"></a>439       lambda { @flog.average('foo') }.should raise_error(ArgumentError)
-</span><span class="inferred1"><a name="line440"></a>440     end
-</span><span class="inferred0"><a name="line441"></a>441     
-</span><span class="marked1"><a name="line442"></a>442     it 'should return the total flog score divided by the number of calls' do
-</span><span class="marked0"><a name="line443"></a>443       @flog.stubs(:total).returns(100.0)
-</span><span class="marked1"><a name="line444"></a>444       @flog.stubs(:calls).returns({ :bar =&gt; {}, :foo =&gt; {} })
-</span><span class="marked0"><a name="line445"></a>445       @flog.average.should be_close(100.0/2, 0.00000000001)
-</span><span class="inferred1"><a name="line446"></a>446     end
-</span><span class="inferred0"><a name="line447"></a>447   end
-</span><span class="inferred1"><a name="line448"></a>448 
-</span><span class="marked0"><a name="line449"></a>449   describe 'when recursively analyzing the complexity of code' do
-</span><span class="marked1"><a name="line450"></a>450     it 'should require a complexity modifier value' do
-</span><span class="marked0"><a name="line451"></a>451       lambda { @flog.bad_dog! }.should raise_error(ArgumentError)
-</span><span class="inferred1"><a name="line452"></a>452     end
-</span><span class="inferred0"><a name="line453"></a>453     
-</span><span class="marked1"><a name="line454"></a>454     it 'should require a block, for code to recursively analyze' do
-</span><span class="marked0"><a name="line455"></a>455       lambda { @flog.bad_dog!(42) }.should raise_error(LocalJumpError)
-</span><span class="inferred1"><a name="line456"></a>456     end
-</span><span class="inferred0"><a name="line457"></a>457     
-</span><span class="marked1"><a name="line458"></a>458     it 'should recursively analyze the provided code block' do
-</span><span class="marked0"><a name="line459"></a>459       @flog.bad_dog!(42) do
-</span><span class="marked1"><a name="line460"></a>460         @foo = true
-</span><span class="inferred0"><a name="line461"></a>461       end
-</span><span class="inferred1"><a name="line462"></a>462       
-</span><span class="marked0"><a name="line463"></a>463       @foo.should be_true
-</span><span class="inferred1"><a name="line464"></a>464     end
-</span><span class="inferred0"><a name="line465"></a>465     
-</span><span class="marked1"><a name="line466"></a>466     it 'should update the complexity multiplier when recursing' do
-</span><span class="marked0"><a name="line467"></a>467       @flog.multiplier = 1
-</span><span class="marked1"><a name="line468"></a>468       @flog.bad_dog!(42) do
-</span><span class="marked0"><a name="line469"></a>469         @flog.multiplier.should == 43
-</span><span class="inferred1"><a name="line470"></a>470       end
-</span><span class="inferred0"><a name="line471"></a>471     end
-</span><span class="inferred1"><a name="line472"></a>472     
-</span><span class="marked0"><a name="line473"></a>473     it 'when it is done it should restore the complexity multiplier to its original value' do
-</span><span class="marked1"><a name="line474"></a>474       @flog.multiplier = 1
-</span><span class="marked0"><a name="line475"></a>475       @flog.bad_dog!(42) do
-</span><span class="inferred1"><a name="line476"></a>476       end
-</span><span class="marked0"><a name="line477"></a>477       @flog.multiplier.should == 1
-</span><span class="inferred1"><a name="line478"></a>478     end
-</span><span class="inferred0"><a name="line479"></a>479   end
-</span><span class="inferred1"><a name="line480"></a>480   
-</span><span class="marked0"><a name="line481"></a>481   describe 'when computing complexity of all remaining opcodes' do
-</span><span class="marked1"><a name="line482"></a>482     it 'should require a list of opcodes' do
-</span><span class="marked0"><a name="line483"></a>483       lambda { @flog.bleed }.should raise_error(ArgumentError)
-</span><span class="inferred1"><a name="line484"></a>484     end
-</span><span class="inferred0"><a name="line485"></a>485     
-</span><span class="marked1"><a name="line486"></a>486     it 'should process each opcode' do
-</span><span class="marked0"><a name="line487"></a>487       @opcodes = [ :foo, :bar, :baz ]
-</span><span class="marked1"><a name="line488"></a>488       @opcodes.each do |opcode|
-</span><span class="marked0"><a name="line489"></a>489          @flog.expects(:process).with(opcode)
-</span><span class="inferred1"><a name="line490"></a>490       end
-</span><span class="inferred0"><a name="line491"></a>491       
-</span><span class="marked1"><a name="line492"></a>492       @flog.bleed @opcodes
-</span><span class="inferred0"><a name="line493"></a>493     end
-</span><span class="inferred1"><a name="line494"></a>494   end
-</span><span class="inferred0"><a name="line495"></a>495   
-</span><span class="marked1"><a name="line496"></a>496   describe 'when recording the current class being analyzed' do
-</span><span class="marked0"><a name="line497"></a>497     it 'should require a class name' do
-</span><span class="marked1"><a name="line498"></a>498       lambda { @flog.klass }.should raise_error(ArgumentError)
-</span><span class="inferred0"><a name="line499"></a>499     end
-</span><span class="inferred1"><a name="line500"></a>500     
-</span><span class="marked0"><a name="line501"></a>501     it 'should require a block during which the class name is in effect' do
-</span><span class="marked1"><a name="line502"></a>502       lambda { @flog.klass('name') }.should raise_error(LocalJumpError)
-</span><span class="inferred0"><a name="line503"></a>503     end
-</span><span class="inferred1"><a name="line504"></a>504     
-</span><span class="marked0"><a name="line505"></a>505     it 'should recursively analyze the provided code block' do
-</span><span class="marked1"><a name="line506"></a>506       @flog.klass 'name' do
-</span><span class="marked0"><a name="line507"></a>507         @foo = true
-</span><span class="inferred1"><a name="line508"></a>508       end
-</span><span class="inferred0"><a name="line509"></a>509       
-</span><span class="marked1"><a name="line510"></a>510       @foo.should be_true
-</span><span class="inferred0"><a name="line511"></a>511     end
-</span><span class="inferred1"><a name="line512"></a>512     
-</span><span class="marked0"><a name="line513"></a>513     it 'should update the class stack when recursing' do
-</span><span class="marked1"><a name="line514"></a>514       @flog.klasses = []
-</span><span class="marked0"><a name="line515"></a>515       @flog.klass 'name' do
-</span><span class="marked1"><a name="line516"></a>516         @flog.klasses.should == ['name']
-</span><span class="inferred0"><a name="line517"></a>517       end
-</span><span class="inferred1"><a name="line518"></a>518     end
-</span><span class="inferred0"><a name="line519"></a>519     
-</span><span class="marked1"><a name="line520"></a>520     it 'when it is done it should restore the class stack to its original value' do
-</span><span class="marked0"><a name="line521"></a>521       @flog.klasses = []
-</span><span class="marked1"><a name="line522"></a>522       @flog.klass 'name' do
-</span><span class="inferred0"><a name="line523"></a>523       end
-</span><span class="marked1"><a name="line524"></a>524       @flog.klasses.should == []
-</span><span class="inferred0"><a name="line525"></a>525     end
-</span><span class="inferred1"><a name="line526"></a>526   end
-</span><span class="inferred0"><a name="line527"></a>527   
-</span><span class="marked1"><a name="line528"></a>528   describe 'when looking up the name of the class currently under analysis' do
-</span><span class="marked0"><a name="line529"></a>529     it 'should not take any arguments' do
-</span><span class="marked1"><a name="line530"></a>530       lambda { @flog.klasses('foo') }.should raise_error(ArgumentError)
-</span><span class="inferred0"><a name="line531"></a>531     end
-</span><span class="inferred1"><a name="line532"></a>532     
-</span><span class="marked0"><a name="line533"></a>533     it 'should return the most recent class entered' do
-</span><span class="marked1"><a name="line534"></a>534       @flog.klasses = [:foo, :bar, :baz]
-</span><span class="marked0"><a name="line535"></a>535       @flog.klass_name.should == :foo
+</span><span class="inferred0"><a name="line435"></a>435     
+</span><span class="marked1"><a name="line436"></a>436     it 'should update the score for the current class, method, and operation' do
+</span><span class="marked0"><a name="line437"></a>437       @flog.add_to_score(:alias)
+</span><span class="marked1"><a name="line438"></a>438       @flog.calls['foo#bar'][:alias].should_not == 0
+</span><span class="inferred0"><a name="line439"></a>439     end
+</span><span class="inferred1"><a name="line440"></a>440     
+</span><span class="marked0"><a name="line441"></a>441     it 'should use the multiplier when updating the current call score' do
+</span><span class="marked1"><a name="line442"></a>442       @flog.multiplier = 10
+</span><span class="marked0"><a name="line443"></a>443       @flog.add_to_score(:alias)
+</span><span class="marked1"><a name="line444"></a>444       @flog.calls['foo#bar'][:alias].should == 10*Flog::SCORES[:alias]
+</span><span class="inferred0"><a name="line445"></a>445     end
+</span><span class="inferred1"><a name="line446"></a>446   end
+</span><span class="inferred0"><a name="line447"></a>447   
+</span><span class="marked1"><a name="line448"></a>448   describe 'when computing the average per-call flog score' do
+</span><span class="marked0"><a name="line449"></a>449     it 'should not allow arguments' do
+</span><span class="marked1"><a name="line450"></a>450       lambda { @flog.average('foo') }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line451"></a>451     end
+</span><span class="inferred1"><a name="line452"></a>452     
+</span><span class="marked0"><a name="line453"></a>453     it 'should return the total flog score divided by the number of calls' do
+</span><span class="marked1"><a name="line454"></a>454       @flog.stubs(:total).returns(100.0)
+</span><span class="marked0"><a name="line455"></a>455       @flog.stubs(:calls).returns({ :bar =&gt; {}, :foo =&gt; {} })
+</span><span class="marked1"><a name="line456"></a>456       @flog.average.should be_close(100.0/2, 0.00000000001)
+</span><span class="inferred0"><a name="line457"></a>457     end
+</span><span class="inferred1"><a name="line458"></a>458   end
+</span><span class="inferred0"><a name="line459"></a>459 
+</span><span class="marked1"><a name="line460"></a>460   describe 'when recursively analyzing the complexity of code' do
+</span><span class="marked0"><a name="line461"></a>461     it 'should require a complexity modifier value' do
+</span><span class="marked1"><a name="line462"></a>462       lambda { @flog.bad_dog! }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line463"></a>463     end
+</span><span class="inferred1"><a name="line464"></a>464     
+</span><span class="marked0"><a name="line465"></a>465     it 'should require a block, for code to recursively analyze' do
+</span><span class="marked1"><a name="line466"></a>466       lambda { @flog.bad_dog!(42) }.should raise_error(LocalJumpError)
+</span><span class="inferred0"><a name="line467"></a>467     end
+</span><span class="inferred1"><a name="line468"></a>468     
+</span><span class="marked0"><a name="line469"></a>469     it 'should recursively analyze the provided code block' do
+</span><span class="marked1"><a name="line470"></a>470       @flog.bad_dog!(42) do
+</span><span class="marked0"><a name="line471"></a>471         @foo = true
+</span><span class="inferred1"><a name="line472"></a>472       end
+</span><span class="inferred0"><a name="line473"></a>473       
+</span><span class="marked1"><a name="line474"></a>474       @foo.should be_true
+</span><span class="inferred0"><a name="line475"></a>475     end
+</span><span class="inferred1"><a name="line476"></a>476     
+</span><span class="marked0"><a name="line477"></a>477     it 'should update the complexity multiplier when recursing' do
+</span><span class="marked1"><a name="line478"></a>478       @flog.multiplier = 1
+</span><span class="marked0"><a name="line479"></a>479       @flog.bad_dog!(42) do
+</span><span class="marked1"><a name="line480"></a>480         @flog.multiplier.should == 43
+</span><span class="inferred0"><a name="line481"></a>481       end
+</span><span class="inferred1"><a name="line482"></a>482     end
+</span><span class="inferred0"><a name="line483"></a>483     
+</span><span class="marked1"><a name="line484"></a>484     it 'when it is done it should restore the complexity multiplier to its original value' do
+</span><span class="marked0"><a name="line485"></a>485       @flog.multiplier = 1
+</span><span class="marked1"><a name="line486"></a>486       @flog.bad_dog!(42) do
+</span><span class="inferred0"><a name="line487"></a>487       end
+</span><span class="marked1"><a name="line488"></a>488       @flog.multiplier.should == 1
+</span><span class="inferred0"><a name="line489"></a>489     end
+</span><span class="inferred1"><a name="line490"></a>490   end
+</span><span class="inferred0"><a name="line491"></a>491   
+</span><span class="marked1"><a name="line492"></a>492   describe 'when computing complexity of all remaining opcodes' do
+</span><span class="marked0"><a name="line493"></a>493     it 'should require a list of opcodes' do
+</span><span class="marked1"><a name="line494"></a>494       lambda { @flog.bleed }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line495"></a>495     end
+</span><span class="inferred1"><a name="line496"></a>496     
+</span><span class="marked0"><a name="line497"></a>497     it 'should process each opcode' do
+</span><span class="marked1"><a name="line498"></a>498       @opcodes = [ :foo, :bar, :baz ]
+</span><span class="marked0"><a name="line499"></a>499       @opcodes.each do |opcode|
+</span><span class="marked1"><a name="line500"></a>500          @flog.expects(:process).with(opcode)
+</span><span class="inferred0"><a name="line501"></a>501       end
+</span><span class="inferred1"><a name="line502"></a>502       
+</span><span class="marked0"><a name="line503"></a>503       @flog.bleed @opcodes
+</span><span class="inferred1"><a name="line504"></a>504     end
+</span><span class="inferred0"><a name="line505"></a>505   end
+</span><span class="inferred1"><a name="line506"></a>506   
+</span><span class="marked0"><a name="line507"></a>507   describe 'when recording the current class being analyzed' do
+</span><span class="marked1"><a name="line508"></a>508     it 'should require a class name' do
+</span><span class="marked0"><a name="line509"></a>509       lambda { @flog.klass }.should raise_error(ArgumentError)
+</span><span class="inferred1"><a name="line510"></a>510     end
+</span><span class="inferred0"><a name="line511"></a>511     
+</span><span class="marked1"><a name="line512"></a>512     it 'should require a block during which the class name is in effect' do
+</span><span class="marked0"><a name="line513"></a>513       lambda { @flog.klass('name') }.should raise_error(LocalJumpError)
+</span><span class="inferred1"><a name="line514"></a>514     end
+</span><span class="inferred0"><a name="line515"></a>515     
+</span><span class="marked1"><a name="line516"></a>516     it 'should recursively analyze the provided code block' do
+</span><span class="marked0"><a name="line517"></a>517       @flog.klass 'name' do
+</span><span class="marked1"><a name="line518"></a>518         @foo = true
+</span><span class="inferred0"><a name="line519"></a>519       end
+</span><span class="inferred1"><a name="line520"></a>520       
+</span><span class="marked0"><a name="line521"></a>521       @foo.should be_true
+</span><span class="inferred1"><a name="line522"></a>522     end
+</span><span class="inferred0"><a name="line523"></a>523     
+</span><span class="marked1"><a name="line524"></a>524     it 'should update the class stack when recursing' do
+</span><span class="marked0"><a name="line525"></a>525       @flog.klasses = []
+</span><span class="marked1"><a name="line526"></a>526       @flog.klass 'name' do
+</span><span class="marked0"><a name="line527"></a>527         @flog.klasses.should == ['name']
+</span><span class="inferred1"><a name="line528"></a>528       end
+</span><span class="inferred0"><a name="line529"></a>529     end
+</span><span class="inferred1"><a name="line530"></a>530     
+</span><span class="marked0"><a name="line531"></a>531     it 'when it is done it should restore the class stack to its original value' do
+</span><span class="marked1"><a name="line532"></a>532       @flog.klasses = []
+</span><span class="marked0"><a name="line533"></a>533       @flog.klass 'name' do
+</span><span class="inferred1"><a name="line534"></a>534       end
+</span><span class="marked0"><a name="line535"></a>535       @flog.klasses.should == []
 </span><span class="inferred1"><a name="line536"></a>536     end
-</span><span class="inferred0"><a name="line537"></a>537     
-</span><span class="marked1"><a name="line538"></a>538     it 'should return the default class if no classes entered' do
-</span><span class="marked0"><a name="line539"></a>539       @flog.klasses = []
-</span><span class="marked1"><a name="line540"></a>540       @flog.klass_name.should == :main
-</span><span class="inferred0"><a name="line541"></a>541     end
-</span><span class="inferred1"><a name="line542"></a>542   end
-</span><span class="inferred0"><a name="line543"></a>543 
-</span><span class="marked1"><a name="line544"></a>544   describe 'when generating a report' do
-</span><span class="marked0"><a name="line545"></a>545     it 'allows specifying an io handle'
-</span><span class="marked1"><a name="line546"></a>546     it 'defaults the io handle to stdout'
-</span><span class="marked0"><a name="line547"></a>547     it 'computes the total flog score'
-</span><span class="marked1"><a name="line548"></a>548     it 'retrieves the set of total statistics'
-</span><span class="inferred0"><a name="line549"></a>549     
-</span><span class="marked1"><a name="line550"></a>550     it 'outputs the total flog score'
-</span><span class="marked0"><a name="line551"></a>551     it 'computes the average flog score'
-</span><span class="marked1"><a name="line552"></a>552     it 'outputs the average flog score'
-</span><span class="inferred0"><a name="line553"></a>553     
-</span><span class="marked1"><a name="line554"></a>554     describe 'when summary mode is set' do
-</span><span class="marked0"><a name="line555"></a>555       it 'exits with status 0'
-</span><span class="marked1"><a name="line556"></a>556       it 'does not produce a call listing'
-</span><span class="marked0"><a name="line557"></a>557       it 'should not retrieve the set of total statistics'
+</span><span class="inferred0"><a name="line537"></a>537   end
+</span><span class="inferred1"><a name="line538"></a>538   
+</span><span class="marked0"><a name="line539"></a>539   describe 'when looking up the name of the class currently under analysis' do
+</span><span class="marked1"><a name="line540"></a>540     it 'should not take any arguments' do
+</span><span class="marked0"><a name="line541"></a>541       lambda { @flog.klasses('foo') }.should raise_error(ArgumentError)
+</span><span class="inferred1"><a name="line542"></a>542     end
+</span><span class="inferred0"><a name="line543"></a>543     
+</span><span class="marked1"><a name="line544"></a>544     it 'should return the most recent class entered' do
+</span><span class="marked0"><a name="line545"></a>545       @flog.klasses = [:foo, :bar, :baz]
+</span><span class="marked1"><a name="line546"></a>546       @flog.klass_name.should == :foo
+</span><span class="inferred0"><a name="line547"></a>547     end
+</span><span class="inferred1"><a name="line548"></a>548     
+</span><span class="marked0"><a name="line549"></a>549     it 'should return the default class if no classes entered' do
+</span><span class="marked1"><a name="line550"></a>550       @flog.klasses = []
+</span><span class="marked0"><a name="line551"></a>551       @flog.klass_name.should == :main
+</span><span class="inferred1"><a name="line552"></a>552     end
+</span><span class="inferred0"><a name="line553"></a>553   end
+</span><span class="inferred1"><a name="line554"></a>554 
+</span><span class="marked0"><a name="line555"></a>555   describe 'when recording the current method being analyzed' do
+</span><span class="marked1"><a name="line556"></a>556     it 'should require a method name' do
+</span><span class="marked0"><a name="line557"></a>557       lambda { @flog.method }.should raise_error(ArgumentError)
 </span><span class="inferred1"><a name="line558"></a>558     end
 </span><span class="inferred0"><a name="line559"></a>559     
-</span><span class="marked1"><a name="line560"></a>560     describe 'when summary mode is not set' do
-</span><span class="inferred0"><a name="line561"></a>561       
+</span><span class="marked1"><a name="line560"></a>560     it 'should require a block during which the class name is in effect' do
+</span><span class="marked0"><a name="line561"></a>561       lambda { @flog.method('name') }.should raise_error(LocalJumpError)
 </span><span class="inferred1"><a name="line562"></a>562     end
-</span><span class="inferred0"><a name="line563"></a>563   end
-</span><span class="inferred1"><a name="line564"></a>564 end
+</span><span class="inferred0"><a name="line563"></a>563     
+</span><span class="marked1"><a name="line564"></a>564     it 'should recursively analyze the provided code block' do
+</span><span class="marked0"><a name="line565"></a>565       @flog.method 'name' do
+</span><span class="marked1"><a name="line566"></a>566         @foo = true
+</span><span class="inferred0"><a name="line567"></a>567       end
+</span><span class="inferred1"><a name="line568"></a>568       
+</span><span class="marked0"><a name="line569"></a>569       @foo.should be_true
+</span><span class="inferred1"><a name="line570"></a>570     end
+</span><span class="inferred0"><a name="line571"></a>571     
+</span><span class="marked1"><a name="line572"></a>572     it 'should update the class stack when recursing' do
+</span><span class="marked0"><a name="line573"></a>573       @flog.method_stack = []
+</span><span class="marked1"><a name="line574"></a>574       @flog.method 'name' do
+</span><span class="marked0"><a name="line575"></a>575         @flog.method_stack.should == ['name']
+</span><span class="inferred1"><a name="line576"></a>576       end
+</span><span class="inferred0"><a name="line577"></a>577     end
+</span><span class="inferred1"><a name="line578"></a>578     
+</span><span class="marked0"><a name="line579"></a>579     it 'when it is done it should restore the class stack to its original value' do
+</span><span class="marked1"><a name="line580"></a>580       @flog.method_stack = []
+</span><span class="marked0"><a name="line581"></a>581       @flog.method 'name' do
+</span><span class="inferred1"><a name="line582"></a>582       end
+</span><span class="marked0"><a name="line583"></a>583       @flog.method_stack.should == []
+</span><span class="inferred1"><a name="line584"></a>584     end
+</span><span class="inferred0"><a name="line585"></a>585   end
+</span><span class="inferred1"><a name="line586"></a>586 
+</span><span class="marked0"><a name="line587"></a>587   describe 'when generating a report' do
+</span><span class="marked1"><a name="line588"></a>588     it 'allows specifying an io handle'
+</span><span class="marked0"><a name="line589"></a>589     it 'defaults the io handle to stdout'
+</span><span class="marked1"><a name="line590"></a>590     it 'computes the total flog score'
+</span><span class="marked0"><a name="line591"></a>591     it 'retrieves the set of total statistics'
+</span><span class="inferred1"><a name="line592"></a>592     
+</span><span class="marked0"><a name="line593"></a>593     it 'outputs the total flog score'
+</span><span class="marked1"><a name="line594"></a>594     it 'computes the average flog score'
+</span><span class="marked0"><a name="line595"></a>595     it 'outputs the average flog score'
+</span><span class="inferred1"><a name="line596"></a>596     
+</span><span class="marked0"><a name="line597"></a>597     describe 'when summary mode is set' do
+</span><span class="marked1"><a name="line598"></a>598       it 'exits with status 0'
+</span><span class="marked0"><a name="line599"></a>599       it 'does not produce a call listing'
+</span><span class="marked1"><a name="line600"></a>600       it 'should not retrieve the set of total statistics'
+</span><span class="inferred0"><a name="line601"></a>601     end
+</span><span class="inferred1"><a name="line602"></a>602     
+</span><span class="marked0"><a name="line603"></a>603     describe 'when summary mode is not set' do
+</span><span class="inferred1"><a name="line604"></a>604       
+</span><span class="inferred0"><a name="line605"></a>605     end
+</span><span class="inferred1"><a name="line606"></a>606   end
+</span><span class="inferred0"><a name="line607"></a>607 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
