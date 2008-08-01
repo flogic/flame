@@ -599,6 +599,38 @@ describe Flog do
       @flog.method_name.should == :none
     end
   end
+  
+  describe 'when resetting state' do
+    it 'should not take any arguments' do
+      lambda { @flog.reset('foo') }.should raise_error(ArgumentError)
+    end
+    
+    it 'should clear any recorded totals data' do
+      @flog.totals['foo'] = 'bar'
+      @flog.reset
+      @flog.totals.should == {}
+    end
+    
+    it 'should clear the total score'
+        
+    it 'should set the multiplier to 1.0' do
+      @flog.multiplier = 20.0
+      @flog.reset
+      @flog.multiplier.should == 1.0
+    end
+    
+    it 'should set clear any calls data' do
+      @flog.calls['foobar'] = 'yoda'
+      @flog.reset
+      @flog.calls.should == {}
+    end
+    
+    it 'should ensure that new recorded calls will get 0 counts without explicit initialization' do
+      @flog.reset
+      @flog.calls['foobar']['baz'] += 20
+      @flog.calls['foobar']['baz'].should == 20
+    end
+  end
 
   describe 'when generating a report' do
     it 'allows specifying an io handle'
