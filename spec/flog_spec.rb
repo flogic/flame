@@ -523,7 +523,22 @@ describe Flog do
       end
       @flog.klasses.should == []
     end
+  end
+  
+  describe 'when looking up the name of the class currently under analysis' do
+    it 'should not take any arguments' do
+      lambda { @flog.klasses('foo') }.should raise_error(ArgumentError)
+    end
     
+    it 'should return the most recent class entered' do
+      @flog.klasses = [:foo, :bar, :baz]
+      @flog.klass_name.should == :foo
+    end
+    
+    it 'should return the default class if no classes entered' do
+      @flog.klasses = []
+      @flog.klass_name.should == :main
+    end
   end
 
   describe 'when generating a report' do

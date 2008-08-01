@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:35:34 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:35:44 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>549</tt>
+      <td class='lines_total'><tt>564</tt>
         </td>
-      <td class='lines_code'><tt>447</tt>
+      <td class='lines_code'><tt>460</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -1123,30 +1123,45 @@ span.run100 {
 </span><span class="inferred0"><a name="line523"></a>523       end
 </span><span class="marked1"><a name="line524"></a>524       @flog.klasses.should == []
 </span><span class="inferred0"><a name="line525"></a>525     end
-</span><span class="inferred1"><a name="line526"></a>526     
-</span><span class="inferred0"><a name="line527"></a>527   end
-</span><span class="inferred1"><a name="line528"></a>528 
-</span><span class="marked0"><a name="line529"></a>529   describe 'when generating a report' do
-</span><span class="marked1"><a name="line530"></a>530     it 'allows specifying an io handle'
-</span><span class="marked0"><a name="line531"></a>531     it 'defaults the io handle to stdout'
-</span><span class="marked1"><a name="line532"></a>532     it 'computes the total flog score'
-</span><span class="marked0"><a name="line533"></a>533     it 'retrieves the set of total statistics'
-</span><span class="inferred1"><a name="line534"></a>534     
-</span><span class="marked0"><a name="line535"></a>535     it 'outputs the total flog score'
-</span><span class="marked1"><a name="line536"></a>536     it 'computes the average flog score'
-</span><span class="marked0"><a name="line537"></a>537     it 'outputs the average flog score'
-</span><span class="inferred1"><a name="line538"></a>538     
-</span><span class="marked0"><a name="line539"></a>539     describe 'when summary mode is set' do
-</span><span class="marked1"><a name="line540"></a>540       it 'exits with status 0'
-</span><span class="marked0"><a name="line541"></a>541       it 'does not produce a call listing'
-</span><span class="marked1"><a name="line542"></a>542       it 'should not retrieve the set of total statistics'
-</span><span class="inferred0"><a name="line543"></a>543     end
-</span><span class="inferred1"><a name="line544"></a>544     
-</span><span class="marked0"><a name="line545"></a>545     describe 'when summary mode is not set' do
-</span><span class="inferred1"><a name="line546"></a>546       
-</span><span class="inferred0"><a name="line547"></a>547     end
-</span><span class="inferred1"><a name="line548"></a>548   end
-</span><span class="inferred0"><a name="line549"></a>549 end
+</span><span class="inferred1"><a name="line526"></a>526   end
+</span><span class="inferred0"><a name="line527"></a>527   
+</span><span class="marked1"><a name="line528"></a>528   describe 'when looking up the name of the class currently under analysis' do
+</span><span class="marked0"><a name="line529"></a>529     it 'should not take any arguments' do
+</span><span class="marked1"><a name="line530"></a>530       lambda { @flog.klasses('foo') }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line531"></a>531     end
+</span><span class="inferred1"><a name="line532"></a>532     
+</span><span class="marked0"><a name="line533"></a>533     it 'should return the most recent class entered' do
+</span><span class="marked1"><a name="line534"></a>534       @flog.klasses = [:foo, :bar, :baz]
+</span><span class="marked0"><a name="line535"></a>535       @flog.klass_name.should == :foo
+</span><span class="inferred1"><a name="line536"></a>536     end
+</span><span class="inferred0"><a name="line537"></a>537     
+</span><span class="marked1"><a name="line538"></a>538     it 'should return the default class if no classes entered' do
+</span><span class="marked0"><a name="line539"></a>539       @flog.klasses = []
+</span><span class="marked1"><a name="line540"></a>540       @flog.klass_name.should == :main
+</span><span class="inferred0"><a name="line541"></a>541     end
+</span><span class="inferred1"><a name="line542"></a>542   end
+</span><span class="inferred0"><a name="line543"></a>543 
+</span><span class="marked1"><a name="line544"></a>544   describe 'when generating a report' do
+</span><span class="marked0"><a name="line545"></a>545     it 'allows specifying an io handle'
+</span><span class="marked1"><a name="line546"></a>546     it 'defaults the io handle to stdout'
+</span><span class="marked0"><a name="line547"></a>547     it 'computes the total flog score'
+</span><span class="marked1"><a name="line548"></a>548     it 'retrieves the set of total statistics'
+</span><span class="inferred0"><a name="line549"></a>549     
+</span><span class="marked1"><a name="line550"></a>550     it 'outputs the total flog score'
+</span><span class="marked0"><a name="line551"></a>551     it 'computes the average flog score'
+</span><span class="marked1"><a name="line552"></a>552     it 'outputs the average flog score'
+</span><span class="inferred0"><a name="line553"></a>553     
+</span><span class="marked1"><a name="line554"></a>554     describe 'when summary mode is set' do
+</span><span class="marked0"><a name="line555"></a>555       it 'exits with status 0'
+</span><span class="marked1"><a name="line556"></a>556       it 'does not produce a call listing'
+</span><span class="marked0"><a name="line557"></a>557       it 'should not retrieve the set of total statistics'
+</span><span class="inferred1"><a name="line558"></a>558     end
+</span><span class="inferred0"><a name="line559"></a>559     
+</span><span class="marked1"><a name="line560"></a>560     describe 'when summary mode is not set' do
+</span><span class="inferred0"><a name="line561"></a>561       
+</span><span class="inferred1"><a name="line562"></a>562     end
+</span><span class="inferred0"><a name="line563"></a>563   end
+</span><span class="inferred1"><a name="line564"></a>564 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
