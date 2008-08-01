@@ -636,6 +636,32 @@ describe Flog do
       @flog.calls['foobar']['baz'].should == 20
     end
   end
+  
+  describe 'when retrieving the total score' do
+    it 'should take no arguments' do
+      lambda { @flog.total('foo') }.should raise_error(ArgumentError)
+    end
+    
+    it 'should return 0 if nothing has been analyzed' do
+      @flog.total.should == 0
+    end
+    
+    it 'should compute totals data when called the first time' do
+      @flog.expects(:totals)
+      @flog.total
+    end
+    
+    it 'should not recompute totals data when called after the first time' do
+      @flog.total
+      @flog.expects(:totals).never
+      @flog.total
+    end
+    
+    it 'should return the score from the analysis once files have been analyzed' do
+      @flog.flog_files(fixture_files('/simple/simple.rb'))
+      @flog.total.should_not == 0
+    end
+  end
 
   describe 'when generating a report' do
     it 'allows specifying an io handle'
