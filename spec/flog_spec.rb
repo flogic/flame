@@ -704,6 +704,54 @@ describe Flog do
     end
   end
   
+  describe 'when compiling summaries for a method' do
+    before :each do
+      @tally = { :foo => 0.0 }
+      @method = 'foo'
+      @score = 42.0
+      
+      @flog.stubs(:score_method).returns(@score)
+      @flog.stubs(:record_method_score)
+      @flog.stubs(:increment_total_score_by)
+    end
+    
+    it 'should require a method name and a tally' do
+      lambda { @flog.summarize_method('foo') }.should raise_error(ArgumentError)
+    end
+    
+    it 'should compute a score for the method, based on the tally' do
+      @flog.expects(:score_method).with(@tally)
+      @flog.summarize_method(@method, @tally)
+    end
+    
+    it 'should record the score for the method' do
+      @flog.expects(:record_method_score).with(@method, @score)
+      @flog.summarize_method(@method, @tally)      
+    end
+    
+    it 'should update the overall flog score' do
+      @flog.expects(:increment_total_score_by).with(@score)
+      @flog.summarize_method(@method, @tally)            
+    end
+
+    describe 'ignoring non-method code and given a non-method tally' do
+      it 'should not compute a score for the tally' do
+        @flog.expects(:score_method).never
+        @flog.summarize_method(@method, @tally)
+      end
+      
+      it 'should not record a score based on the tally' do
+        @flog.expects(:record_method_score).never
+        @flog.summarize_method(@method, @tally)      
+      end
+      
+      it 'should not update the overall flog score' do
+        @flog.expects(:increment_total_score_by).never
+        @flog.summarize_method(@method, @tally)            
+      end
+    end    
+  end
+  
   describe 'when requesting totals' do
     it 'should not accept any arguments' do
       lambda { @flog.totals('foo') }.should raise_error(ArgumentError)
@@ -715,25 +763,18 @@ describe Flog do
         @flog.totals
       end
       
+      it "will compile a summary for each method from the method's tally" do
+        @calls = { :foo => 1.0, :bar => 2.0, :baz => 3.0 }
+        @flog.stubs(:calls).returns(@calls)
+        @calls.each do |meth, tally|
+          @flog.expects(:summarize_method).with(meth, tally)
+        end
+        @flog.totals
+      end
+      
       it 'should return the totals data' do
         @flog.totals.should == {}
-      end
-      
-      it 'will compute scores for any tallies for non-default methods'
-      it 'will include non-default method data in totals'
-      it 'will adjust total score with tallies from non-default methods'
-      
-      describe 'when $m is set' do
-        currently 'will not compute scores for any tallies for the default method'
-        currently 'will not include default method data in totals'
-        currently 'will not adjust total score with tallies from default methods'
-      end
-      
-      describe 'when $m is not set' do
-        it 'will compute scores for any tallies for the default method'
-        it 'will include default method data in totals'
-        it 'will adjust total score with talles from default methods'
-      end
+      end      
     end
     
     describe 'when called after the first time' do
@@ -744,6 +785,11 @@ describe Flog do
       it 'should not access calls data' do
         @flog.expects(:calls).never
         @flog.totals        
+      end
+      
+      it 'should not compile method summaries' do
+        @flog.expects(:summarize_method).never
+        @flog.totals
       end
       
       it 'should return the totals data' do
