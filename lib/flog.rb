@@ -208,12 +208,13 @@ class Flog < SexpProcessor
     output_summary(io)
     exit 0 if $s
 
-    current = 0
     total_score = self.total
-    max = total_score * THRESHOLD
     totals = self.totals
 
-    @calls.sort_by { |k,v| -totals[k] }.each do |class_method, calls|
+    max = total_score * THRESHOLD
+    current = 0
+
+    calls.sort_by { |k,v| -totals[k] }.each do |class_method, calls|
       next if $m and class_method =~ /##{@@no_method}/
       total = totals[class_method]
       io.puts "%s: (%.1f)" % [class_method, total]
