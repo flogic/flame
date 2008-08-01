@@ -695,6 +695,22 @@ describe Flog do
       it 'should return the totals data' do
         @flog.totals.should == {}
       end
+      
+      it 'will compute scores for any tallies for non-default methods'
+      it 'will include non-default method data in totals'
+      it 'will adjust total score with tallies from non-default methods'
+      
+      describe 'when $m is set' do
+        currently 'will not compute scores for any tallies for the default method'
+        currently 'will not include default method data in totals'
+        currently 'will not adjust total score with tallies from default methods'
+      end
+      
+      describe 'when $m is not set' do
+        it 'will compute scores for any tallies for the default method'
+        it 'will include default method data in totals'
+        it 'will adjust total score with talles from default methods'
+      end
     end
     
     describe 'when called after the first time' do
