@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:40:16 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:40:34 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>877</tt>
+      <td class='lines_total'><tt>920</tt>
         </td>
-      <td class='lines_code'><tt>716</tt>
+      <td class='lines_code'><tt>751</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -1415,66 +1415,109 @@ span.run100 {
 </span><span class="marked1"><a name="line815"></a>815       lambda { @flog.report }.should_not raise_error(ArgumentError)
 </span><span class="inferred0"><a name="line816"></a>816     end
 </span><span class="inferred1"><a name="line817"></a>817     
-</span><span class="marked0"><a name="line818"></a>818     it 'defaults the io handle to stdout'
-</span><span class="inferred1"><a name="line819"></a>819 
-</span><span class="marked0"><a name="line820"></a>820     describe 'when producing a summary report' do
-</span><span class="marked1"><a name="line821"></a>821       before :each do
-</span><span class="marked0"><a name="line822"></a>822         $s = true
-</span><span class="inferred1"><a name="line823"></a>823       end
-</span><span class="inferred0"><a name="line824"></a>824       
-</span><span class="marked1"><a name="line825"></a>825       it 'retrieves the set of total statistics' do
-</span><span class="marked0"><a name="line826"></a>826         @flog.expects(:totals)
-</span><span class="marked1"><a name="line827"></a>827         @flog.report(@handle)
-</span><span class="inferred0"><a name="line828"></a>828       end
-</span><span class="inferred1"><a name="line829"></a>829       
-</span><span class="marked0"><a name="line830"></a>830       it 'computes the total flog score' do
-</span><span class="marked1"><a name="line831"></a>831         @flog.expects(:total).returns 42.0
-</span><span class="marked0"><a name="line832"></a>832         @flog.report(@handle)
-</span><span class="inferred1"><a name="line833"></a>833       end 
-</span><span class="inferred0"><a name="line834"></a>834       
-</span><span class="marked1"><a name="line835"></a>835       it 'computes the average flog score' do
-</span><span class="marked0"><a name="line836"></a>836         @flog.expects(:average).returns 1.0
-</span><span class="marked1"><a name="line837"></a>837         @flog.report(@handle)
-</span><span class="inferred0"><a name="line838"></a>838       end
-</span><span class="inferred1"><a name="line839"></a>839       
-</span><span class="marked0"><a name="line840"></a>840       it 'outputs the total flog score to the handle' do
-</span><span class="marked1"><a name="line841"></a>841         @handle.expects(:puts).with do |string|
-</span><span class="marked0"><a name="line842"></a>842           string =~ Regexp.new(Regexp.escape(&quot;%.1f&quot; % @total_score))
-</span><span class="inferred1"><a name="line843"></a>843         end
-</span><span class="marked0"><a name="line844"></a>844         @flog.report(@handle)
-</span><span class="inferred1"><a name="line845"></a>845       end
-</span><span class="inferred0"><a name="line846"></a>846       
-</span><span class="marked1"><a name="line847"></a>847       it 'outputs the average flog score to the handle' do
-</span><span class="marked0"><a name="line848"></a>848         @handle.expects(:puts).with do |string|
-</span><span class="marked1"><a name="line849"></a>849           string =~ Regexp.new(Regexp.escape(&quot;%.1f&quot; % @average_score))
-</span><span class="inferred0"><a name="line850"></a>850         end
-</span><span class="marked1"><a name="line851"></a>851         @flog.report(@handle)        
-</span><span class="inferred0"><a name="line852"></a>852       end
-</span><span class="inferred1"><a name="line853"></a>853       
-</span><span class="marked0"><a name="line854"></a>854       it 'exits with status 0' do
-</span><span class="marked1"><a name="line855"></a>855         @flog.expects(:exit)
-</span><span class="marked0"><a name="line856"></a>856         @flog.report(@handle)
-</span><span class="inferred1"><a name="line857"></a>857       end
-</span><span class="inferred0"><a name="line858"></a>858       
-</span><span class="marked1"><a name="line859"></a>859       it 'does not produce a call listing' do
-</span><span class="marked0"><a name="line860"></a>860         @flog.expects(:calls).never
-</span><span class="marked1"><a name="line861"></a>861         @flog.report(@handle)        
-</span><span class="inferred0"><a name="line862"></a>862       end
-</span><span class="inferred1"><a name="line863"></a>863     end
-</span><span class="inferred0"><a name="line864"></a>864     
-</span><span class="marked1"><a name="line865"></a>865     describe 'when producing a full report' do
-</span><span class="marked0"><a name="line866"></a>866       before :each do
-</span><span class="marked1"><a name="line867"></a>867         $s = false
-</span><span class="inferred0"><a name="line868"></a>868       end
-</span><span class="inferred1"><a name="line869"></a>869       
-</span><span class="marked0"><a name="line870"></a>870       it 'retrieves the set of total statistics'
-</span><span class="marked1"><a name="line871"></a>871       it 'computes the total flog score'    
-</span><span class="marked0"><a name="line872"></a>872       it 'computes the average flog score'    
-</span><span class="marked1"><a name="line873"></a>873       it 'outputs the total flog score to the handle'
-</span><span class="marked0"><a name="line874"></a>874       it 'outputs the average flog score to the handle'      
-</span><span class="inferred1"><a name="line875"></a>875     end
-</span><span class="inferred0"><a name="line876"></a>876   end
-</span><span class="inferred1"><a name="line877"></a>877 end
+</span><span class="marked0"><a name="line818"></a>818     describe 'and no i/o handle is specified' do
+</span><span class="marked1"><a name="line819"></a>819       before :each do
+</span><span class="marked0"><a name="line820"></a>820         @old_stdout, $stdout = $stdout, stub('io handle', :puts =&gt; nil, :write =&gt; nil)
+</span><span class="inferred1"><a name="line821"></a>821       end
+</span><span class="inferred0"><a name="line822"></a>822       
+</span><span class="marked1"><a name="line823"></a>823       after :each do
+</span><span class="marked0"><a name="line824"></a>824         $stdout = @old_stdout
+</span><span class="inferred1"><a name="line825"></a>825       end
+</span><span class="inferred0"><a name="line826"></a>826       
+</span><span class="marked1"><a name="line827"></a>827       it 'defaults the io handle to stdout' do
+</span><span class="marked0"><a name="line828"></a>828         $stdout.expects(:puts)
+</span><span class="marked1"><a name="line829"></a>829         @flog.report
+</span><span class="inferred0"><a name="line830"></a>830       end
+</span><span class="inferred1"><a name="line831"></a>831     end
+</span><span class="inferred0"><a name="line832"></a>832 
+</span><span class="marked1"><a name="line833"></a>833     describe 'and producing a summary report' do
+</span><span class="marked0"><a name="line834"></a>834       before :each do
+</span><span class="marked1"><a name="line835"></a>835         $s = true
+</span><span class="inferred0"><a name="line836"></a>836       end
+</span><span class="inferred1"><a name="line837"></a>837       
+</span><span class="marked0"><a name="line838"></a>838       it 'retrieves the set of total statistics' do
+</span><span class="marked1"><a name="line839"></a>839         @flog.expects(:totals)
+</span><span class="marked0"><a name="line840"></a>840         @flog.report(@handle)
+</span><span class="inferred1"><a name="line841"></a>841       end
+</span><span class="inferred0"><a name="line842"></a>842       
+</span><span class="marked1"><a name="line843"></a>843       it 'computes the total flog score' do
+</span><span class="marked0"><a name="line844"></a>844         @flog.expects(:total).returns 42.0
+</span><span class="marked1"><a name="line845"></a>845         @flog.report(@handle)
+</span><span class="inferred0"><a name="line846"></a>846       end 
+</span><span class="inferred1"><a name="line847"></a>847       
+</span><span class="marked0"><a name="line848"></a>848       it 'computes the average flog score' do
+</span><span class="marked1"><a name="line849"></a>849         @flog.expects(:average).returns 1.0
+</span><span class="marked0"><a name="line850"></a>850         @flog.report(@handle)
+</span><span class="inferred1"><a name="line851"></a>851       end
+</span><span class="inferred0"><a name="line852"></a>852       
+</span><span class="marked1"><a name="line853"></a>853       it 'outputs the total flog score to the handle' do
+</span><span class="marked0"><a name="line854"></a>854         @handle.expects(:puts).with do |string|
+</span><span class="marked1"><a name="line855"></a>855           string =~ Regexp.new(Regexp.escape(&quot;%.1f&quot; % @total_score))
+</span><span class="inferred0"><a name="line856"></a>856         end
+</span><span class="marked1"><a name="line857"></a>857         @flog.report(@handle)
+</span><span class="inferred0"><a name="line858"></a>858       end
+</span><span class="inferred1"><a name="line859"></a>859       
+</span><span class="marked0"><a name="line860"></a>860       it 'outputs the average flog score to the handle' do
+</span><span class="marked1"><a name="line861"></a>861         @handle.expects(:puts).with do |string|
+</span><span class="marked0"><a name="line862"></a>862           string =~ Regexp.new(Regexp.escape(&quot;%.1f&quot; % @average_score))
+</span><span class="inferred1"><a name="line863"></a>863         end
+</span><span class="marked0"><a name="line864"></a>864         @flog.report(@handle)        
+</span><span class="inferred1"><a name="line865"></a>865       end
+</span><span class="inferred0"><a name="line866"></a>866       
+</span><span class="marked1"><a name="line867"></a>867       it 'exits with status 0' do
+</span><span class="marked0"><a name="line868"></a>868         @flog.expects(:exit)
+</span><span class="marked1"><a name="line869"></a>869         @flog.report(@handle)
+</span><span class="inferred0"><a name="line870"></a>870       end
+</span><span class="inferred1"><a name="line871"></a>871       
+</span><span class="marked0"><a name="line872"></a>872       it 'does not produce a call listing' do
+</span><span class="marked1"><a name="line873"></a>873         @flog.expects(:calls).never
+</span><span class="marked0"><a name="line874"></a>874         @flog.report(@handle)        
+</span><span class="inferred1"><a name="line875"></a>875       end
+</span><span class="inferred0"><a name="line876"></a>876     end
+</span><span class="inferred1"><a name="line877"></a>877     
+</span><span class="marked0"><a name="line878"></a>878     describe 'and producing a full report' do
+</span><span class="marked1"><a name="line879"></a>879       before :each do
+</span><span class="marked0"><a name="line880"></a>880         $s = false
+</span><span class="inferred1"><a name="line881"></a>881       end
+</span><span class="inferred0"><a name="line882"></a>882       
+</span><span class="marked1"><a name="line883"></a>883       it 'retrieves the set of total statistics' do
+</span><span class="marked0"><a name="line884"></a>884         @flog.expects(:totals)
+</span><span class="marked1"><a name="line885"></a>885         @flog.report(@handle)
+</span><span class="inferred0"><a name="line886"></a>886       end
+</span><span class="inferred1"><a name="line887"></a>887       
+</span><span class="marked0"><a name="line888"></a>888       it 'computes the total flog score' do
+</span><span class="marked1"><a name="line889"></a>889         @flog.expects(:total).returns 42.0
+</span><span class="marked0"><a name="line890"></a>890         @flog.report(@handle)
+</span><span class="inferred1"><a name="line891"></a>891       end 
+</span><span class="inferred0"><a name="line892"></a>892       
+</span><span class="marked1"><a name="line893"></a>893       it 'computes the average flog score' do
+</span><span class="marked0"><a name="line894"></a>894         @flog.expects(:average).returns 1.0
+</span><span class="marked1"><a name="line895"></a>895         @flog.report(@handle)
+</span><span class="inferred0"><a name="line896"></a>896       end
+</span><span class="inferred1"><a name="line897"></a>897       
+</span><span class="marked0"><a name="line898"></a>898       it 'outputs the total flog score to the handle' do
+</span><span class="marked1"><a name="line899"></a>899         @handle.expects(:puts).with do |string|
+</span><span class="marked0"><a name="line900"></a>900           string =~ Regexp.new(Regexp.escape(&quot;%.1f&quot; % @total_score))
+</span><span class="inferred1"><a name="line901"></a>901         end
+</span><span class="marked0"><a name="line902"></a>902         @flog.report(@handle)
+</span><span class="inferred1"><a name="line903"></a>903       end
+</span><span class="inferred0"><a name="line904"></a>904       
+</span><span class="marked1"><a name="line905"></a>905       it 'outputs the average flog score to the handle' do
+</span><span class="marked0"><a name="line906"></a>906         @handle.expects(:puts).with do |string|
+</span><span class="marked1"><a name="line907"></a>907           string =~ Regexp.new(Regexp.escape(&quot;%.1f&quot; % @average_score))
+</span><span class="inferred0"><a name="line908"></a>908         end
+</span><span class="marked1"><a name="line909"></a>909         @flog.report(@handle)        
+</span><span class="inferred0"><a name="line910"></a>910       end
+</span><span class="inferred1"><a name="line911"></a>911       
+</span><span class="marked0"><a name="line912"></a>912       it 'should not exit' do
+</span><span class="marked1"><a name="line913"></a>913         @flog.expects(:exit).never
+</span><span class="marked0"><a name="line914"></a>914         @flog.report(@handle)
+</span><span class="inferred1"><a name="line915"></a>915       end
+</span><span class="inferred0"><a name="line916"></a>916       
+</span><span class="marked1"><a name="line917"></a>917       it 'should have more specs about detailed output report'
+</span><span class="inferred0"><a name="line918"></a>918     end
+</span><span class="inferred1"><a name="line919"></a>919   end
+</span><span class="inferred0"><a name="line920"></a>920 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
