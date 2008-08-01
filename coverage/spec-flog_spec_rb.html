@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:38:35 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:38:46 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -1154,15 +1154,15 @@ span.run100 {
 </span><span class="inferred0"><a name="line554"></a>554 
 </span><span class="marked1"><a name="line555"></a>555   describe 'when recording the current method being analyzed' do
 </span><span class="marked0"><a name="line556"></a>556     it 'should require a method name' do
-</span><span class="marked1"><a name="line557"></a>557       lambda { @flog.method }.should raise_error(ArgumentError)
+</span><span class="marked1"><a name="line557"></a>557       lambda { @flog.set_method }.should raise_error(ArgumentError)
 </span><span class="inferred0"><a name="line558"></a>558     end
 </span><span class="inferred1"><a name="line559"></a>559     
 </span><span class="marked0"><a name="line560"></a>560     it 'should require a block during which the class name is in effect' do
-</span><span class="marked1"><a name="line561"></a>561       lambda { @flog.method('name') }.should raise_error(LocalJumpError)
+</span><span class="marked1"><a name="line561"></a>561       lambda { @flog.set_method('name') }.should raise_error(LocalJumpError)
 </span><span class="inferred0"><a name="line562"></a>562     end
 </span><span class="inferred1"><a name="line563"></a>563     
 </span><span class="marked0"><a name="line564"></a>564     it 'should recursively analyze the provided code block' do
-</span><span class="marked1"><a name="line565"></a>565       @flog.method 'name' do
+</span><span class="marked1"><a name="line565"></a>565       @flog.set_method 'name' do
 </span><span class="marked0"><a name="line566"></a>566         @foo = true
 </span><span class="inferred1"><a name="line567"></a>567       end
 </span><span class="inferred0"><a name="line568"></a>568       
@@ -1171,14 +1171,14 @@ span.run100 {
 </span><span class="inferred1"><a name="line571"></a>571     
 </span><span class="marked0"><a name="line572"></a>572     it 'should update the class stack when recursing' do
 </span><span class="marked1"><a name="line573"></a>573       @flog.method_stack = []
-</span><span class="marked0"><a name="line574"></a>574       @flog.method 'name' do
+</span><span class="marked0"><a name="line574"></a>574       @flog.set_method 'name' do
 </span><span class="marked1"><a name="line575"></a>575         @flog.method_stack.should == ['name']
 </span><span class="inferred0"><a name="line576"></a>576       end
 </span><span class="inferred1"><a name="line577"></a>577     end
 </span><span class="inferred0"><a name="line578"></a>578     
 </span><span class="marked1"><a name="line579"></a>579     it 'when it is done it should restore the class stack to its original value' do
 </span><span class="marked0"><a name="line580"></a>580       @flog.method_stack = []
-</span><span class="marked1"><a name="line581"></a>581       @flog.method 'name' do
+</span><span class="marked1"><a name="line581"></a>581       @flog.set_method 'name' do
 </span><span class="inferred0"><a name="line582"></a>582       end
 </span><span class="marked1"><a name="line583"></a>583       @flog.method_stack.should == []
 </span><span class="inferred0"><a name="line584"></a>584     end

@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:38:34 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:38:44 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -740,7 +740,7 @@ span.run100 {
 </span><span class="marked0"><a name="line140"></a>140     @class_stack.first || @@no_class
 </span><span class="marked1"><a name="line141"></a>141   end
 </span><span class="inferred0"><a name="line142"></a>142 
-</span><span class="marked1"><a name="line143"></a>143   def method name
+</span><span class="marked1"><a name="line143"></a>143   def set_method name
 </span><span class="marked0"><a name="line144"></a>144     @method_stack.unshift name
 </span><span class="marked1"><a name="line145"></a>145     yield
 </span><span class="marked0"><a name="line146"></a>146     @method_stack.shift
@@ -915,7 +915,7 @@ span.run100 {
 </span><span class="inferred1"><a name="line315"></a>315   end
 </span><span class="inferred0"><a name="line316"></a>316 
 </span><span class="marked1"><a name="line317"></a>317   def process_defn(exp)
-</span><span class="marked0"><a name="line318"></a>318     self.method exp.shift do
+</span><span class="marked0"><a name="line318"></a>318     set_method exp.shift do
 </span><span class="marked1"><a name="line319"></a>319       analyze_list exp
 </span><span class="inferred0"><a name="line320"></a>320     end
 </span><span class="marked1"><a name="line321"></a>321     s()
@@ -923,7 +923,7 @@ span.run100 {
 </span><span class="inferred1"><a name="line323"></a>323 
 </span><span class="marked0"><a name="line324"></a>324   def process_defs(exp)
 </span><span class="marked1"><a name="line325"></a>325     process exp.shift
-</span><span class="marked0"><a name="line326"></a>326     self.method exp.shift do
+</span><span class="marked0"><a name="line326"></a>326     set_method exp.shift do
 </span><span class="marked1"><a name="line327"></a>327       analyze_list exp
 </span><span class="inferred0"><a name="line328"></a>328     end
 </span><span class="marked1"><a name="line329"></a>329     s()
@@ -961,7 +961,7 @@ span.run100 {
 </span><span class="marked1"><a name="line361"></a>361       if recv[0] == :call and recv[1] == nil and recv.arglist[1] and [:lit, :str].include? recv.arglist[1][0] then
 </span><span class="marked0"><a name="line362"></a>362         msg = recv[2]
 </span><span class="marked1"><a name="line363"></a>363         submsg = recv.arglist[1][1]
-</span><span class="marked0"><a name="line364"></a>364         self.method submsg do
+</span><span class="marked0"><a name="line364"></a>364         set_method submsg do
 </span><span class="marked1"><a name="line365"></a>365           set_class msg do
 </span><span class="marked0"><a name="line366"></a>366             analyze_list exp
 </span><span class="inferred1"><a name="line367"></a>367           end
