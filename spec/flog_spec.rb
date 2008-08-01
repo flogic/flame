@@ -799,23 +799,79 @@ describe Flog do
   end
   
   describe 'when generating a report' do
-    it 'allows specifying an io handle'
-    it 'defaults the io handle to stdout'
-    it 'computes the total flog score'
-    it 'retrieves the set of total statistics'
-    
-    it 'outputs the total flog score'
-    it 'computes the average flog score'
-    it 'outputs the average flog score'
-    
-    describe 'when summary mode is set' do
-      it 'exits with status 0'
-      it 'does not produce a call listing'
-      it 'should not retrieve the set of total statistics'
+    before :each do
+      @handle = stub('io handle)', :puts => nil)
+      @flog.stubs(:calls).returns({})
+      @flog.stubs(:total).returns(@total_score = 42.0)
+      @flog.stubs(:average).returns(@average_score = 1.0)
+      @flog.stubs(:exit)
     end
     
-    describe 'when summary mode is not set' do
+    it 'allows specifying an i/o handle' do
+      lambda { @flog.report @handle }.should_not raise_error(ArgumentError)
+    end
+    
+    it 'allows running the report without a specified i/o handle' do
+      lambda { @flog.report }.should_not raise_error(ArgumentError)
+    end
+    
+    it 'defaults the io handle to stdout'
+
+    describe 'when producing a summary report' do
+      before :each do
+        $s = true
+      end
       
+      it 'retrieves the set of total statistics' do
+        @flog.expects(:totals)
+        @flog.report(@handle)
+      end
+      
+      it 'computes the total flog score' do
+        @flog.expects(:total).returns 42.0
+        @flog.report(@handle)
+      end 
+      
+      it 'computes the average flog score' do
+        @flog.expects(:average).returns 1.0
+        @flog.report(@handle)
+      end
+      
+      it 'outputs the total flog score to the handle' do
+        @handle.expects(:puts).with do |string|
+          string =~ Regexp.new(Regexp.escape("%.1f" % @total_score))
+        end
+        @flog.report(@handle)
+      end
+      
+      it 'outputs the average flog score to the handle' do
+        @handle.expects(:puts).with do |string|
+          string =~ Regexp.new(Regexp.escape("%.1f" % @average_score))
+        end
+        @flog.report(@handle)        
+      end
+      
+      it 'exits with status 0' do
+        @flog.expects(:exit)
+        @flog.report(@handle)
+      end
+      
+      it 'does not produce a call listing' do
+        @flog.expects(:calls).never
+        @flog.report(@handle)        
+      end
+    end
+    
+    describe 'when producing a full report' do
+      before :each do
+        $s = false
+      end
+      
+      it 'retrieves the set of total statistics'
+      it 'computes the total flog score'    
+      it 'computes the average flog score'    
+      it 'outputs the total flog score to the handle'
+      it 'outputs the average flog score to the handle'      
     end
   end
 end
