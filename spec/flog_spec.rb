@@ -663,6 +663,24 @@ describe Flog do
     end
   end
   
+  describe 'when computing a score for a method' do
+    it 'should require a hash of call tallies' do
+      lambda { @flog.score_method }.should raise_error(ArgumentError)
+    end
+    
+    it 'should return a score of 0 if no tallies are provided' do
+      @flog.score_method({}).should == 0.0
+    end
+    
+    it 'should compute the sqrt of summed squares for assignments, branches, and other tallies' do
+      @flog.score_method({
+        :assignment => 7,
+        :branch => 23,
+        :crap => 37
+      }).should be_close(Math.sqrt(7*7 + 23*23 + 37*37), 0.0000000001)
+    end
+  end
+  
   describe 'when requesting totals' do
     it 'should not accept any arguments' do
       lambda { @flog.totals('foo') }.should raise_error(ArgumentError)
