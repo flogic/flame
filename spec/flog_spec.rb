@@ -815,9 +815,22 @@ describe Flog do
       lambda { @flog.report }.should_not raise_error(ArgumentError)
     end
     
-    it 'defaults the io handle to stdout'
+    describe 'and no i/o handle is specified' do
+      before :each do
+        @old_stdout, $stdout = $stdout, stub('io handle', :puts => nil, :write => nil)
+      end
+      
+      after :each do
+        $stdout = @old_stdout
+      end
+      
+      it 'defaults the io handle to stdout' do
+        $stdout.expects(:puts)
+        @flog.report
+      end
+    end
 
-    describe 'when producing a summary report' do
+    describe 'and producing a summary report' do
       before :each do
         $s = true
       end
@@ -862,16 +875,46 @@ describe Flog do
       end
     end
     
-    describe 'when producing a full report' do
+    describe 'and producing a full report' do
       before :each do
         $s = false
       end
       
-      it 'retrieves the set of total statistics'
-      it 'computes the total flog score'    
-      it 'computes the average flog score'    
-      it 'outputs the total flog score to the handle'
-      it 'outputs the average flog score to the handle'      
+      it 'retrieves the set of total statistics' do
+        @flog.expects(:totals)
+        @flog.report(@handle)
+      end
+      
+      it 'computes the total flog score' do
+        @flog.expects(:total).returns 42.0
+        @flog.report(@handle)
+      end 
+      
+      it 'computes the average flog score' do
+        @flog.expects(:average).returns 1.0
+        @flog.report(@handle)
+      end
+      
+      it 'outputs the total flog score to the handle' do
+        @handle.expects(:puts).with do |string|
+          string =~ Regexp.new(Regexp.escape("%.1f" % @total_score))
+        end
+        @flog.report(@handle)
+      end
+      
+      it 'outputs the average flog score to the handle' do
+        @handle.expects(:puts).with do |string|
+          string =~ Regexp.new(Regexp.escape("%.1f" % @average_score))
+        end
+        @flog.report(@handle)        
+      end
+      
+      it 'should not exit' do
+        @flog.expects(:exit).never
+        @flog.report(@handle)
+      end
+      
+      it 'should have more specs about detailed output report'
     end
   end
 end
