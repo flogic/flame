@@ -162,21 +162,25 @@ class Flog < SexpProcessor
     @total_score
   end
 
+  def score_method(tally)
+    a, b, c = 0, 0, 0
+    tally.each do |cat, score|
+      case cat
+      when :assignment then a += score
+      when :branch     then b += score
+      else                  c += score
+      end
+    end
+    Math.sqrt(a*a + b*b + c*c)
+  end
+
   def totals
     unless @totals then
       @total_score = 0
       @totals = Hash.new(0)
       self.calls.each do |meth, tally|
         next if $m and meth =~ /##{@@no_method}$/
-        a, b, c = 0, 0, 0
-        tally.each do |cat, score|
-          case cat
-          when :assignment then a += score
-          when :branch     then b += score
-          else                  c += score
-          end
-        end
-        score = Math.sqrt(a*a + b*b + c*c)
+        score = score_method(tally)
         @totals[meth] = score
         @total_score += score
       end
