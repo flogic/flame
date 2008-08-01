@@ -424,7 +424,7 @@ describe Flog do
   describe 'when adding to the current flog score' do
     before :each do
       @flog.multiplier = 1
-      @flog.stubs(:klass_name).returns('foo')
+      @flog.stubs(:class_name).returns('foo')
       @flog.stubs(:method_name).returns('bar')
       @flog.calls['foo#bar'] = { :alias => 0 }
     end
@@ -538,17 +538,17 @@ describe Flog do
   
   describe 'when looking up the name of the class currently under analysis' do
     it 'should not take any arguments' do
-      lambda { @flog.klass_name('foo') }.should raise_error(ArgumentError)
+      lambda { @flog.class_name('foo') }.should raise_error(ArgumentError)
     end
     
     it 'should return the most recent class entered' do
       @flog.class_stack = [:foo, :bar, :baz]
-      @flog.klass_name.should == :foo
+      @flog.class_name.should == :foo
     end
     
     it 'should return the default class if no classes entered' do
       @flog.class_stack = []
-      @flog.klass_name.should == :main
+      @flog.class_name.should == :main
     end
   end
 
