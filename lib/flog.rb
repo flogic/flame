@@ -140,7 +140,7 @@ class Flog < SexpProcessor
     @class_stack.first || @@no_class
   end
 
-  def method name
+  def set_method name
     @method_stack.unshift name
     yield
     @method_stack.shift
@@ -315,7 +315,7 @@ class Flog < SexpProcessor
   end
 
   def process_defn(exp)
-    self.method exp.shift do
+    set_method exp.shift do
       analyze_list exp
     end
     s()
@@ -323,7 +323,7 @@ class Flog < SexpProcessor
 
   def process_defs(exp)
     process exp.shift
-    self.method exp.shift do
+    set_method exp.shift do
       analyze_list exp
     end
     s()
@@ -361,7 +361,7 @@ class Flog < SexpProcessor
       if recv[0] == :call and recv[1] == nil and recv.arglist[1] and [:lit, :str].include? recv.arglist[1][0] then
         msg = recv[2]
         submsg = recv.arglist[1][1]
-        self.method submsg do
+        set_method submsg do
           set_class msg do
             analyze_list exp
           end
