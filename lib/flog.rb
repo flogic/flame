@@ -183,17 +183,19 @@ class Flog < SexpProcessor
     @total_score ||= 0
     @total_score += amount
   end
+  
+  def summarize_method(meth, tally)
+    return if $m and meth =~ /##{@@no_method}$/
+    score = score_method(tally)
+    record_method_score(meth, score)
+    increment_total_score_by score
+  end
 
   def totals
     unless @totals then
       @total_score = 0
       @totals = Hash.new(0)
-      self.calls.each do |meth, tally|
-        next if $m and meth =~ /##{@@no_method}$/
-        score = score_method(tally)
-        record_method_score(meth, score)
-        increment_total_score_by score
-      end
+      self.calls.each {|meth, tally| summarize_method(meth, tally) }
     end
     @totals
   end
