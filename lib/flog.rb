@@ -77,7 +77,7 @@ class Flog < SexpProcessor
     @parse_tree ||= ParseTree.new(false)
   end
 
-  def flog_files *files
+  def flog_files(*files)
     files.flatten.each do |file|
       flog_file(file)
     end
@@ -116,17 +116,17 @@ class Flog < SexpProcessor
     total / calls.size
   end
   
-  def penalize_by bonus
+  def penalize_by(bonus)
     @multiplier += bonus
     yield
     @multiplier -= bonus
   end
 
-  def analyze_list exp
+  def analyze_list(exp)
     process exp.shift until exp.empty?
   end
 
-  def set_class name
+  def set_class(name)
     @class_stack.unshift name
     yield
     @class_stack.shift
@@ -136,7 +136,7 @@ class Flog < SexpProcessor
     @class_stack.first || @@no_class
   end
 
-  def set_method name
+  def set_method(name)
     @method_stack.unshift name
     yield
     @method_stack.shift
@@ -222,7 +222,7 @@ class Flog < SexpProcessor
     end
   end
 
-  def report io = $stdout
+  def report(io = $stdout)
     output_summary(io)
     exit 0 if $s  # TODO:  this should eventually not be an exit(), as this should just be a library
     
