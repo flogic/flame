@@ -130,7 +130,7 @@ class Flog < SexpProcessor
     process exp.shift until exp.empty?
   end
 
-  def klass name
+  def set_class name
     @class_stack.unshift name
     yield
     @class_stack.shift
@@ -298,7 +298,7 @@ class Flog < SexpProcessor
   end
 
   def process_class(exp)
-    self.klass exp.shift do
+    set_class exp.shift do
       penalize_by 1.0 do
         supr = process exp.shift
       end
@@ -362,7 +362,7 @@ class Flog < SexpProcessor
         msg = recv[2]
         submsg = recv.arglist[1][1]
         self.method submsg do
-          self.klass msg do
+          set_class msg do
             analyze_list exp
           end
         end
@@ -411,7 +411,7 @@ class Flog < SexpProcessor
   end
 
   def process_module(exp)
-    self.klass exp.shift do
+    set_class exp.shift do
       analyze_list exp
     end
     s()

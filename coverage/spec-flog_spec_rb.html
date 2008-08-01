@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:38:15 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:38:25 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -1106,15 +1106,15 @@ span.run100 {
 </span><span class="inferred0"><a name="line506"></a>506   
 </span><span class="marked1"><a name="line507"></a>507   describe 'when recording the current class being analyzed' do
 </span><span class="marked0"><a name="line508"></a>508     it 'should require a class name' do
-</span><span class="marked1"><a name="line509"></a>509       lambda { @flog.klass }.should raise_error(ArgumentError)
+</span><span class="marked1"><a name="line509"></a>509       lambda { @flog.set_class }.should raise_error(ArgumentError)
 </span><span class="inferred0"><a name="line510"></a>510     end
 </span><span class="inferred1"><a name="line511"></a>511     
 </span><span class="marked0"><a name="line512"></a>512     it 'should require a block during which the class name is in effect' do
-</span><span class="marked1"><a name="line513"></a>513       lambda { @flog.klass('name') }.should raise_error(LocalJumpError)
+</span><span class="marked1"><a name="line513"></a>513       lambda { @flog.set_class('name') }.should raise_error(LocalJumpError)
 </span><span class="inferred0"><a name="line514"></a>514     end
 </span><span class="inferred1"><a name="line515"></a>515     
 </span><span class="marked0"><a name="line516"></a>516     it 'should recursively analyze the provided code block' do
-</span><span class="marked1"><a name="line517"></a>517       @flog.klass 'name' do
+</span><span class="marked1"><a name="line517"></a>517       @flog.set_class 'name' do
 </span><span class="marked0"><a name="line518"></a>518         @foo = true
 </span><span class="inferred1"><a name="line519"></a>519       end
 </span><span class="inferred0"><a name="line520"></a>520       
@@ -1123,14 +1123,14 @@ span.run100 {
 </span><span class="inferred1"><a name="line523"></a>523     
 </span><span class="marked0"><a name="line524"></a>524     it 'should update the class stack when recursing' do
 </span><span class="marked1"><a name="line525"></a>525       @flog.class_stack = []
-</span><span class="marked0"><a name="line526"></a>526       @flog.klass 'name' do
+</span><span class="marked0"><a name="line526"></a>526       @flog.set_class 'name' do
 </span><span class="marked1"><a name="line527"></a>527         @flog.class_stack.should == ['name']
 </span><span class="inferred0"><a name="line528"></a>528       end
 </span><span class="inferred1"><a name="line529"></a>529     end
 </span><span class="inferred0"><a name="line530"></a>530     
 </span><span class="marked1"><a name="line531"></a>531     it 'when it is done it should restore the class stack to its original value' do
 </span><span class="marked0"><a name="line532"></a>532       @flog.class_stack = []
-</span><span class="marked1"><a name="line533"></a>533       @flog.klass 'name' do
+</span><span class="marked1"><a name="line533"></a>533       @flog.set_class 'name' do
 </span><span class="inferred0"><a name="line534"></a>534       end
 </span><span class="marked1"><a name="line535"></a>535       @flog.class_stack.should == []
 </span><span class="inferred0"><a name="line536"></a>536     end
