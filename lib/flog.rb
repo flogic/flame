@@ -122,7 +122,7 @@ class Flog < SexpProcessor
   
   def bad_dog! bonus
     @multiplier += bonus
-    yield 42
+    yield
     @multiplier -= bonus
   end
 
