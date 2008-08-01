@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:37:05 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:37:21 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -762,53 +762,53 @@ span.run100 {
 </span><span class="marked0"><a name="line162"></a>162     @total_score
 </span><span class="inferred1"><a name="line163"></a>163   end
 </span><span class="inferred0"><a name="line164"></a>164 
-</span><span class="marked1"><a name="line165"></a>165   def report io = $stdout
-</span><span class="inferred0"><a name="line166"></a>166     current = 0   # can be moved lower
-</span><span class="inferred1"><a name="line167"></a>167     total_score = self.total
-</span><span class="inferred0"><a name="line168"></a>168     max = total_score * THRESHOLD  # can be moved lower
-</span><span class="inferred1"><a name="line169"></a>169     totals = self.totals  # can be moved lower
-</span><span class="inferred0"><a name="line170"></a>170 
-</span><span class="inferred1"><a name="line171"></a>171     io.puts &quot;Total Flog = %.1f (%.1f flog / method)&quot; % [total_score, self.average]
-</span><span class="inferred0"><a name="line172"></a>172     io.puts
-</span><span class="inferred1"><a name="line173"></a>173 
-</span><span class="inferred0"><a name="line174"></a>174     exit 0 if $s
-</span><span class="inferred1"><a name="line175"></a>175 
-</span><span class="inferred0"><a name="line176"></a>176     @calls.sort_by { |k,v| -totals[k] }.each do |klass_method, calls|
-</span><span class="inferred1"><a name="line177"></a>177       next if $m and klass_method =~ /##{@@no_method}/
-</span><span class="inferred0"><a name="line178"></a>178       total = totals[klass_method]
-</span><span class="inferred1"><a name="line179"></a>179       io.puts &quot;%s: (%.1f)&quot; % [klass_method, total]
-</span><span class="inferred0"><a name="line180"></a>180       calls.sort_by { |k,v| -v }.each do |call, count|
-</span><span class="inferred1"><a name="line181"></a>181         io.puts &quot;  %6.1f: %s&quot; % [count, call]
+</span><span class="marked1"><a name="line165"></a>165   def totals
+</span><span class="marked0"><a name="line166"></a>166     unless @totals then
+</span><span class="marked1"><a name="line167"></a>167       @total_score = 0
+</span><span class="marked0"><a name="line168"></a>168       @totals = Hash.new(0)
+</span><span class="marked1"><a name="line169"></a>169       self.calls.each do |meth, tally|
+</span><span class="marked0"><a name="line170"></a>170         next if $m and meth =~ /##{@@no_method}$/
+</span><span class="marked1"><a name="line171"></a>171         a, b, c = 0, 0, 0
+</span><span class="marked0"><a name="line172"></a>172         tally.each do |cat, score|
+</span><span class="marked1"><a name="line173"></a>173           case cat
+</span><span class="marked0"><a name="line174"></a>174           when :assignment then a += score
+</span><span class="marked1"><a name="line175"></a>175           when :branch     then b += score
+</span><span class="marked0"><a name="line176"></a>176           else                  c += score
+</span><span class="inferred1"><a name="line177"></a>177           end
+</span><span class="inferred0"><a name="line178"></a>178         end
+</span><span class="marked1"><a name="line179"></a>179         score = Math.sqrt(a*a + b*b + c*c)
+</span><span class="marked0"><a name="line180"></a>180         @totals[meth] = score
+</span><span class="marked1"><a name="line181"></a>181         @total_score += score
 </span><span class="inferred0"><a name="line182"></a>182       end
-</span><span class="inferred1"><a name="line183"></a>183 
-</span><span class="inferred0"><a name="line184"></a>184       current += total
-</span><span class="inferred1"><a name="line185"></a>185       break if current &gt;= max
-</span><span class="inferred0"><a name="line186"></a>186     end
-</span><span class="uncovered1"><a name="line187"></a>187   ensure
-</span><span class="uncovered0"><a name="line188"></a>188     self.reset
-</span><span class="uncovered1"><a name="line189"></a>189   end
-</span><span class="inferred0"><a name="line190"></a>190 
-</span><span class="marked1"><a name="line191"></a>191   def totals
-</span><span class="marked0"><a name="line192"></a>192     unless @totals then
-</span><span class="marked1"><a name="line193"></a>193       @total_score = 0
-</span><span class="marked0"><a name="line194"></a>194       @totals = Hash.new(0)
-</span><span class="marked1"><a name="line195"></a>195       self.calls.each do |meth, tally|
-</span><span class="marked0"><a name="line196"></a>196         next if $m and meth =~ /##{@@no_method}$/
-</span><span class="marked1"><a name="line197"></a>197         a, b, c = 0, 0, 0
-</span><span class="marked0"><a name="line198"></a>198         tally.each do |cat, score|
-</span><span class="marked1"><a name="line199"></a>199           case cat
-</span><span class="marked0"><a name="line200"></a>200           when :assignment then a += score
-</span><span class="marked1"><a name="line201"></a>201           when :branch     then b += score
-</span><span class="marked0"><a name="line202"></a>202           else                  c += score
-</span><span class="inferred1"><a name="line203"></a>203           end
-</span><span class="inferred0"><a name="line204"></a>204         end
-</span><span class="marked1"><a name="line205"></a>205         score = Math.sqrt(a*a + b*b + c*c)
-</span><span class="marked0"><a name="line206"></a>206         @totals[meth] = score
-</span><span class="marked1"><a name="line207"></a>207         @total_score += score
-</span><span class="inferred0"><a name="line208"></a>208       end
-</span><span class="inferred1"><a name="line209"></a>209     end
-</span><span class="marked0"><a name="line210"></a>210     @totals
-</span><span class="inferred1"><a name="line211"></a>211   end
+</span><span class="inferred1"><a name="line183"></a>183     end
+</span><span class="marked0"><a name="line184"></a>184     @totals
+</span><span class="inferred1"><a name="line185"></a>185   end
+</span><span class="inferred0"><a name="line186"></a>186 
+</span><span class="marked1"><a name="line187"></a>187   def report io = $stdout
+</span><span class="inferred0"><a name="line188"></a>188     current = 0   # can be moved lower
+</span><span class="inferred1"><a name="line189"></a>189     total_score = self.total
+</span><span class="inferred0"><a name="line190"></a>190     max = total_score * THRESHOLD  # can be moved lower
+</span><span class="inferred1"><a name="line191"></a>191     totals = self.totals  # can be moved lower
+</span><span class="inferred0"><a name="line192"></a>192 
+</span><span class="inferred1"><a name="line193"></a>193     io.puts &quot;Total Flog = %.1f (%.1f flog / method)&quot; % [total_score, self.average]
+</span><span class="inferred0"><a name="line194"></a>194     io.puts
+</span><span class="inferred1"><a name="line195"></a>195 
+</span><span class="inferred0"><a name="line196"></a>196     exit 0 if $s
+</span><span class="inferred1"><a name="line197"></a>197 
+</span><span class="inferred0"><a name="line198"></a>198     @calls.sort_by { |k,v| -totals[k] }.each do |klass_method, calls|
+</span><span class="inferred1"><a name="line199"></a>199       next if $m and klass_method =~ /##{@@no_method}/
+</span><span class="inferred0"><a name="line200"></a>200       total = totals[klass_method]
+</span><span class="inferred1"><a name="line201"></a>201       io.puts &quot;%s: (%.1f)&quot; % [klass_method, total]
+</span><span class="inferred0"><a name="line202"></a>202       calls.sort_by { |k,v| -v }.each do |call, count|
+</span><span class="inferred1"><a name="line203"></a>203         io.puts &quot;  %6.1f: %s&quot; % [count, call]
+</span><span class="inferred0"><a name="line204"></a>204       end
+</span><span class="inferred1"><a name="line205"></a>205 
+</span><span class="inferred0"><a name="line206"></a>206       current += total
+</span><span class="inferred1"><a name="line207"></a>207       break if current &gt;= max
+</span><span class="inferred0"><a name="line208"></a>208     end
+</span><span class="uncovered1"><a name="line209"></a>209   ensure
+</span><span class="uncovered0"><a name="line210"></a>210     self.reset
+</span><span class="uncovered1"><a name="line211"></a>211   end
 </span><span class="inferred0"><a name="line212"></a>212 
 </span><span class="inferred1"><a name="line213"></a>213   ############################################################
 </span><span class="inferred0"><a name="line214"></a>214   # Process Methods:

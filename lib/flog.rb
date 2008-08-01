@@ -162,6 +162,28 @@ class Flog < SexpProcessor
     @total_score
   end
 
+  def totals
+    unless @totals then
+      @total_score = 0
+      @totals = Hash.new(0)
+      self.calls.each do |meth, tally|
+        next if $m and meth =~ /##{@@no_method}$/
+        a, b, c = 0, 0, 0
+        tally.each do |cat, score|
+          case cat
+          when :assignment then a += score
+          when :branch     then b += score
+          else                  c += score
+          end
+        end
+        score = Math.sqrt(a*a + b*b + c*c)
+        @totals[meth] = score
+        @total_score += score
+      end
+    end
+    @totals
+  end
+
   def report io = $stdout
     current = 0   # can be moved lower
     total_score = self.total
@@ -186,28 +208,6 @@ class Flog < SexpProcessor
     end
   ensure
     self.reset
-  end
-
-  def totals
-    unless @totals then
-      @total_score = 0
-      @totals = Hash.new(0)
-      self.calls.each do |meth, tally|
-        next if $m and meth =~ /##{@@no_method}$/
-        a, b, c = 0, 0, 0
-        tally.each do |cat, score|
-          case cat
-          when :assignment then a += score
-          when :branch     then b += score
-          else                  c += score
-          end
-        end
-        score = Math.sqrt(a*a + b*b + c*c)
-        @totals[meth] = score
-        @total_score += score
-      end
-    end
-    @totals
   end
 
   ############################################################
