@@ -693,6 +693,17 @@ describe Flog do
     end
   end
   
+  describe 'when updating the total flog score' do
+    it 'should require an amount to update by' do
+      lambda { @flog.increment_total_score_by }.should raise_error(ArgumentError)
+    end
+    
+    it 'should update the total flog score' do
+      @flog.increment_total_score_by 42
+      @flog.total.should == 42
+    end
+  end
+  
   describe 'when requesting totals' do
     it 'should not accept any arguments' do
       lambda { @flog.totals('foo') }.should raise_error(ArgumentError)
