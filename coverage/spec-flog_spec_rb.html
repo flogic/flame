@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:36:45 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:36:56 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>655</tt>
+      <td class='lines_total'><tt>660</tt>
         </td>
-      <td class='lines_code'><tt>534</tt>
+      <td class='lines_code'><tt>538</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -1210,49 +1210,54 @@ span.run100 {
 </span><span class="marked0"><a name="line610"></a>610       @flog.reset
 </span><span class="marked1"><a name="line611"></a>611       @flog.totals.should == {}
 </span><span class="inferred0"><a name="line612"></a>612     end
-</span><span class="inferred1"><a name="line613"></a>613     
-</span><span class="marked0"><a name="line614"></a>614     it 'should clear the total score'
-</span><span class="inferred1"><a name="line615"></a>615         
-</span><span class="marked0"><a name="line616"></a>616     it 'should set the multiplier to 1.0' do
-</span><span class="marked1"><a name="line617"></a>617       @flog.multiplier = 20.0
-</span><span class="marked0"><a name="line618"></a>618       @flog.reset
-</span><span class="marked1"><a name="line619"></a>619       @flog.multiplier.should == 1.0
-</span><span class="inferred0"><a name="line620"></a>620     end
-</span><span class="inferred1"><a name="line621"></a>621     
-</span><span class="marked0"><a name="line622"></a>622     it 'should set clear any calls data' do
-</span><span class="marked1"><a name="line623"></a>623       @flog.calls['foobar'] = 'yoda'
-</span><span class="marked0"><a name="line624"></a>624       @flog.reset
-</span><span class="marked1"><a name="line625"></a>625       @flog.calls.should == {}
-</span><span class="inferred0"><a name="line626"></a>626     end
-</span><span class="inferred1"><a name="line627"></a>627     
-</span><span class="marked0"><a name="line628"></a>628     it 'should ensure that new recorded calls will get 0 counts without explicit initialization' do
+</span><span class="inferred1"><a name="line613"></a>613         
+</span><span class="marked0"><a name="line614"></a>614     it 'should clear the total score' do
+</span><span class="inferred1"><a name="line615"></a>615       # the only way I know to do this is to force the total score to be computed for actual code, then reset it
+</span><span class="marked0"><a name="line616"></a>616       @flog.flog_files(fixture_files('/simple/simple.rb'))
+</span><span class="marked1"><a name="line617"></a>617       @flog.reset
+</span><span class="marked0"><a name="line618"></a>618       @flog.total.should == 0
+</span><span class="inferred1"><a name="line619"></a>619     end
+</span><span class="inferred0"><a name="line620"></a>620     
+</span><span class="marked1"><a name="line621"></a>621     it 'should set the multiplier to 1.0' do
+</span><span class="marked0"><a name="line622"></a>622       @flog.multiplier = 20.0
+</span><span class="marked1"><a name="line623"></a>623       @flog.reset
+</span><span class="marked0"><a name="line624"></a>624       @flog.multiplier.should == 1.0
+</span><span class="inferred1"><a name="line625"></a>625     end
+</span><span class="inferred0"><a name="line626"></a>626     
+</span><span class="marked1"><a name="line627"></a>627     it 'should set clear any calls data' do
+</span><span class="marked0"><a name="line628"></a>628       @flog.calls['foobar'] = 'yoda'
 </span><span class="marked1"><a name="line629"></a>629       @flog.reset
-</span><span class="marked0"><a name="line630"></a>630       @flog.calls['foobar']['baz'] += 20
-</span><span class="marked1"><a name="line631"></a>631       @flog.calls['foobar']['baz'].should == 20
-</span><span class="inferred0"><a name="line632"></a>632     end
-</span><span class="inferred1"><a name="line633"></a>633   end
-</span><span class="inferred0"><a name="line634"></a>634 
-</span><span class="marked1"><a name="line635"></a>635   describe 'when generating a report' do
-</span><span class="marked0"><a name="line636"></a>636     it 'allows specifying an io handle'
-</span><span class="marked1"><a name="line637"></a>637     it 'defaults the io handle to stdout'
-</span><span class="marked0"><a name="line638"></a>638     it 'computes the total flog score'
-</span><span class="marked1"><a name="line639"></a>639     it 'retrieves the set of total statistics'
-</span><span class="inferred0"><a name="line640"></a>640     
-</span><span class="marked1"><a name="line641"></a>641     it 'outputs the total flog score'
-</span><span class="marked0"><a name="line642"></a>642     it 'computes the average flog score'
-</span><span class="marked1"><a name="line643"></a>643     it 'outputs the average flog score'
-</span><span class="inferred0"><a name="line644"></a>644     
-</span><span class="marked1"><a name="line645"></a>645     describe 'when summary mode is set' do
-</span><span class="marked0"><a name="line646"></a>646       it 'exits with status 0'
-</span><span class="marked1"><a name="line647"></a>647       it 'does not produce a call listing'
-</span><span class="marked0"><a name="line648"></a>648       it 'should not retrieve the set of total statistics'
-</span><span class="inferred1"><a name="line649"></a>649     end
-</span><span class="inferred0"><a name="line650"></a>650     
-</span><span class="marked1"><a name="line651"></a>651     describe 'when summary mode is not set' do
-</span><span class="inferred0"><a name="line652"></a>652       
-</span><span class="inferred1"><a name="line653"></a>653     end
-</span><span class="inferred0"><a name="line654"></a>654   end
-</span><span class="inferred1"><a name="line655"></a>655 end
+</span><span class="marked0"><a name="line630"></a>630       @flog.calls.should == {}
+</span><span class="inferred1"><a name="line631"></a>631     end
+</span><span class="inferred0"><a name="line632"></a>632     
+</span><span class="marked1"><a name="line633"></a>633     it 'should ensure that new recorded calls will get 0 counts without explicit initialization' do
+</span><span class="marked0"><a name="line634"></a>634       @flog.reset
+</span><span class="marked1"><a name="line635"></a>635       @flog.calls['foobar']['baz'] += 20
+</span><span class="marked0"><a name="line636"></a>636       @flog.calls['foobar']['baz'].should == 20
+</span><span class="inferred1"><a name="line637"></a>637     end
+</span><span class="inferred0"><a name="line638"></a>638   end
+</span><span class="inferred1"><a name="line639"></a>639 
+</span><span class="marked0"><a name="line640"></a>640   describe 'when generating a report' do
+</span><span class="marked1"><a name="line641"></a>641     it 'allows specifying an io handle'
+</span><span class="marked0"><a name="line642"></a>642     it 'defaults the io handle to stdout'
+</span><span class="marked1"><a name="line643"></a>643     it 'computes the total flog score'
+</span><span class="marked0"><a name="line644"></a>644     it 'retrieves the set of total statistics'
+</span><span class="inferred1"><a name="line645"></a>645     
+</span><span class="marked0"><a name="line646"></a>646     it 'outputs the total flog score'
+</span><span class="marked1"><a name="line647"></a>647     it 'computes the average flog score'
+</span><span class="marked0"><a name="line648"></a>648     it 'outputs the average flog score'
+</span><span class="inferred1"><a name="line649"></a>649     
+</span><span class="marked0"><a name="line650"></a>650     describe 'when summary mode is set' do
+</span><span class="marked1"><a name="line651"></a>651       it 'exits with status 0'
+</span><span class="marked0"><a name="line652"></a>652       it 'does not produce a call listing'
+</span><span class="marked1"><a name="line653"></a>653       it 'should not retrieve the set of total statistics'
+</span><span class="inferred0"><a name="line654"></a>654     end
+</span><span class="inferred1"><a name="line655"></a>655     
+</span><span class="marked0"><a name="line656"></a>656     describe 'when summary mode is not set' do
+</span><span class="inferred1"><a name="line657"></a>657       
+</span><span class="inferred0"><a name="line658"></a>658     end
+</span><span class="inferred1"><a name="line659"></a>659   end
+</span><span class="inferred0"><a name="line660"></a>660 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>

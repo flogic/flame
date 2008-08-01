@@ -610,9 +610,14 @@ describe Flog do
       @flog.reset
       @flog.totals.should == {}
     end
-    
-    it 'should clear the total score'
         
+    it 'should clear the total score' do
+      # the only way I know to do this is to force the total score to be computed for actual code, then reset it
+      @flog.flog_files(fixture_files('/simple/simple.rb'))
+      @flog.reset
+      @flog.total.should == 0
+    end
+    
     it 'should set the multiplier to 1.0' do
       @flog.multiplier = 20.0
       @flog.reset
