@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:36:15 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:36:25 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>607</tt>
+      <td class='lines_total'><tt>623</tt>
         </td>
-      <td class='lines_code'><tt>495</tt>
+      <td class='lines_code'><tt>508</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -1184,27 +1184,43 @@ span.run100 {
 </span><span class="inferred1"><a name="line584"></a>584     end
 </span><span class="inferred0"><a name="line585"></a>585   end
 </span><span class="inferred1"><a name="line586"></a>586 
-</span><span class="marked0"><a name="line587"></a>587   describe 'when generating a report' do
-</span><span class="marked1"><a name="line588"></a>588     it 'allows specifying an io handle'
-</span><span class="marked0"><a name="line589"></a>589     it 'defaults the io handle to stdout'
-</span><span class="marked1"><a name="line590"></a>590     it 'computes the total flog score'
-</span><span class="marked0"><a name="line591"></a>591     it 'retrieves the set of total statistics'
-</span><span class="inferred1"><a name="line592"></a>592     
-</span><span class="marked0"><a name="line593"></a>593     it 'outputs the total flog score'
-</span><span class="marked1"><a name="line594"></a>594     it 'computes the average flog score'
-</span><span class="marked0"><a name="line595"></a>595     it 'outputs the average flog score'
+</span><span class="marked0"><a name="line587"></a>587   describe 'when looking up the name of the method currently under analysis' do
+</span><span class="marked1"><a name="line588"></a>588     it 'should not take any arguments' do
+</span><span class="marked0"><a name="line589"></a>589       lambda { @flog.method_name('foo') }.should raise_error(ArgumentError)
+</span><span class="inferred1"><a name="line590"></a>590     end
+</span><span class="inferred0"><a name="line591"></a>591     
+</span><span class="marked1"><a name="line592"></a>592     it 'should return the most recent class entered' do
+</span><span class="marked0"><a name="line593"></a>593       @flog.method_stack = [:foo, :bar, :baz]
+</span><span class="marked1"><a name="line594"></a>594       @flog.method_name.should == :foo
+</span><span class="inferred0"><a name="line595"></a>595     end
 </span><span class="inferred1"><a name="line596"></a>596     
-</span><span class="marked0"><a name="line597"></a>597     describe 'when summary mode is set' do
-</span><span class="marked1"><a name="line598"></a>598       it 'exits with status 0'
-</span><span class="marked0"><a name="line599"></a>599       it 'does not produce a call listing'
-</span><span class="marked1"><a name="line600"></a>600       it 'should not retrieve the set of total statistics'
-</span><span class="inferred0"><a name="line601"></a>601     end
-</span><span class="inferred1"><a name="line602"></a>602     
-</span><span class="marked0"><a name="line603"></a>603     describe 'when summary mode is not set' do
-</span><span class="inferred1"><a name="line604"></a>604       
-</span><span class="inferred0"><a name="line605"></a>605     end
-</span><span class="inferred1"><a name="line606"></a>606   end
-</span><span class="inferred0"><a name="line607"></a>607 end
+</span><span class="marked0"><a name="line597"></a>597     it 'should return the default class if no classes entered' do
+</span><span class="marked1"><a name="line598"></a>598       @flog.method_stack = []
+</span><span class="marked0"><a name="line599"></a>599       @flog.method_name.should == :none
+</span><span class="inferred1"><a name="line600"></a>600     end
+</span><span class="inferred0"><a name="line601"></a>601   end
+</span><span class="inferred1"><a name="line602"></a>602 
+</span><span class="marked0"><a name="line603"></a>603   describe 'when generating a report' do
+</span><span class="marked1"><a name="line604"></a>604     it 'allows specifying an io handle'
+</span><span class="marked0"><a name="line605"></a>605     it 'defaults the io handle to stdout'
+</span><span class="marked1"><a name="line606"></a>606     it 'computes the total flog score'
+</span><span class="marked0"><a name="line607"></a>607     it 'retrieves the set of total statistics'
+</span><span class="inferred1"><a name="line608"></a>608     
+</span><span class="marked0"><a name="line609"></a>609     it 'outputs the total flog score'
+</span><span class="marked1"><a name="line610"></a>610     it 'computes the average flog score'
+</span><span class="marked0"><a name="line611"></a>611     it 'outputs the average flog score'
+</span><span class="inferred1"><a name="line612"></a>612     
+</span><span class="marked0"><a name="line613"></a>613     describe 'when summary mode is set' do
+</span><span class="marked1"><a name="line614"></a>614       it 'exits with status 0'
+</span><span class="marked0"><a name="line615"></a>615       it 'does not produce a call listing'
+</span><span class="marked1"><a name="line616"></a>616       it 'should not retrieve the set of total statistics'
+</span><span class="inferred0"><a name="line617"></a>617     end
+</span><span class="inferred1"><a name="line618"></a>618     
+</span><span class="marked0"><a name="line619"></a>619     describe 'when summary mode is not set' do
+</span><span class="inferred1"><a name="line620"></a>620       
+</span><span class="inferred0"><a name="line621"></a>621     end
+</span><span class="inferred1"><a name="line622"></a>622   end
+</span><span class="inferred0"><a name="line623"></a>623 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>

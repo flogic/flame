@@ -584,6 +584,22 @@ describe Flog do
     end
   end
 
+  describe 'when looking up the name of the method currently under analysis' do
+    it 'should not take any arguments' do
+      lambda { @flog.method_name('foo') }.should raise_error(ArgumentError)
+    end
+    
+    it 'should return the most recent class entered' do
+      @flog.method_stack = [:foo, :bar, :baz]
+      @flog.method_name.should == :foo
+    end
+    
+    it 'should return the default class if no classes entered' do
+      @flog.method_stack = []
+      @flog.method_name.should == :none
+    end
+  end
+
   describe 'when generating a report' do
     it 'allows specifying an io handle'
     it 'defaults the io handle to stdout'
