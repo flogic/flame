@@ -506,15 +506,15 @@ describe Flog do
   
   describe 'when recording the current class being analyzed' do
     it 'should require a class name' do
-      lambda { @flog.klass }.should raise_error(ArgumentError)
+      lambda { @flog.set_class }.should raise_error(ArgumentError)
     end
     
     it 'should require a block during which the class name is in effect' do
-      lambda { @flog.klass('name') }.should raise_error(LocalJumpError)
+      lambda { @flog.set_class('name') }.should raise_error(LocalJumpError)
     end
     
     it 'should recursively analyze the provided code block' do
-      @flog.klass 'name' do
+      @flog.set_class 'name' do
         @foo = true
       end
       
@@ -523,14 +523,14 @@ describe Flog do
     
     it 'should update the class stack when recursing' do
       @flog.class_stack = []
-      @flog.klass 'name' do
+      @flog.set_class 'name' do
         @flog.class_stack.should == ['name']
       end
     end
     
     it 'when it is done it should restore the class stack to its original value' do
       @flog.class_stack = []
-      @flog.klass 'name' do
+      @flog.set_class 'name' do
       end
       @flog.class_stack.should == []
     end
