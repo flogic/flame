@@ -36,3 +36,5 @@ $v ||= false # verbose, print methods as processed
 flogger = Flog.new
 flogger.flog_files ARGV
 flogger.report
+
+exit 0

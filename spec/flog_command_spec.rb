@@ -59,6 +59,11 @@ describe 'flog command' do
       self.expects(:usage).never
       run_command
     end
+    
+    it 'should exit with status 0' do
+      self.expects(:exit).with(0)
+      run_command
+    end
 
     it 'should not alter the include path' do
       @paths = $:.dup
