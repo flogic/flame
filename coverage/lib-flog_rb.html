@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:43:54 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:44:07 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -670,7 +670,7 @@ span.run100 {
 </span><span class="marked0"><a name="line70"></a> 70     @method_stack = []
 </span><span class="marked1"><a name="line71"></a> 71     self.auto_shift_type = true
 </span><span class="marked0"><a name="line72"></a> 72     self.require_empty = false # HACK
-</span><span class="marked1"><a name="line73"></a> 73     self.reset
+</span><span class="marked1"><a name="line73"></a> 73     reset
 </span><span class="inferred0"><a name="line74"></a> 74   end
 </span><span class="inferred1"><a name="line75"></a> 75   
 </span><span class="marked0"><a name="line76"></a> 76   def parse_tree
@@ -709,11 +709,11 @@ span.run100 {
 </span><span class="inferred1"><a name="line109"></a>109   end
 </span><span class="inferred0"><a name="line110"></a>110   
 </span><span class="marked1"><a name="line111"></a>111   def add_to_score(name)
-</span><span class="marked0"><a name="line112"></a>112     @calls[&quot;#{self.class_name}##{self.method_name}&quot;][name] += SCORES[name] * @multiplier
+</span><span class="marked0"><a name="line112"></a>112     @calls[&quot;#{class_name}##{method_name}&quot;][name] += SCORES[name] * @multiplier
 </span><span class="marked1"><a name="line113"></a>113   end
 </span><span class="inferred0"><a name="line114"></a>114   
 </span><span class="marked1"><a name="line115"></a>115   def average
-</span><span class="marked0"><a name="line116"></a>116     self.total / self.calls.size
+</span><span class="marked0"><a name="line116"></a>116     total / calls.size
 </span><span class="marked1"><a name="line117"></a>117   end
 </span><span class="inferred0"><a name="line118"></a>118   
 </span><span class="marked1"><a name="line119"></a>119   def penalize_by bonus
@@ -753,7 +753,7 @@ span.run100 {
 </span><span class="inferred1"><a name="line153"></a>153   end
 </span><span class="inferred0"><a name="line154"></a>154 
 </span><span class="marked1"><a name="line155"></a>155   def total
-</span><span class="marked0"><a name="line156"></a>156     self.totals unless @total_score # calculates total_score as well
+</span><span class="marked0"><a name="line156"></a>156     totals unless @total_score # calculates total_score as well
 </span><span class="inferred1"><a name="line157"></a>157 
 </span><span class="marked0"><a name="line158"></a>158     @total_score
 </span><span class="inferred1"><a name="line159"></a>159   end
@@ -791,19 +791,19 @@ span.run100 {
 </span><span class="marked1"><a name="line191"></a>191     unless @totals then
 </span><span class="marked0"><a name="line192"></a>192       @total_score = 0
 </span><span class="marked1"><a name="line193"></a>193       @totals = Hash.new(0)
-</span><span class="marked0"><a name="line194"></a>194       self.calls.each {|meth, tally| summarize_method(meth, tally) }
+</span><span class="marked0"><a name="line194"></a>194       calls.each {|meth, tally| summarize_method(meth, tally) }
 </span><span class="inferred1"><a name="line195"></a>195     end
 </span><span class="marked0"><a name="line196"></a>196     @totals
 </span><span class="inferred1"><a name="line197"></a>197   end
 </span><span class="inferred0"><a name="line198"></a>198 
 </span><span class="marked1"><a name="line199"></a>199   def output_summary(io)
-</span><span class="marked0"><a name="line200"></a>200     io.puts &quot;Total Flog = %.1f (%.1f flog / method)\n&quot; % [self.total, self.average]
+</span><span class="marked0"><a name="line200"></a>200     io.puts &quot;Total Flog = %.1f (%.1f flog / method)\n&quot; % [total, average]
 </span><span class="marked1"><a name="line201"></a>201   end
 </span><span class="inferred0"><a name="line202"></a>202 
 </span><span class="marked1"><a name="line203"></a>203   def output_method_details(io, class_method, call_list)
 </span><span class="marked0"><a name="line204"></a>204     return 0 if $m and class_method =~ /##{@@no_method}/
 </span><span class="inferred1"><a name="line205"></a>205     
-</span><span class="marked0"><a name="line206"></a>206     total = self.totals[class_method]
+</span><span class="marked0"><a name="line206"></a>206     total = totals[class_method]
 </span><span class="marked1"><a name="line207"></a>207     io.puts &quot;%s: (%.1f)&quot; % [class_method, total]
 </span><span class="inferred0"><a name="line208"></a>208 
 </span><span class="marked1"><a name="line209"></a>209     call_list.sort_by { |k,v| -v }.each do |call, count|
@@ -814,9 +814,9 @@ span.run100 {
 </span><span class="inferred0"><a name="line214"></a>214   end
 </span><span class="inferred1"><a name="line215"></a>215 
 </span><span class="marked0"><a name="line216"></a>216   def output_details(io, max = nil)
-</span><span class="marked1"><a name="line217"></a>217     totals = self.totals
+</span><span class="marked1"><a name="line217"></a>217     my_totals = totals
 </span><span class="marked0"><a name="line218"></a>218     current = 0
-</span><span class="marked1"><a name="line219"></a>219     calls.sort_by { |k,v| -totals[k] }.each do |class_method, call_list|
+</span><span class="marked1"><a name="line219"></a>219     calls.sort_by { |k,v| -my_totals[k] }.each do |class_method, call_list|
 </span><span class="marked0"><a name="line220"></a>220       current += output_method_details(io, class_method, call_list)
 </span><span class="marked1"><a name="line221"></a>221       break if max and current &gt;= max
 </span><span class="inferred0"><a name="line222"></a>222     end
@@ -829,10 +829,10 @@ span.run100 {
 </span><span class="marked1"><a name="line229"></a>229     if $a
 </span><span class="marked0"><a name="line230"></a>230       output_details(io)
 </span><span class="inferred1"><a name="line231"></a>231     else
-</span><span class="marked0"><a name="line232"></a>232       output_details(io, self.total * THRESHOLD)
+</span><span class="marked0"><a name="line232"></a>232       output_details(io, total * THRESHOLD)
 </span><span class="inferred1"><a name="line233"></a>233     end    
 </span><span class="inferred0"><a name="line234"></a>234   ensure
-</span><span class="marked1"><a name="line235"></a>235     self.reset
+</span><span class="marked1"><a name="line235"></a>235     reset
 </span><span class="marked0"><a name="line236"></a>236   end
 </span><span class="inferred1"><a name="line237"></a>237 
 </span><span class="inferred0"><a name="line238"></a>238   ############################################################
