@@ -873,6 +873,11 @@ describe Flog do
         @flog.expects(:calls).never
         @flog.report(@handle)        
       end
+      
+      currently 'should reset statistics when finished' do
+        @flog.expects(:reset)
+        @flog.report(@handle)
+      end
     end
     
     describe 'and producing a full report' do
@@ -911,6 +916,11 @@ describe Flog do
       
       it 'should not exit' do
         @flog.expects(:exit).never
+        @flog.report(@handle)
+      end
+      
+      it 'should reset statistics when finished' do
+        @flog.expects(:reset)
         @flog.report(@handle)
       end
       
