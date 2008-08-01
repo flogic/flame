@@ -235,7 +235,7 @@ describe Flog do
             $v = false
           end
           
-          currently 'should note which file is being flogged' do
+          currently 'should not note which file is being flogged' do
             @flog.expects(:warn).never
             @flog.flog_file(@file)
           end          
