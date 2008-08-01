@@ -195,10 +195,10 @@ class Flog < SexpProcessor
 
     exit 0 if $s
 
-    @calls.sort_by { |k,v| -totals[k] }.each do |klass_method, calls|
-      next if $m and klass_method =~ /##{@@no_method}/
-      total = totals[klass_method]
-      io.puts "%s: (%.1f)" % [klass_method, total]
+    @calls.sort_by { |k,v| -totals[k] }.each do |class_method, calls|
+      next if $m and class_method =~ /##{@@no_method}/
+      total = totals[class_method]
+      io.puts "%s: (%.1f)" % [class_method, total]
       calls.sort_by { |k,v| -v }.each do |call, count|
         io.puts "  %6.1f: %s" % [count, call]
       end
