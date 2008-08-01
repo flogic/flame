@@ -467,6 +467,21 @@ describe Flog do
     end
   end
   
+  describe 'when computing complexity of all remaining opcodes' do
+    it 'should require a list of opcodes' do
+      lambda { @flog.bleed }.should raise_error(ArgumentError)
+    end
+    
+    it 'should process each opcode' do
+      @opcodes = [ :foo, :bar, :baz ]
+      @opcodes.each do |opcode|
+         @flog.expects(:process).with(opcode)
+      end
+      
+      @flog.bleed @opcodes
+    end
+  end
+  
   describe 'when generating a report' do
     it 'allows specifying an io handle'
     it 'defaults the io handle to stdout'
