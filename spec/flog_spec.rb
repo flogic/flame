@@ -538,7 +538,7 @@ describe Flog do
   
   describe 'when looking up the name of the class currently under analysis' do
     it 'should not take any arguments' do
-      lambda { @flog.class_stack('foo') }.should raise_error(ArgumentError)
+      lambda { @flog.klass_name('foo') }.should raise_error(ArgumentError)
     end
     
     it 'should return the most recent class entered' do
