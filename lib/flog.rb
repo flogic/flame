@@ -204,14 +204,16 @@ class Flog < SexpProcessor
     io.puts "Total Flog = %.1f (%.1f flog / method)\n" % [self.total, self.average]
   end
 
-  def output_method_details(class_method, call_list)
-    next if $m and class_method =~ /##{@@no_method}/
-    total = totals[class_method]
+  def output_method_details(io, class_method, call_list)
+    return 0 if $m and class_method =~ /##{@@no_method}/
+    
+    total = self.totals[class_method]
     io.puts "%s: (%.1f)" % [class_method, total]
 
     call_list.sort_by { |k,v| -v }.each do |call, count|
       io.puts "  %6.1f: %s" % [count, call]
     end
+
     total
   end
 
@@ -219,7 +221,7 @@ class Flog < SexpProcessor
     totals = self.totals
     current = 0
     calls.sort_by { |k,v| -totals[k] }.each do |class_method, call_list|
-      current += output_method_details(class_method, call_list)
+      current += output_method_details(io, class_method, call_list)
       break if max and current >= max
     end
   end

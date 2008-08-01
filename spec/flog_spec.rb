@@ -865,16 +865,16 @@ describe Flog do
 
     it 'should output a method summary for each located method' do
       @calls.each do |meth, list|
-        @flog.expects(:output_method_details).with(meth, list).returns(5)
+        @flog.expects(:output_method_details).with(@handle, meth, list).returns(5)
       end
       @flog.output_details(@handle)
     end
     
     describe 'if a threshold is provided' do
       it 'should only output details for methods until the threshold is reached' do
-        @flog.expects(:output_method_details).with(:baz, {}).returns(5)
-        @flog.expects(:output_method_details).with(:bar, {}).returns(5)
-        @flog.expects(:output_method_details).with(:foo, {}).never
+        @flog.expects(:output_method_details).with(@handle, :baz, {}).returns(5)
+        @flog.expects(:output_method_details).with(@handle, :bar, {}).returns(5)
+        @flog.expects(:output_method_details).with(@handle, :foo, {}).never
         @flog.output_details(@handle, 10)
       end
     end
@@ -882,9 +882,87 @@ describe Flog do
     describe 'if no threshold is provided' do
       it 'should output details for all methods' do
         @calls.each do |class_method, call_list|
-          @flog.expects(:output_method_details).with(class_method, call_list).returns(5)
+          @flog.expects(:output_method_details).with(@handle, class_method, call_list).returns(5)
         end
         @flog.output_details(@handle)
+      end
+    end
+  end
+  
+  describe 'when reporting the details for a specific method' do
+    before :each do
+      @handle = stub('i/o handle', :puts => nil)
+      @totals = { 'foo#foo' => 42.0, 'foo#none' => 12.0 }
+      @data = { :assign => 10, :branch => 5, :case => 3 }
+      @flog.stubs(:totals).returns(@totals)
+    end
+    
+    it 'should require an i/o handle, a method name, and method details' do
+      lambda { @flog.output_method_details('foo', 'bar') }.should raise_error(ArgumentError)
+    end
+        
+    describe 'and ignoring non-method code' do
+      before :each do
+        $m = true
+      end
+      
+      describe 'and given non-method data to summarize' do
+        it 'should not generate any output on the i/o handle' do
+          @handle.expects(:puts).never
+          @flog.output_method_details(@handle, 'foo#none', @data)
+        end
+      
+        it 'should return 0' do
+          @flog.output_method_details(@handle, 'foo#none', @data).should == 0.0
+        end
+      end
+      
+      describe 'and given method data to summarize' do
+        it 'should return the total complexity for the method' do
+          @flog.output_method_details(@handle, 'foo#foo', @data).should == 42.0
+        end
+        
+        it 'should output the overall total for the method' do
+          @handle.expects(:puts).with do |string| 
+            string =~ Regexp.new(Regexp.escape("%.1f" % 42.0))
+          end
+          @flog.output_method_details(@handle, 'foo#foo', @data)          
+        end
+        
+        it 'should output call details for each call for the method' do
+          @data.each do |call, count|
+            @handle.expects(:puts).with do |string| 
+              string =~ Regexp.new(Regexp.escape("%6.1f: %s" % [ count, call ]))
+            end
+          end
+          @flog.output_method_details(@handle, 'foo#foo', @data)          
+        end
+      end
+    end
+    
+    describe 'and not excluding non-method code' do
+      before :each do
+        $m = true
+      end
+      
+      it 'should return the total complexity for the method' do
+        @flog.output_method_details(@handle, 'foo#foo', @data).should == 42.0
+      end
+      
+      it 'should output the overall total for the method' do
+        @handle.expects(:puts).with do |string| 
+          string =~ Regexp.new(Regexp.escape("%.1f" % 42.0))
+        end
+        @flog.output_method_details(@handle, 'foo#foo', @data)          
+      end
+      
+      it 'should output call details for each call for the method' do
+        @data.each do |call, count|
+          @handle.expects(:puts).with do |string| 
+            string =~ Regexp.new(Regexp.escape("%6.1f: %s" % [ count, call ]))
+          end
+        end
+        @flog.output_method_details(@handle, 'foo#foo', @data)          
       end
     end
   end
