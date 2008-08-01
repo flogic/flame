@@ -54,25 +54,95 @@ describe 'flog command' do
       @flog.expects(:flog_files).with(['-'])
       run_command
     end
+
+    it 'should not display usage information' do
+      self.expects(:usage).never
+      run_command
+    end
+
+    it 'should not alter the include path' do
+      @paths = $:.dup
+      run_command
+      $:.should == @paths
+    end
+    
+    it 'should not display all flog results' do
+      run_command
+      $a.should be_false
+    end
+    
+    it 'should not display a summary report' do
+      run_command
+      $s.should be_false
+    end
+    
+    it 'should not skip code outside of methods' do
+      run_command
+      $m.should be_false
+    end
+    
+    it 'should not display verbose progress info' do
+      run_command
+      $v.should be_false
+    end
   end
   
-  describe "since the script assumes it was called with 'ruby -s'" do
-    describe "when -h is specified on the command-line" do
+  describe "when -h is specified on the command-line" do
+    before :each do
+      Object.send(:remove_const, :ARGV)
+      ARGV = []
+      $h = true  # ruby -s, ftw
+    end
+    
+    after :each do
+      $h = nil
+    end
+    
+    before :each do
+      self.stubs(:usage).returns(nil)
+    end
+  
+    currently "should display help information" do
+      self.expects(:usage)
+      run_command
+    end
+    
+    it 'should not create a Flog instance' do
+      Flog.expects(:new).never
+      run_command
+    end
+    
+    it 'should exit with status 0' do
+      self.expects(:exit).with(0)
+      run_command
+    end
+  end
+  
+  describe 'when -I is specified on the command-line' do
+    before :each do
+      Object.send(:remove_const, :ARGV)
+      ARGV = []
+    end
+    
+    before :each do
+      @paths = $:.dup
+    end
+    
+    describe 'when -I is not given a string' do
       before :each do
-        Object.send(:remove_const, :ARGV)
-        ARGV = []
-        $h = true  # ruby -s, ftw
+        $I = 234  # ruby -s, ftw
       end
       
       after :each do
-        $h = nil
+        $I = nil
       end
       
-      before :each do
-        self.stubs(:usage).returns(nil)
+      currently 'should not modify the include path' do
+        run_command
+        $:.should == @paths
       end
-    
-      currently "should display help information" do
+      
+      it 'should display usage' do
         self.expects(:usage)
         run_command
       end
@@ -81,73 +151,26 @@ describe 'flog command' do
         Flog.expects(:new).never
         run_command
       end
+    end
+    
+    describe 'when -I is given a string' do
+      before :each do
+        $I = '/bin/true'      
+      end
       
-      it 'should exit with status 0' do
-        self.expects(:exit).with(0)
+      after :each do
+        $I = nil
+      end
+      
+      it "should append each ':' separated path to $:" do
         run_command
+        $:.should_not == @paths
       end
     end
     
-    describe 'when -I is specified on the command-line' do
-      before :each do
-        Object.send(:remove_const, :ARGV)
-        ARGV = []
-      end
-      
-      before :each do
-        @paths = $:.dup
-      end
-      
-      describe 'when -I is not given a string' do
-        before :each do
-          $I = 234  # ruby -s, ftw
-        end
-        
-        after :each do
-          $I = nil
-        end
-        
-        currently 'should not modify the include path' do
-          run_command
-          $:.should == @paths
-        end
-        
-        it 'should display usage' do
-          self.expects(:usage)
-          run_command
-        end
-        
-        it 'should not create a Flog instance' do
-          Flog.expects(:new).never
-          run_command
-        end
-      end
-      
-      describe 'when -I is given a string' do
-        before :each do
-          $I = '/bin/true'      
-        end
-        
-        after :each do
-          $I = nil
-        end
-        
-        it "should append each ':' separated path to $:" do
-          run_command
-          $:.should_not == @paths
-        end
-      end
-      
-      it 'should create a Flog instance' do
-        Flog.expects(:new).returns(@flog)
-        run_command
-      end
+    it 'should create a Flog instance' do
+      Flog.expects(:new).returns(@flog)
+      run_command
     end
-
-    it 'should validate the -a option'
-    it 'should validate the -m option'
-    it 'should validate the -s option'
-    it 'should validate the -v option'
-
   end
 end

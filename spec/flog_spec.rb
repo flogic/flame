@@ -932,6 +932,10 @@ describe Flog do
         $m = true
       end
       
+      after :each do
+        $m = false
+      end
+      
       describe 'and given non-method data to summarize' do
         it 'should not generate any output on the i/o handle' do
           @handle.expects(:puts).never
@@ -969,6 +973,10 @@ describe Flog do
     describe 'and not excluding non-method code' do
       before :each do
         $m = true
+      end
+      
+      after :each do
+        $m = false
       end
       
       it 'should return the total complexity for the method' do
