@@ -837,9 +837,12 @@ describe Flog do
   describe 'when producing a detailed call summary report' do
     before :each do
       @handle = stub('io handle)', :puts => nil)
-      @flog.stubs(:calls).returns({})
-      @flog.stubs(:total).returns(@total_score = 42.0)
-      @flog.stubs(:average).returns(@average_score = 1.0)
+      @calls = { :foo => {}, :bar => {}, :baz => {} }
+      @totals = { :foo => 1, :bar => 2, :baz => 3 }
+      
+      @flog.stubs(:calls).returns(@calls)
+      @flog.stubs(:totals).returns(@totals)
+      @flog.stubs(:output_method_details).returns(5)
     end
     
     it 'should require an i/o handle' do
@@ -851,11 +854,39 @@ describe Flog do
     end
       
     it 'retrieves the set of total statistics' do
-      @flog.expects(:totals)
+      @flog.expects(:totals).returns(@totals)
       @flog.output_details(@handle)
     end
     
-    it 'should have more specs'
+    it 'retrieves the set of call statistics' do
+      @flog.expects(:calls).returns({})
+      @flog.output_details(@handle)      
+    end
+
+    it 'should output a method summary for each located method' do
+      @calls.each do |meth, list|
+        @flog.expects(:output_method_details).with(meth, list).returns(5)
+      end
+      @flog.output_details(@handle)
+    end
+    
+    describe 'if a threshold is provided' do
+      it 'should only output details for methods until the threshold is reached' do
+        @flog.expects(:output_method_details).with(:baz, {}).returns(5)
+        @flog.expects(:output_method_details).with(:bar, {}).returns(5)
+        @flog.expects(:output_method_details).with(:foo, {}).never
+        @flog.output_details(@handle, 10)
+      end
+    end
+    
+    describe 'if no threshold is provided' do
+      it 'should output details for all methods' do
+        @calls.each do |class_method, call_list|
+          @flog.expects(:output_method_details).with(class_method, call_list).returns(5)
+        end
+        @flog.output_details(@handle)
+      end
+    end
   end
   
   describe 'when generating a report' do    

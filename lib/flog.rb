@@ -204,28 +204,29 @@ class Flog < SexpProcessor
     io.puts "Total Flog = %.1f (%.1f flog / method)\n" % [self.total, self.average]
   end
 
+  def output_method_details(class_method, call_list)
+    next if $m and class_method =~ /##{@@no_method}/
+    total = totals[class_method]
+    io.puts "%s: (%.1f)" % [class_method, total]
+
+    call_list.sort_by { |k,v| -v }.each do |call, count|
+      io.puts "  %6.1f: %s" % [count, call]
+    end
+    total
+  end
+
   def output_details(io, max = nil)
     totals = self.totals
     current = 0
     calls.sort_by { |k,v| -totals[k] }.each do |class_method, call_list|
-      next if $m and class_method =~ /##{@@no_method}/
-      total = totals[class_method]
-      io.puts "%s: (%.1f)" % [class_method, total]
-
-      # and here is a likely next Extract Method candidate
-      call_list.sort_by { |k,v| -v }.each do |call, count|
-        io.puts "  %6.1f: %s" % [count, call]
-      end
-      # end extraction
-      
-      current += total
-      break if current >= max
+      current += output_method_details(class_method, call_list)
+      break if max and current >= max
     end
   end
 
   def report io = $stdout
     output_summary(io)
-    exit 0 if $s
+    exit 0 if $s  # TODO:  this should eventually not be an exit(), as this should just be a library
     output_details(io, self.total * THRESHOLD)    
   ensure
     self.reset
