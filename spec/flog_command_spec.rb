@@ -107,7 +107,7 @@ describe 'flog command' do
       self.stubs(:usage).returns(nil)
     end
   
-    currently "should display help information" do
+    it "should display help information" do
       self.expects(:usage)
       run_command
     end
@@ -143,7 +143,7 @@ describe 'flog command' do
         $I = nil
       end
       
-      currently 'should not modify the include path' do
+      it 'should not modify the include path' do
         run_command
         $:.should == @paths
       end
