@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:38:03 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:38:13 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -713,7 +713,7 @@ span.run100 {
 </span><span class="inferred1"><a name="line113"></a>113   end
 </span><span class="inferred0"><a name="line114"></a>114   
 </span><span class="marked1"><a name="line115"></a>115   def add_to_score(name)
-</span><span class="marked0"><a name="line116"></a>116     @calls[&quot;#{self.klass_name}##{self.method_name}&quot;][name] += SCORES[name] * @multiplier
+</span><span class="marked0"><a name="line116"></a>116     @calls[&quot;#{self.class_name}##{self.method_name}&quot;][name] += SCORES[name] * @multiplier
 </span><span class="marked1"><a name="line117"></a>117   end
 </span><span class="inferred0"><a name="line118"></a>118   
 </span><span class="marked1"><a name="line119"></a>119   def average
@@ -736,7 +736,7 @@ span.run100 {
 </span><span class="marked0"><a name="line136"></a>136     @class_stack.shift
 </span><span class="inferred1"><a name="line137"></a>137   end
 </span><span class="inferred0"><a name="line138"></a>138 
-</span><span class="marked1"><a name="line139"></a>139   def klass_name
+</span><span class="marked1"><a name="line139"></a>139   def class_name
 </span><span class="marked0"><a name="line140"></a>140     @class_stack.first || @@no_class
 </span><span class="marked1"><a name="line141"></a>141   end
 </span><span class="inferred0"><a name="line142"></a>142 

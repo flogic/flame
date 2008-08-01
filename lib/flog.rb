@@ -113,7 +113,7 @@ class Flog < SexpProcessor
   end
   
   def add_to_score(name)
-    @calls["#{self.klass_name}##{self.method_name}"][name] += SCORES[name] * @multiplier
+    @calls["#{self.class_name}##{self.method_name}"][name] += SCORES[name] * @multiplier
   end
   
   def average
@@ -136,7 +136,7 @@ class Flog < SexpProcessor
     @class_stack.shift
   end
 
-  def klass_name
+  def class_name
     @class_stack.first || @@no_class
   end
 
