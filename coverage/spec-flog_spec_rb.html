@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:43:30 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:43:42 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>1098</tt>
+      <td class='lines_total'><tt>1106</tt>
         </td>
-      <td class='lines_code'><tt>901</tt>
+      <td class='lines_code'><tt>907</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>99.1%</tt>
               &nbsp;</td>
@@ -1532,170 +1532,178 @@ span.run100 {
 </span><span class="marked0"><a name="line932"></a> 932         $m = true
 </span><span class="inferred1"><a name="line933"></a> 933       end
 </span><span class="inferred0"><a name="line934"></a> 934       
-</span><span class="marked1"><a name="line935"></a> 935       describe 'and given non-method data to summarize' do
-</span><span class="marked0"><a name="line936"></a> 936         it 'should not generate any output on the i/o handle' do
-</span><span class="marked1"><a name="line937"></a> 937           @handle.expects(:puts).never
-</span><span class="marked0"><a name="line938"></a> 938           @flog.output_method_details(@handle, 'foo#none', @data)
-</span><span class="inferred1"><a name="line939"></a> 939         end
-</span><span class="inferred0"><a name="line940"></a> 940       
-</span><span class="marked1"><a name="line941"></a> 941         it 'should return 0' do
-</span><span class="marked0"><a name="line942"></a> 942           @flog.output_method_details(@handle, 'foo#none', @data).should == 0.0
+</span><span class="marked1"><a name="line935"></a> 935       after :each do
+</span><span class="marked0"><a name="line936"></a> 936         $m = false
+</span><span class="inferred1"><a name="line937"></a> 937       end
+</span><span class="inferred0"><a name="line938"></a> 938       
+</span><span class="marked1"><a name="line939"></a> 939       describe 'and given non-method data to summarize' do
+</span><span class="marked0"><a name="line940"></a> 940         it 'should not generate any output on the i/o handle' do
+</span><span class="marked1"><a name="line941"></a> 941           @handle.expects(:puts).never
+</span><span class="marked0"><a name="line942"></a> 942           @flog.output_method_details(@handle, 'foo#none', @data)
 </span><span class="inferred1"><a name="line943"></a> 943         end
-</span><span class="inferred0"><a name="line944"></a> 944       end
-</span><span class="inferred1"><a name="line945"></a> 945       
-</span><span class="marked0"><a name="line946"></a> 946       describe 'and given method data to summarize' do
-</span><span class="marked1"><a name="line947"></a> 947         it 'should return the total complexity for the method' do
-</span><span class="marked0"><a name="line948"></a> 948           @flog.output_method_details(@handle, 'foo#foo', @data).should == 42.0
-</span><span class="inferred1"><a name="line949"></a> 949         end
-</span><span class="inferred0"><a name="line950"></a> 950         
-</span><span class="marked1"><a name="line951"></a> 951         it 'should output the overall total for the method' do
-</span><span class="marked0"><a name="line952"></a> 952           @handle.expects(:puts).with do |string| 
-</span><span class="marked1"><a name="line953"></a> 953             string =~ Regexp.new(Regexp.escape(&quot;%.1f&quot; % 42.0))
-</span><span class="inferred0"><a name="line954"></a> 954           end
-</span><span class="marked1"><a name="line955"></a> 955           @flog.output_method_details(@handle, 'foo#foo', @data)          
-</span><span class="inferred0"><a name="line956"></a> 956         end
-</span><span class="inferred1"><a name="line957"></a> 957         
-</span><span class="marked0"><a name="line958"></a> 958         it 'should output call details for each call for the method' do
-</span><span class="marked1"><a name="line959"></a> 959           @data.each do |call, count|
-</span><span class="marked0"><a name="line960"></a> 960             @handle.expects(:puts).with do |string| 
-</span><span class="marked1"><a name="line961"></a> 961               string =~ Regexp.new(Regexp.escape(&quot;%6.1f: %s&quot; % [ count, call ]))
-</span><span class="inferred0"><a name="line962"></a> 962             end
-</span><span class="inferred1"><a name="line963"></a> 963           end
-</span><span class="marked0"><a name="line964"></a> 964           @flog.output_method_details(@handle, 'foo#foo', @data)          
-</span><span class="inferred1"><a name="line965"></a> 965         end
-</span><span class="inferred0"><a name="line966"></a> 966       end
-</span><span class="inferred1"><a name="line967"></a> 967     end
-</span><span class="inferred0"><a name="line968"></a> 968     
-</span><span class="marked1"><a name="line969"></a> 969     describe 'and not excluding non-method code' do
-</span><span class="marked0"><a name="line970"></a> 970       before :each do
-</span><span class="marked1"><a name="line971"></a> 971         $m = true
-</span><span class="inferred0"><a name="line972"></a> 972       end
-</span><span class="inferred1"><a name="line973"></a> 973       
-</span><span class="marked0"><a name="line974"></a> 974       it 'should return the total complexity for the method' do
-</span><span class="marked1"><a name="line975"></a> 975         @flog.output_method_details(@handle, 'foo#foo', @data).should == 42.0
+</span><span class="inferred0"><a name="line944"></a> 944       
+</span><span class="marked1"><a name="line945"></a> 945         it 'should return 0' do
+</span><span class="marked0"><a name="line946"></a> 946           @flog.output_method_details(@handle, 'foo#none', @data).should == 0.0
+</span><span class="inferred1"><a name="line947"></a> 947         end
+</span><span class="inferred0"><a name="line948"></a> 948       end
+</span><span class="inferred1"><a name="line949"></a> 949       
+</span><span class="marked0"><a name="line950"></a> 950       describe 'and given method data to summarize' do
+</span><span class="marked1"><a name="line951"></a> 951         it 'should return the total complexity for the method' do
+</span><span class="marked0"><a name="line952"></a> 952           @flog.output_method_details(@handle, 'foo#foo', @data).should == 42.0
+</span><span class="inferred1"><a name="line953"></a> 953         end
+</span><span class="inferred0"><a name="line954"></a> 954         
+</span><span class="marked1"><a name="line955"></a> 955         it 'should output the overall total for the method' do
+</span><span class="marked0"><a name="line956"></a> 956           @handle.expects(:puts).with do |string| 
+</span><span class="marked1"><a name="line957"></a> 957             string =~ Regexp.new(Regexp.escape(&quot;%.1f&quot; % 42.0))
+</span><span class="inferred0"><a name="line958"></a> 958           end
+</span><span class="marked1"><a name="line959"></a> 959           @flog.output_method_details(@handle, 'foo#foo', @data)          
+</span><span class="inferred0"><a name="line960"></a> 960         end
+</span><span class="inferred1"><a name="line961"></a> 961         
+</span><span class="marked0"><a name="line962"></a> 962         it 'should output call details for each call for the method' do
+</span><span class="marked1"><a name="line963"></a> 963           @data.each do |call, count|
+</span><span class="marked0"><a name="line964"></a> 964             @handle.expects(:puts).with do |string| 
+</span><span class="marked1"><a name="line965"></a> 965               string =~ Regexp.new(Regexp.escape(&quot;%6.1f: %s&quot; % [ count, call ]))
+</span><span class="inferred0"><a name="line966"></a> 966             end
+</span><span class="inferred1"><a name="line967"></a> 967           end
+</span><span class="marked0"><a name="line968"></a> 968           @flog.output_method_details(@handle, 'foo#foo', @data)          
+</span><span class="inferred1"><a name="line969"></a> 969         end
+</span><span class="inferred0"><a name="line970"></a> 970       end
+</span><span class="inferred1"><a name="line971"></a> 971     end
+</span><span class="inferred0"><a name="line972"></a> 972     
+</span><span class="marked1"><a name="line973"></a> 973     describe 'and not excluding non-method code' do
+</span><span class="marked0"><a name="line974"></a> 974       before :each do
+</span><span class="marked1"><a name="line975"></a> 975         $m = true
 </span><span class="inferred0"><a name="line976"></a> 976       end
 </span><span class="inferred1"><a name="line977"></a> 977       
-</span><span class="marked0"><a name="line978"></a> 978       it 'should output the overall total for the method' do
-</span><span class="marked1"><a name="line979"></a> 979         @handle.expects(:puts).with do |string| 
-</span><span class="marked0"><a name="line980"></a> 980           string =~ Regexp.new(Regexp.escape(&quot;%.1f&quot; % 42.0))
-</span><span class="inferred1"><a name="line981"></a> 981         end
-</span><span class="marked0"><a name="line982"></a> 982         @flog.output_method_details(@handle, 'foo#foo', @data)          
-</span><span class="inferred1"><a name="line983"></a> 983       end
-</span><span class="inferred0"><a name="line984"></a> 984       
-</span><span class="marked1"><a name="line985"></a> 985       it 'should output call details for each call for the method' do
-</span><span class="marked0"><a name="line986"></a> 986         @data.each do |call, count|
-</span><span class="marked1"><a name="line987"></a> 987           @handle.expects(:puts).with do |string| 
-</span><span class="marked0"><a name="line988"></a> 988             string =~ Regexp.new(Regexp.escape(&quot;%6.1f: %s&quot; % [ count, call ]))
-</span><span class="inferred1"><a name="line989"></a> 989           end
-</span><span class="inferred0"><a name="line990"></a> 990         end
-</span><span class="marked1"><a name="line991"></a> 991         @flog.output_method_details(@handle, 'foo#foo', @data)          
-</span><span class="inferred0"><a name="line992"></a> 992       end
-</span><span class="inferred1"><a name="line993"></a> 993     end
-</span><span class="inferred0"><a name="line994"></a> 994   end
-</span><span class="inferred1"><a name="line995"></a> 995   
-</span><span class="marked0"><a name="line996"></a> 996   describe 'when generating a report' do    
-</span><span class="marked1"><a name="line997"></a> 997     it 'allows specifying an i/o handle' do
-</span><span class="marked0"><a name="line998"></a> 998       lambda { @flog.report 'handle' }.should_not raise_error(ArgumentError)
-</span><span class="inferred1"><a name="line999"></a> 999     end
-</span><span class="inferred0"><a name="line1000"></a>1000     
-</span><span class="marked1"><a name="line1001"></a>1001     it 'allows running the report without a specified i/o handle' do
-</span><span class="marked0"><a name="line1002"></a>1002       lambda { @flog.report }.should_not raise_error(ArgumentError)
-</span><span class="inferred1"><a name="line1003"></a>1003     end
-</span><span class="inferred0"><a name="line1004"></a>1004     
-</span><span class="marked1"><a name="line1005"></a>1005     describe 'and no i/o handle is specified' do      
-</span><span class="marked0"><a name="line1006"></a>1006       it 'defaults the io handle to stdout' do
-</span><span class="marked1"><a name="line1007"></a>1007         @flog.expects(:output_summary).with($stdout)
-</span><span class="marked0"><a name="line1008"></a>1008         @flog.report
-</span><span class="inferred1"><a name="line1009"></a>1009       end
-</span><span class="inferred0"><a name="line1010"></a>1010     end
-</span><span class="inferred1"><a name="line1011"></a>1011 
-</span><span class="marked0"><a name="line1012"></a>1012     describe 'and producing a summary report' do
-</span><span class="marked1"><a name="line1013"></a>1013       before :each do
-</span><span class="marked0"><a name="line1014"></a>1014         $s = true
-</span><span class="marked1"><a name="line1015"></a>1015         @flog.stubs(:output_summary)
-</span><span class="inferred0"><a name="line1016"></a>1016       end
-</span><span class="inferred1"><a name="line1017"></a>1017       
-</span><span class="marked0"><a name="line1018"></a>1018       it 'produces an output summary on the i/o handle' do
-</span><span class="marked1"><a name="line1019"></a>1019         @flog.expects(:output_summary).with('handle')
-</span><span class="marked0"><a name="line1020"></a>1020         begin
-</span><span class="marked1"><a name="line1021"></a>1021           @flog.report('handle')
-</span><span class="uncovered0"><a name="line1022"></a>1022         rescue SystemExit
-</span><span class="uncovered1"><a name="line1023"></a>1023         end
-</span><span class="uncovered0"><a name="line1024"></a>1024       end
+</span><span class="marked0"><a name="line978"></a> 978       after :each do
+</span><span class="marked1"><a name="line979"></a> 979         $m = false
+</span><span class="inferred0"><a name="line980"></a> 980       end
+</span><span class="inferred1"><a name="line981"></a> 981       
+</span><span class="marked0"><a name="line982"></a> 982       it 'should return the total complexity for the method' do
+</span><span class="marked1"><a name="line983"></a> 983         @flog.output_method_details(@handle, 'foo#foo', @data).should == 42.0
+</span><span class="inferred0"><a name="line984"></a> 984       end
+</span><span class="inferred1"><a name="line985"></a> 985       
+</span><span class="marked0"><a name="line986"></a> 986       it 'should output the overall total for the method' do
+</span><span class="marked1"><a name="line987"></a> 987         @handle.expects(:puts).with do |string| 
+</span><span class="marked0"><a name="line988"></a> 988           string =~ Regexp.new(Regexp.escape(&quot;%.1f&quot; % 42.0))
+</span><span class="inferred1"><a name="line989"></a> 989         end
+</span><span class="marked0"><a name="line990"></a> 990         @flog.output_method_details(@handle, 'foo#foo', @data)          
+</span><span class="inferred1"><a name="line991"></a> 991       end
+</span><span class="inferred0"><a name="line992"></a> 992       
+</span><span class="marked1"><a name="line993"></a> 993       it 'should output call details for each call for the method' do
+</span><span class="marked0"><a name="line994"></a> 994         @data.each do |call, count|
+</span><span class="marked1"><a name="line995"></a> 995           @handle.expects(:puts).with do |string| 
+</span><span class="marked0"><a name="line996"></a> 996             string =~ Regexp.new(Regexp.escape(&quot;%6.1f: %s&quot; % [ count, call ]))
+</span><span class="inferred1"><a name="line997"></a> 997           end
+</span><span class="inferred0"><a name="line998"></a> 998         end
+</span><span class="marked1"><a name="line999"></a> 999         @flog.output_method_details(@handle, 'foo#foo', @data)          
+</span><span class="inferred0"><a name="line1000"></a>1000       end
+</span><span class="inferred1"><a name="line1001"></a>1001     end
+</span><span class="inferred0"><a name="line1002"></a>1002   end
+</span><span class="inferred1"><a name="line1003"></a>1003   
+</span><span class="marked0"><a name="line1004"></a>1004   describe 'when generating a report' do    
+</span><span class="marked1"><a name="line1005"></a>1005     it 'allows specifying an i/o handle' do
+</span><span class="marked0"><a name="line1006"></a>1006       lambda { @flog.report 'handle' }.should_not raise_error(ArgumentError)
+</span><span class="inferred1"><a name="line1007"></a>1007     end
+</span><span class="inferred0"><a name="line1008"></a>1008     
+</span><span class="marked1"><a name="line1009"></a>1009     it 'allows running the report without a specified i/o handle' do
+</span><span class="marked0"><a name="line1010"></a>1010       lambda { @flog.report }.should_not raise_error(ArgumentError)
+</span><span class="inferred1"><a name="line1011"></a>1011     end
+</span><span class="inferred0"><a name="line1012"></a>1012     
+</span><span class="marked1"><a name="line1013"></a>1013     describe 'and no i/o handle is specified' do      
+</span><span class="marked0"><a name="line1014"></a>1014       it 'defaults the io handle to stdout' do
+</span><span class="marked1"><a name="line1015"></a>1015         @flog.expects(:output_summary).with($stdout)
+</span><span class="marked0"><a name="line1016"></a>1016         @flog.report
+</span><span class="inferred1"><a name="line1017"></a>1017       end
+</span><span class="inferred0"><a name="line1018"></a>1018     end
+</span><span class="inferred1"><a name="line1019"></a>1019 
+</span><span class="marked0"><a name="line1020"></a>1020     describe 'and producing a summary report' do
+</span><span class="marked1"><a name="line1021"></a>1021       before :each do
+</span><span class="marked0"><a name="line1022"></a>1022         $s = true
+</span><span class="marked1"><a name="line1023"></a>1023         @flog.stubs(:output_summary)
+</span><span class="inferred0"><a name="line1024"></a>1024       end
 </span><span class="inferred1"><a name="line1025"></a>1025       
-</span><span class="marked0"><a name="line1026"></a>1026       currently 'exits with status 0' do
-</span><span class="marked1"><a name="line1027"></a>1027         lambda { @flog.report('handle') }.should raise_error(SystemExit)
-</span><span class="inferred0"><a name="line1028"></a>1028       end
-</span><span class="inferred1"><a name="line1029"></a>1029       
-</span><span class="marked0"><a name="line1030"></a>1030       it 'does not output a detailed report' do
-</span><span class="marked1"><a name="line1031"></a>1031         @flog.expects(:output_details).never
-</span><span class="marked0"><a name="line1032"></a>1032         begin
-</span><span class="marked1"><a name="line1033"></a>1033           @flog.report('handle')
-</span><span class="uncovered0"><a name="line1034"></a>1034         rescue SystemExit
-</span><span class="uncovered1"><a name="line1035"></a>1035         end
-</span><span class="uncovered0"><a name="line1036"></a>1036       end
+</span><span class="marked0"><a name="line1026"></a>1026       it 'produces an output summary on the i/o handle' do
+</span><span class="marked1"><a name="line1027"></a>1027         @flog.expects(:output_summary).with('handle')
+</span><span class="marked0"><a name="line1028"></a>1028         begin
+</span><span class="marked1"><a name="line1029"></a>1029           @flog.report('handle')
+</span><span class="uncovered0"><a name="line1030"></a>1030         rescue SystemExit
+</span><span class="uncovered1"><a name="line1031"></a>1031         end
+</span><span class="uncovered0"><a name="line1032"></a>1032       end
+</span><span class="inferred1"><a name="line1033"></a>1033       
+</span><span class="marked0"><a name="line1034"></a>1034       currently 'exits with status 0' do
+</span><span class="marked1"><a name="line1035"></a>1035         lambda { @flog.report('handle') }.should raise_error(SystemExit)
+</span><span class="inferred0"><a name="line1036"></a>1036       end
 </span><span class="inferred1"><a name="line1037"></a>1037       
-</span><span class="marked0"><a name="line1038"></a>1038       currently 'should reset statistics when finished' do
-</span><span class="marked1"><a name="line1039"></a>1039         @flog.expects(:reset)
+</span><span class="marked0"><a name="line1038"></a>1038       it 'does not output a detailed report' do
+</span><span class="marked1"><a name="line1039"></a>1039         @flog.expects(:output_details).never
 </span><span class="marked0"><a name="line1040"></a>1040         begin
 </span><span class="marked1"><a name="line1041"></a>1041           @flog.report('handle')
 </span><span class="uncovered0"><a name="line1042"></a>1042         rescue SystemExit
 </span><span class="uncovered1"><a name="line1043"></a>1043         end
 </span><span class="uncovered0"><a name="line1044"></a>1044       end
-</span><span class="uncovered1"><a name="line1045"></a>1045     end
-</span><span class="inferred0"><a name="line1046"></a>1046     
-</span><span class="marked1"><a name="line1047"></a>1047     describe 'and producing a full report' do
-</span><span class="marked0"><a name="line1048"></a>1048       before :each do
-</span><span class="marked1"><a name="line1049"></a>1049         $s = false
-</span><span class="marked0"><a name="line1050"></a>1050         @flog.stubs(:output_summary)
-</span><span class="marked1"><a name="line1051"></a>1051         @flog.stubs(:output_details)
-</span><span class="inferred0"><a name="line1052"></a>1052       end
-</span><span class="inferred1"><a name="line1053"></a>1053       
-</span><span class="marked0"><a name="line1054"></a>1054       it 'produces an output summary on the i/o handle' do
-</span><span class="marked1"><a name="line1055"></a>1055         @flog.expects(:output_summary).with('handle')
-</span><span class="marked0"><a name="line1056"></a>1056         @flog.report('handle')
-</span><span class="inferred1"><a name="line1057"></a>1057       end
-</span><span class="inferred0"><a name="line1058"></a>1058       
-</span><span class="marked1"><a name="line1059"></a>1059       currently 'should not exit' do
-</span><span class="marked0"><a name="line1060"></a>1060         @flog.expects(:exit).never
-</span><span class="marked1"><a name="line1061"></a>1061         @flog.report('handle')
-</span><span class="inferred0"><a name="line1062"></a>1062       end
-</span><span class="inferred1"><a name="line1063"></a>1063 
-</span><span class="marked0"><a name="line1064"></a>1064       it 'should generate a detailed report of method complexity on the i/o handle' do
-</span><span class="marked1"><a name="line1065"></a>1065         @flog.expects(:output_details).with {|handle, max| handle == 'handle' }
-</span><span class="marked0"><a name="line1066"></a>1066         @flog.report('handle')
-</span><span class="inferred1"><a name="line1067"></a>1067       end
-</span><span class="inferred0"><a name="line1068"></a>1068 
-</span><span class="marked1"><a name="line1069"></a>1069       describe 'when flogging all methods in the system' do
-</span><span class="marked0"><a name="line1070"></a>1070         before :each do
-</span><span class="marked1"><a name="line1071"></a>1071           $a = true
-</span><span class="inferred0"><a name="line1072"></a>1072         end
-</span><span class="inferred1"><a name="line1073"></a>1073         
-</span><span class="marked0"><a name="line1074"></a>1074         it 'should not limit the detailed report' do
-</span><span class="marked1"><a name="line1075"></a>1075           @flog.expects(:output_details).with('handle')
-</span><span class="marked0"><a name="line1076"></a>1076           @flog.report('handle')
-</span><span class="inferred1"><a name="line1077"></a>1077         end
-</span><span class="inferred0"><a name="line1078"></a>1078       end
-</span><span class="inferred1"><a name="line1079"></a>1079       
-</span><span class="marked0"><a name="line1080"></a>1080       describe 'when flogging only the most expensive methods in the system' do
-</span><span class="marked1"><a name="line1081"></a>1081         before :each do
-</span><span class="marked0"><a name="line1082"></a>1082           $a = false
-</span><span class="inferred1"><a name="line1083"></a>1083         end
-</span><span class="inferred0"><a name="line1084"></a>1084         
-</span><span class="marked1"><a name="line1085"></a>1085         it 'should limit the detailed report to the Flog threshold' do
-</span><span class="marked0"><a name="line1086"></a>1086           @flog.stubs(:total).returns(3.45)
-</span><span class="marked1"><a name="line1087"></a>1087           @flog.expects(:output_details).with('handle', 3.45 * 0.60)
-</span><span class="marked0"><a name="line1088"></a>1088           @flog.report('handle')
-</span><span class="inferred1"><a name="line1089"></a>1089         end
-</span><span class="inferred0"><a name="line1090"></a>1090       end
-</span><span class="inferred1"><a name="line1091"></a>1091       
-</span><span class="marked0"><a name="line1092"></a>1092       it 'should reset statistics when finished' do
-</span><span class="marked1"><a name="line1093"></a>1093         @flog.expects(:reset)
-</span><span class="marked0"><a name="line1094"></a>1094         @flog.report(@handle)
-</span><span class="inferred1"><a name="line1095"></a>1095       end
-</span><span class="inferred0"><a name="line1096"></a>1096     end
-</span><span class="inferred1"><a name="line1097"></a>1097   end
-</span><span class="inferred0"><a name="line1098"></a>1098 end
+</span><span class="inferred1"><a name="line1045"></a>1045       
+</span><span class="marked0"><a name="line1046"></a>1046       currently 'should reset statistics when finished' do
+</span><span class="marked1"><a name="line1047"></a>1047         @flog.expects(:reset)
+</span><span class="marked0"><a name="line1048"></a>1048         begin
+</span><span class="marked1"><a name="line1049"></a>1049           @flog.report('handle')
+</span><span class="uncovered0"><a name="line1050"></a>1050         rescue SystemExit
+</span><span class="uncovered1"><a name="line1051"></a>1051         end
+</span><span class="uncovered0"><a name="line1052"></a>1052       end
+</span><span class="uncovered1"><a name="line1053"></a>1053     end
+</span><span class="inferred0"><a name="line1054"></a>1054     
+</span><span class="marked1"><a name="line1055"></a>1055     describe 'and producing a full report' do
+</span><span class="marked0"><a name="line1056"></a>1056       before :each do
+</span><span class="marked1"><a name="line1057"></a>1057         $s = false
+</span><span class="marked0"><a name="line1058"></a>1058         @flog.stubs(:output_summary)
+</span><span class="marked1"><a name="line1059"></a>1059         @flog.stubs(:output_details)
+</span><span class="inferred0"><a name="line1060"></a>1060       end
+</span><span class="inferred1"><a name="line1061"></a>1061       
+</span><span class="marked0"><a name="line1062"></a>1062       it 'produces an output summary on the i/o handle' do
+</span><span class="marked1"><a name="line1063"></a>1063         @flog.expects(:output_summary).with('handle')
+</span><span class="marked0"><a name="line1064"></a>1064         @flog.report('handle')
+</span><span class="inferred1"><a name="line1065"></a>1065       end
+</span><span class="inferred0"><a name="line1066"></a>1066       
+</span><span class="marked1"><a name="line1067"></a>1067       currently 'should not exit' do
+</span><span class="marked0"><a name="line1068"></a>1068         @flog.expects(:exit).never
+</span><span class="marked1"><a name="line1069"></a>1069         @flog.report('handle')
+</span><span class="inferred0"><a name="line1070"></a>1070       end
+</span><span class="inferred1"><a name="line1071"></a>1071 
+</span><span class="marked0"><a name="line1072"></a>1072       it 'should generate a detailed report of method complexity on the i/o handle' do
+</span><span class="marked1"><a name="line1073"></a>1073         @flog.expects(:output_details).with {|handle, max| handle == 'handle' }
+</span><span class="marked0"><a name="line1074"></a>1074         @flog.report('handle')
+</span><span class="inferred1"><a name="line1075"></a>1075       end
+</span><span class="inferred0"><a name="line1076"></a>1076 
+</span><span class="marked1"><a name="line1077"></a>1077       describe 'when flogging all methods in the system' do
+</span><span class="marked0"><a name="line1078"></a>1078         before :each do
+</span><span class="marked1"><a name="line1079"></a>1079           $a = true
+</span><span class="inferred0"><a name="line1080"></a>1080         end
+</span><span class="inferred1"><a name="line1081"></a>1081         
+</span><span class="marked0"><a name="line1082"></a>1082         it 'should not limit the detailed report' do
+</span><span class="marked1"><a name="line1083"></a>1083           @flog.expects(:output_details).with('handle')
+</span><span class="marked0"><a name="line1084"></a>1084           @flog.report('handle')
+</span><span class="inferred1"><a name="line1085"></a>1085         end
+</span><span class="inferred0"><a name="line1086"></a>1086       end
+</span><span class="inferred1"><a name="line1087"></a>1087       
+</span><span class="marked0"><a name="line1088"></a>1088       describe 'when flogging only the most expensive methods in the system' do
+</span><span class="marked1"><a name="line1089"></a>1089         before :each do
+</span><span class="marked0"><a name="line1090"></a>1090           $a = false
+</span><span class="inferred1"><a name="line1091"></a>1091         end
+</span><span class="inferred0"><a name="line1092"></a>1092         
+</span><span class="marked1"><a name="line1093"></a>1093         it 'should limit the detailed report to the Flog threshold' do
+</span><span class="marked0"><a name="line1094"></a>1094           @flog.stubs(:total).returns(3.45)
+</span><span class="marked1"><a name="line1095"></a>1095           @flog.expects(:output_details).with('handle', 3.45 * 0.60)
+</span><span class="marked0"><a name="line1096"></a>1096           @flog.report('handle')
+</span><span class="inferred1"><a name="line1097"></a>1097         end
+</span><span class="inferred0"><a name="line1098"></a>1098       end
+</span><span class="inferred1"><a name="line1099"></a>1099       
+</span><span class="marked0"><a name="line1100"></a>1100       it 'should reset statistics when finished' do
+</span><span class="marked1"><a name="line1101"></a>1101         @flog.expects(:reset)
+</span><span class="marked0"><a name="line1102"></a>1102         @flog.report(@handle)
+</span><span class="inferred1"><a name="line1103"></a>1103       end
+</span><span class="inferred0"><a name="line1104"></a>1104     end
+</span><span class="inferred1"><a name="line1105"></a>1105   end
+</span><span class="inferred0"><a name="line1106"></a>1106 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>

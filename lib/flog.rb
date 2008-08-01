@@ -3,11 +3,6 @@ require 'parse_tree'
 require 'sexp_processor'
 require 'unified_ruby'
 
-$a ||= false # report all methods, not just 60%
-$m ||= false # real methods only (no global scope)
-$s ||= false # summary only
-$v ||= false # verbose, print methods as processed
-
 class Flog < SexpProcessor
   VERSION = '1.2.0'
 

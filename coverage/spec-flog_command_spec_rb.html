@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:43:28 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:43:40 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_command_spec_rb.html'>spec/flog_command_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>153</tt>
+      <td class='lines_total'><tt>176</tt>
         </td>
-      <td class='lines_code'><tt>124</tt>
+      <td class='lines_code'><tt>143</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -598,159 +598,182 @@ span.run100 {
       </tr>
     </tbody>
   </table>
-<pre><span class="marked1"><a name="line1"></a>  1 require File.dirname(__FILE__) + '/spec_helper.rb'
-</span><span class="marked0"><a name="line2"></a>  2 require 'flog'
-</span><span class="inferred1"><a name="line3"></a>  3 
-</span><span class="marked0"><a name="line4"></a>  4 describe 'flog command' do
-</span><span class="marked1"><a name="line5"></a>  5   before :each do
-</span><span class="marked0"><a name="line6"></a>  6     @flog = stub('Flog', :flog_files =&gt; true, :report =&gt; true)
-</span><span class="marked1"><a name="line7"></a>  7     Flog.stubs(:new).returns(@flog)
-</span><span class="marked0"><a name="line8"></a>  8     self.stubs(:exit)
-</span><span class="inferred1"><a name="line9"></a>  9   end
-</span><span class="inferred0"><a name="line10"></a> 10 
-</span><span class="marked1"><a name="line11"></a> 11   def run_command
-</span><span class="marked0"><a name="line12"></a> 12     eval File.read(File.join(File.dirname(__FILE__), *%w[.. bin flog]))
-</span><span class="marked1"><a name="line13"></a> 13   end
-</span><span class="inferred0"><a name="line14"></a> 14   
-</span><span class="marked1"><a name="line15"></a> 15   describe 'usage' do
-</span><span class="marked0"><a name="line16"></a> 16     it 'should take no arguments' do
-</span><span class="marked1"><a name="line17"></a> 17       run_command
-</span><span class="marked0"><a name="line18"></a> 18       lambda { usage('foo') }.should raise_error(ArgumentError)
-</span><span class="inferred1"><a name="line19"></a> 19     end
-</span><span class="inferred0"><a name="line20"></a> 20     
-</span><span class="marked1"><a name="line21"></a> 21     it 'should output a usage message' do
-</span><span class="marked0"><a name="line22"></a> 22       run_command
-</span><span class="marked1"><a name="line23"></a> 23       self.expects(:puts).at_least_once
-</span><span class="marked0"><a name="line24"></a> 24       usage
-</span><span class="inferred1"><a name="line25"></a> 25     end
-</span><span class="inferred0"><a name="line26"></a> 26   end
-</span><span class="inferred1"><a name="line27"></a> 27   
-</span><span class="marked0"><a name="line28"></a> 28   describe 'when no command-line arguments are specified' do
-</span><span class="marked1"><a name="line29"></a> 29     before :each do
-</span><span class="marked0"><a name="line30"></a> 30       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line31"></a> 31       ARGV = []
-</span><span class="inferred0"><a name="line32"></a> 32     end  
-</span><span class="inferred1"><a name="line33"></a> 33   
-</span><span class="marked0"><a name="line34"></a> 34     it 'should run' do
-</span><span class="marked1"><a name="line35"></a> 35       lambda { run_command }.should_not raise_error(Errno::ENOENT)
-</span><span class="inferred0"><a name="line36"></a> 36     end
-</span><span class="inferred1"><a name="line37"></a> 37     
-</span><span class="marked0"><a name="line38"></a> 38     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line39"></a> 39       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line40"></a> 40       run_command
-</span><span class="inferred1"><a name="line41"></a> 41     end
-</span><span class="inferred0"><a name="line42"></a> 42     
-</span><span class="marked1"><a name="line43"></a> 43     it 'should call flog_files on the Flog instance' do
-</span><span class="marked0"><a name="line44"></a> 44       @flog.expects(:flog_files)
-</span><span class="marked1"><a name="line45"></a> 45       run_command
-</span><span class="inferred0"><a name="line46"></a> 46     end
-</span><span class="inferred1"><a name="line47"></a> 47     
-</span><span class="marked0"><a name="line48"></a> 48     it 'should call report on the Flog instance' do
-</span><span class="marked1"><a name="line49"></a> 49       @flog.expects(:report)
-</span><span class="marked0"><a name="line50"></a> 50       run_command
-</span><span class="inferred1"><a name="line51"></a> 51     end
-</span><span class="inferred0"><a name="line52"></a> 52     
-</span><span class="marked1"><a name="line53"></a> 53     it &quot;should pass '-' (for the file path) to flog_files on the instance&quot; do
-</span><span class="marked0"><a name="line54"></a> 54       @flog.expects(:flog_files).with(['-'])
-</span><span class="marked1"><a name="line55"></a> 55       run_command
-</span><span class="inferred0"><a name="line56"></a> 56     end
-</span><span class="inferred1"><a name="line57"></a> 57   end
-</span><span class="inferred0"><a name="line58"></a> 58   
-</span><span class="marked1"><a name="line59"></a> 59   describe &quot;since the script assumes it was called with 'ruby -s'&quot; do
-</span><span class="marked0"><a name="line60"></a> 60     describe &quot;when -h is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line61"></a> 61       before :each do
-</span><span class="marked0"><a name="line62"></a> 62         Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line63"></a> 63         ARGV = []
-</span><span class="marked0"><a name="line64"></a> 64         $h = true  # ruby -s, ftw
-</span><span class="inferred1"><a name="line65"></a> 65       end
-</span><span class="inferred0"><a name="line66"></a> 66       
-</span><span class="marked1"><a name="line67"></a> 67       after :each do
-</span><span class="marked0"><a name="line68"></a> 68         $h = nil
-</span><span class="inferred1"><a name="line69"></a> 69       end
-</span><span class="inferred0"><a name="line70"></a> 70       
-</span><span class="marked1"><a name="line71"></a> 71       before :each do
-</span><span class="marked0"><a name="line72"></a> 72         self.stubs(:usage).returns(nil)
-</span><span class="inferred1"><a name="line73"></a> 73       end
-</span><span class="inferred0"><a name="line74"></a> 74     
-</span><span class="marked1"><a name="line75"></a> 75       currently &quot;should display help information&quot; do
-</span><span class="marked0"><a name="line76"></a> 76         self.expects(:usage)
-</span><span class="marked1"><a name="line77"></a> 77         run_command
-</span><span class="inferred0"><a name="line78"></a> 78       end
-</span><span class="inferred1"><a name="line79"></a> 79       
-</span><span class="marked0"><a name="line80"></a> 80       it 'should not create a Flog instance' do
-</span><span class="marked1"><a name="line81"></a> 81         Flog.expects(:new).never
-</span><span class="marked0"><a name="line82"></a> 82         run_command
-</span><span class="inferred1"><a name="line83"></a> 83       end
-</span><span class="inferred0"><a name="line84"></a> 84       
-</span><span class="marked1"><a name="line85"></a> 85       it 'should exit with status 0' do
-</span><span class="marked0"><a name="line86"></a> 86         self.expects(:exit).with(0)
-</span><span class="marked1"><a name="line87"></a> 87         run_command
-</span><span class="inferred0"><a name="line88"></a> 88       end
-</span><span class="inferred1"><a name="line89"></a> 89     end
-</span><span class="inferred0"><a name="line90"></a> 90     
-</span><span class="marked1"><a name="line91"></a> 91     describe 'when -I is specified on the command-line' do
-</span><span class="marked0"><a name="line92"></a> 92       before :each do
-</span><span class="marked1"><a name="line93"></a> 93         Object.send(:remove_const, :ARGV)
-</span><span class="marked0"><a name="line94"></a> 94         ARGV = []
-</span><span class="inferred1"><a name="line95"></a> 95       end
-</span><span class="inferred0"><a name="line96"></a> 96       
-</span><span class="marked1"><a name="line97"></a> 97       before :each do
-</span><span class="marked0"><a name="line98"></a> 98         @paths = $:.dup
-</span><span class="inferred1"><a name="line99"></a> 99       end
-</span><span class="inferred0"><a name="line100"></a>100       
-</span><span class="marked1"><a name="line101"></a>101       describe 'when -I is not given a string' do
-</span><span class="marked0"><a name="line102"></a>102         before :each do
-</span><span class="marked1"><a name="line103"></a>103           $I = 234  # ruby -s, ftw
-</span><span class="inferred0"><a name="line104"></a>104         end
-</span><span class="inferred1"><a name="line105"></a>105         
-</span><span class="marked0"><a name="line106"></a>106         after :each do
-</span><span class="marked1"><a name="line107"></a>107           $I = nil
-</span><span class="inferred0"><a name="line108"></a>108         end
-</span><span class="inferred1"><a name="line109"></a>109         
-</span><span class="marked0"><a name="line110"></a>110         currently 'should not modify the include path' do
-</span><span class="marked1"><a name="line111"></a>111           run_command
-</span><span class="marked0"><a name="line112"></a>112           $:.should == @paths
-</span><span class="inferred1"><a name="line113"></a>113         end
-</span><span class="inferred0"><a name="line114"></a>114         
-</span><span class="marked1"><a name="line115"></a>115         it 'should display usage' do
-</span><span class="marked0"><a name="line116"></a>116           self.expects(:usage)
-</span><span class="marked1"><a name="line117"></a>117           run_command
-</span><span class="inferred0"><a name="line118"></a>118         end
-</span><span class="inferred1"><a name="line119"></a>119         
-</span><span class="marked0"><a name="line120"></a>120         it 'should not create a Flog instance' do
-</span><span class="marked1"><a name="line121"></a>121           Flog.expects(:new).never
-</span><span class="marked0"><a name="line122"></a>122           run_command
-</span><span class="inferred1"><a name="line123"></a>123         end
-</span><span class="inferred0"><a name="line124"></a>124       end
-</span><span class="inferred1"><a name="line125"></a>125       
-</span><span class="marked0"><a name="line126"></a>126       describe 'when -I is given a string' do
-</span><span class="marked1"><a name="line127"></a>127         before :each do
-</span><span class="marked0"><a name="line128"></a>128           $I = '/bin/true'      
-</span><span class="inferred1"><a name="line129"></a>129         end
-</span><span class="inferred0"><a name="line130"></a>130         
-</span><span class="marked1"><a name="line131"></a>131         after :each do
-</span><span class="marked0"><a name="line132"></a>132           $I = nil
-</span><span class="inferred1"><a name="line133"></a>133         end
-</span><span class="inferred0"><a name="line134"></a>134         
-</span><span class="marked1"><a name="line135"></a>135         it &quot;should append each ':' separated path to $:&quot; do
-</span><span class="marked0"><a name="line136"></a>136           run_command
-</span><span class="marked1"><a name="line137"></a>137           $:.should_not == @paths
-</span><span class="inferred0"><a name="line138"></a>138         end
-</span><span class="inferred1"><a name="line139"></a>139       end
-</span><span class="inferred0"><a name="line140"></a>140       
-</span><span class="marked1"><a name="line141"></a>141       it 'should create a Flog instance' do
-</span><span class="marked0"><a name="line142"></a>142         Flog.expects(:new).returns(@flog)
-</span><span class="marked1"><a name="line143"></a>143         run_command
-</span><span class="inferred0"><a name="line144"></a>144       end
-</span><span class="inferred1"><a name="line145"></a>145     end
-</span><span class="inferred0"><a name="line146"></a>146 
-</span><span class="marked1"><a name="line147"></a>147     it 'should validate the -a option'
-</span><span class="marked0"><a name="line148"></a>148     it 'should validate the -m option'
-</span><span class="marked1"><a name="line149"></a>149     it 'should validate the -s option'
-</span><span class="marked0"><a name="line150"></a>150     it 'should validate the -v option'
-</span><span class="inferred1"><a name="line151"></a>151 
-</span><span class="inferred0"><a name="line152"></a>152   end
-</span><span class="inferred1"><a name="line153"></a>153 end
+<pre><span class="marked0"><a name="line1"></a>  1 require File.dirname(__FILE__) + '/spec_helper.rb'
+</span><span class="marked1"><a name="line2"></a>  2 require 'flog'
+</span><span class="inferred0"><a name="line3"></a>  3 
+</span><span class="marked1"><a name="line4"></a>  4 describe 'flog command' do
+</span><span class="marked0"><a name="line5"></a>  5   before :each do
+</span><span class="marked1"><a name="line6"></a>  6     @flog = stub('Flog', :flog_files =&gt; true, :report =&gt; true)
+</span><span class="marked0"><a name="line7"></a>  7     Flog.stubs(:new).returns(@flog)
+</span><span class="marked1"><a name="line8"></a>  8     self.stubs(:exit)
+</span><span class="inferred0"><a name="line9"></a>  9   end
+</span><span class="inferred1"><a name="line10"></a> 10 
+</span><span class="marked0"><a name="line11"></a> 11   def run_command
+</span><span class="marked1"><a name="line12"></a> 12     eval File.read(File.join(File.dirname(__FILE__), *%w[.. bin flog]))
+</span><span class="marked0"><a name="line13"></a> 13   end
+</span><span class="inferred1"><a name="line14"></a> 14   
+</span><span class="marked0"><a name="line15"></a> 15   describe 'usage' do
+</span><span class="marked1"><a name="line16"></a> 16     it 'should take no arguments' do
+</span><span class="marked0"><a name="line17"></a> 17       run_command
+</span><span class="marked1"><a name="line18"></a> 18       lambda { usage('foo') }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line19"></a> 19     end
+</span><span class="inferred1"><a name="line20"></a> 20     
+</span><span class="marked0"><a name="line21"></a> 21     it 'should output a usage message' do
+</span><span class="marked1"><a name="line22"></a> 22       run_command
+</span><span class="marked0"><a name="line23"></a> 23       self.expects(:puts).at_least_once
+</span><span class="marked1"><a name="line24"></a> 24       usage
+</span><span class="inferred0"><a name="line25"></a> 25     end
+</span><span class="inferred1"><a name="line26"></a> 26   end
+</span><span class="inferred0"><a name="line27"></a> 27   
+</span><span class="marked1"><a name="line28"></a> 28   describe 'when no command-line arguments are specified' do
+</span><span class="marked0"><a name="line29"></a> 29     before :each do
+</span><span class="marked1"><a name="line30"></a> 30       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line31"></a> 31       ARGV = []
+</span><span class="inferred1"><a name="line32"></a> 32     end  
+</span><span class="inferred0"><a name="line33"></a> 33   
+</span><span class="marked1"><a name="line34"></a> 34     it 'should run' do
+</span><span class="marked0"><a name="line35"></a> 35       lambda { run_command }.should_not raise_error(Errno::ENOENT)
+</span><span class="inferred1"><a name="line36"></a> 36     end
+</span><span class="inferred0"><a name="line37"></a> 37     
+</span><span class="marked1"><a name="line38"></a> 38     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line39"></a> 39       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line40"></a> 40       run_command
+</span><span class="inferred0"><a name="line41"></a> 41     end
+</span><span class="inferred1"><a name="line42"></a> 42     
+</span><span class="marked0"><a name="line43"></a> 43     it 'should call flog_files on the Flog instance' do
+</span><span class="marked1"><a name="line44"></a> 44       @flog.expects(:flog_files)
+</span><span class="marked0"><a name="line45"></a> 45       run_command
+</span><span class="inferred1"><a name="line46"></a> 46     end
+</span><span class="inferred0"><a name="line47"></a> 47     
+</span><span class="marked1"><a name="line48"></a> 48     it 'should call report on the Flog instance' do
+</span><span class="marked0"><a name="line49"></a> 49       @flog.expects(:report)
+</span><span class="marked1"><a name="line50"></a> 50       run_command
+</span><span class="inferred0"><a name="line51"></a> 51     end
+</span><span class="inferred1"><a name="line52"></a> 52     
+</span><span class="marked0"><a name="line53"></a> 53     it &quot;should pass '-' (for the file path) to flog_files on the instance&quot; do
+</span><span class="marked1"><a name="line54"></a> 54       @flog.expects(:flog_files).with(['-'])
+</span><span class="marked0"><a name="line55"></a> 55       run_command
+</span><span class="inferred1"><a name="line56"></a> 56     end
+</span><span class="inferred0"><a name="line57"></a> 57 
+</span><span class="marked1"><a name="line58"></a> 58     it 'should not display usage information' do
+</span><span class="marked0"><a name="line59"></a> 59       self.expects(:usage).never
+</span><span class="marked1"><a name="line60"></a> 60       run_command
+</span><span class="inferred0"><a name="line61"></a> 61     end
+</span><span class="inferred1"><a name="line62"></a> 62 
+</span><span class="marked0"><a name="line63"></a> 63     it 'should not alter the include path' do
+</span><span class="marked1"><a name="line64"></a> 64       @paths = $:.dup
+</span><span class="marked0"><a name="line65"></a> 65       run_command
+</span><span class="marked1"><a name="line66"></a> 66       $:.should == @paths
+</span><span class="inferred0"><a name="line67"></a> 67     end
+</span><span class="inferred1"><a name="line68"></a> 68     
+</span><span class="marked0"><a name="line69"></a> 69     it 'should not display all flog results' do
+</span><span class="marked1"><a name="line70"></a> 70       run_command
+</span><span class="marked0"><a name="line71"></a> 71       $a.should be_false
+</span><span class="inferred1"><a name="line72"></a> 72     end
+</span><span class="inferred0"><a name="line73"></a> 73     
+</span><span class="marked1"><a name="line74"></a> 74     it 'should not display a summary report' do
+</span><span class="marked0"><a name="line75"></a> 75       run_command
+</span><span class="marked1"><a name="line76"></a> 76       $s.should be_false
+</span><span class="inferred0"><a name="line77"></a> 77     end
+</span><span class="inferred1"><a name="line78"></a> 78     
+</span><span class="marked0"><a name="line79"></a> 79     it 'should not skip code outside of methods' do
+</span><span class="marked1"><a name="line80"></a> 80       run_command
+</span><span class="marked0"><a name="line81"></a> 81       $m.should be_false
+</span><span class="inferred1"><a name="line82"></a> 82     end
+</span><span class="inferred0"><a name="line83"></a> 83     
+</span><span class="marked1"><a name="line84"></a> 84     it 'should not display verbose progress info' do
+</span><span class="marked0"><a name="line85"></a> 85       run_command
+</span><span class="marked1"><a name="line86"></a> 86       $v.should be_false
+</span><span class="inferred0"><a name="line87"></a> 87     end
+</span><span class="inferred1"><a name="line88"></a> 88   end
+</span><span class="inferred0"><a name="line89"></a> 89   
+</span><span class="marked1"><a name="line90"></a> 90   describe &quot;when -h is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line91"></a> 91     before :each do
+</span><span class="marked1"><a name="line92"></a> 92       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line93"></a> 93       ARGV = []
+</span><span class="marked1"><a name="line94"></a> 94       $h = true  # ruby -s, ftw
+</span><span class="inferred0"><a name="line95"></a> 95     end
+</span><span class="inferred1"><a name="line96"></a> 96     
+</span><span class="marked0"><a name="line97"></a> 97     after :each do
+</span><span class="marked1"><a name="line98"></a> 98       $h = nil
+</span><span class="inferred0"><a name="line99"></a> 99     end
+</span><span class="inferred1"><a name="line100"></a>100     
+</span><span class="marked0"><a name="line101"></a>101     before :each do
+</span><span class="marked1"><a name="line102"></a>102       self.stubs(:usage).returns(nil)
+</span><span class="inferred0"><a name="line103"></a>103     end
+</span><span class="inferred1"><a name="line104"></a>104   
+</span><span class="marked0"><a name="line105"></a>105     currently &quot;should display help information&quot; do
+</span><span class="marked1"><a name="line106"></a>106       self.expects(:usage)
+</span><span class="marked0"><a name="line107"></a>107       run_command
+</span><span class="inferred1"><a name="line108"></a>108     end
+</span><span class="inferred0"><a name="line109"></a>109     
+</span><span class="marked1"><a name="line110"></a>110     it 'should not create a Flog instance' do
+</span><span class="marked0"><a name="line111"></a>111       Flog.expects(:new).never
+</span><span class="marked1"><a name="line112"></a>112       run_command
+</span><span class="inferred0"><a name="line113"></a>113     end
+</span><span class="inferred1"><a name="line114"></a>114     
+</span><span class="marked0"><a name="line115"></a>115     it 'should exit with status 0' do
+</span><span class="marked1"><a name="line116"></a>116       self.expects(:exit).with(0)
+</span><span class="marked0"><a name="line117"></a>117       run_command
+</span><span class="inferred1"><a name="line118"></a>118     end
+</span><span class="inferred0"><a name="line119"></a>119   end
+</span><span class="inferred1"><a name="line120"></a>120   
+</span><span class="marked0"><a name="line121"></a>121   describe 'when -I is specified on the command-line' do
+</span><span class="marked1"><a name="line122"></a>122     before :each do
+</span><span class="marked0"><a name="line123"></a>123       Object.send(:remove_const, :ARGV)
+</span><span class="marked1"><a name="line124"></a>124       ARGV = []
+</span><span class="inferred0"><a name="line125"></a>125     end
+</span><span class="inferred1"><a name="line126"></a>126     
+</span><span class="marked0"><a name="line127"></a>127     before :each do
+</span><span class="marked1"><a name="line128"></a>128       @paths = $:.dup
+</span><span class="inferred0"><a name="line129"></a>129     end
+</span><span class="inferred1"><a name="line130"></a>130     
+</span><span class="marked0"><a name="line131"></a>131     describe 'when -I is not given a string' do
+</span><span class="marked1"><a name="line132"></a>132       before :each do
+</span><span class="marked0"><a name="line133"></a>133         $I = 234  # ruby -s, ftw
+</span><span class="inferred1"><a name="line134"></a>134       end
+</span><span class="inferred0"><a name="line135"></a>135       
+</span><span class="marked1"><a name="line136"></a>136       after :each do
+</span><span class="marked0"><a name="line137"></a>137         $I = nil
+</span><span class="inferred1"><a name="line138"></a>138       end
+</span><span class="inferred0"><a name="line139"></a>139       
+</span><span class="marked1"><a name="line140"></a>140       currently 'should not modify the include path' do
+</span><span class="marked0"><a name="line141"></a>141         run_command
+</span><span class="marked1"><a name="line142"></a>142         $:.should == @paths
+</span><span class="inferred0"><a name="line143"></a>143       end
+</span><span class="inferred1"><a name="line144"></a>144       
+</span><span class="marked0"><a name="line145"></a>145       it 'should display usage' do
+</span><span class="marked1"><a name="line146"></a>146         self.expects(:usage)
+</span><span class="marked0"><a name="line147"></a>147         run_command
+</span><span class="inferred1"><a name="line148"></a>148       end
+</span><span class="inferred0"><a name="line149"></a>149       
+</span><span class="marked1"><a name="line150"></a>150       it 'should not create a Flog instance' do
+</span><span class="marked0"><a name="line151"></a>151         Flog.expects(:new).never
+</span><span class="marked1"><a name="line152"></a>152         run_command
+</span><span class="inferred0"><a name="line153"></a>153       end
+</span><span class="inferred1"><a name="line154"></a>154     end
+</span><span class="inferred0"><a name="line155"></a>155     
+</span><span class="marked1"><a name="line156"></a>156     describe 'when -I is given a string' do
+</span><span class="marked0"><a name="line157"></a>157       before :each do
+</span><span class="marked1"><a name="line158"></a>158         $I = '/bin/true'      
+</span><span class="inferred0"><a name="line159"></a>159       end
+</span><span class="inferred1"><a name="line160"></a>160       
+</span><span class="marked0"><a name="line161"></a>161       after :each do
+</span><span class="marked1"><a name="line162"></a>162         $I = nil
+</span><span class="inferred0"><a name="line163"></a>163       end
+</span><span class="inferred1"><a name="line164"></a>164       
+</span><span class="marked0"><a name="line165"></a>165       it &quot;should append each ':' separated path to $:&quot; do
+</span><span class="marked1"><a name="line166"></a>166         run_command
+</span><span class="marked0"><a name="line167"></a>167         $:.should_not == @paths
+</span><span class="inferred1"><a name="line168"></a>168       end
+</span><span class="inferred0"><a name="line169"></a>169     end
+</span><span class="inferred1"><a name="line170"></a>170     
+</span><span class="marked0"><a name="line171"></a>171     it 'should create a Flog instance' do
+</span><span class="marked1"><a name="line172"></a>172       Flog.expects(:new).returns(@flog)
+</span><span class="marked0"><a name="line173"></a>173       run_command
+</span><span class="inferred1"><a name="line174"></a>174     end
+</span><span class="inferred0"><a name="line175"></a>175   end
+</span><span class="inferred1"><a name="line176"></a>176 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>

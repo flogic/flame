@@ -28,6 +28,11 @@ if $I
   end
 end
 
+$a ||= false # report all methods, not just 60%
+$m ||= false # real methods only (no global scope)
+$s ||= false # summary only
+$v ||= false # verbose, print methods as processed
+
 flogger = Flog.new
 flogger.flog_files ARGV
 flogger.report
