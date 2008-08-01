@@ -204,13 +204,7 @@ class Flog < SexpProcessor
     io.puts "Total Flog = %.1f (%.1f flog / method)\n" % [self.total, self.average]
   end
 
-  def report io = $stdout
-    output_summary(io)
-    exit 0 if $s
-
-    max = self.total * THRESHOLD
-
-    # will Extract Method here, passing in max
+  def output_details(io, max = nil)
     totals = self.totals
     current = 0
     calls.sort_by { |k,v| -totals[k] }.each do |class_method, call_list|
@@ -227,8 +221,12 @@ class Flog < SexpProcessor
       current += total
       break if current >= max
     end
-    ### end extraction
-    
+  end
+
+  def report io = $stdout
+    output_summary(io)
+    exit 0 if $s
+    output_details(io, self.total * THRESHOLD)    
   ensure
     self.reset
   end
