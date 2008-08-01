@@ -178,6 +178,11 @@ class Flog < SexpProcessor
     @totals ||= Hash.new(0)
     @totals[method] = score
   end
+  
+  def increment_total_score_by(amount)
+    @total_score ||= 0
+    @total_score += amount
+  end
 
   def totals
     unless @totals then
@@ -187,7 +192,7 @@ class Flog < SexpProcessor
         next if $m and meth =~ /##{@@no_method}$/
         score = score_method(tally)
         record_method_score(meth, score)
-        @total_score += score
+        increment_total_score_by score
       end
     end
     @totals

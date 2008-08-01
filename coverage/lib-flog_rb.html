@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:39:27 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:39:39 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,11 +571,11 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='lib-flog_rb.html'>lib/flog.rb</a>
         </td>
-      <td class='lines_total'><tt>495</tt>
+      <td class='lines_total'><tt>500</tt>
         </td>
-      <td class='lines_code'><tt>409</tt>
+      <td class='lines_code'><tt>413</tt>
         </td>
-      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>87.3%</tt>
+      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>87.4%</tt>
               &nbsp;</td>
             <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='87'/>
                   <td class='uncovered' width='13'/>
@@ -585,7 +585,7 @@ span.run100 {
             </tr>
           </table>
         </td>
-      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_code'>85.1%</tt>
+      <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_code'>85.2%</tt>
               &nbsp;</td>
             <td><table cellspacing='0' class='percent_graph' cellpadding='0' width='100'><tr><td class='covered' width='85'/>
                   <td class='uncovered' width='15'/>
@@ -778,321 +778,326 @@ span.run100 {
 </span><span class="marked0"><a name="line178"></a>178     @totals ||= Hash.new(0)
 </span><span class="marked1"><a name="line179"></a>179     @totals[method] = score
 </span><span class="inferred0"><a name="line180"></a>180   end
-</span><span class="inferred1"><a name="line181"></a>181 
-</span><span class="marked0"><a name="line182"></a>182   def totals
-</span><span class="marked1"><a name="line183"></a>183     unless @totals then
-</span><span class="marked0"><a name="line184"></a>184       @total_score = 0
-</span><span class="marked1"><a name="line185"></a>185       @totals = Hash.new(0)
-</span><span class="marked0"><a name="line186"></a>186       self.calls.each do |meth, tally|
-</span><span class="marked1"><a name="line187"></a>187         next if $m and meth =~ /##{@@no_method}$/
-</span><span class="marked0"><a name="line188"></a>188         score = score_method(tally)
-</span><span class="marked1"><a name="line189"></a>189         record_method_score(meth, score)
-</span><span class="marked0"><a name="line190"></a>190         @total_score += score
-</span><span class="inferred1"><a name="line191"></a>191       end
-</span><span class="inferred0"><a name="line192"></a>192     end
-</span><span class="marked1"><a name="line193"></a>193     @totals
-</span><span class="inferred0"><a name="line194"></a>194   end
-</span><span class="inferred1"><a name="line195"></a>195 
-</span><span class="marked0"><a name="line196"></a>196   def report io = $stdout
-</span><span class="inferred1"><a name="line197"></a>197     current = 0   # can be moved lower
-</span><span class="inferred0"><a name="line198"></a>198     total_score = self.total
-</span><span class="inferred1"><a name="line199"></a>199     max = total_score * THRESHOLD  # can be moved lower
-</span><span class="inferred0"><a name="line200"></a>200     totals = self.totals  # can be moved lower
-</span><span class="inferred1"><a name="line201"></a>201 
-</span><span class="inferred0"><a name="line202"></a>202     io.puts &quot;Total Flog = %.1f (%.1f flog / method)&quot; % [total_score, self.average]
-</span><span class="inferred1"><a name="line203"></a>203     io.puts
-</span><span class="inferred0"><a name="line204"></a>204 
-</span><span class="inferred1"><a name="line205"></a>205     exit 0 if $s
+</span><span class="inferred1"><a name="line181"></a>181   
+</span><span class="marked0"><a name="line182"></a>182   def increment_total_score_by(amount)
+</span><span class="marked1"><a name="line183"></a>183     @total_score ||= 0
+</span><span class="marked0"><a name="line184"></a>184     @total_score += amount
+</span><span class="inferred1"><a name="line185"></a>185   end
+</span><span class="inferred0"><a name="line186"></a>186 
+</span><span class="marked1"><a name="line187"></a>187   def totals
+</span><span class="marked0"><a name="line188"></a>188     unless @totals then
+</span><span class="marked1"><a name="line189"></a>189       @total_score = 0
+</span><span class="marked0"><a name="line190"></a>190       @totals = Hash.new(0)
+</span><span class="marked1"><a name="line191"></a>191       self.calls.each do |meth, tally|
+</span><span class="marked0"><a name="line192"></a>192         next if $m and meth =~ /##{@@no_method}$/
+</span><span class="marked1"><a name="line193"></a>193         score = score_method(tally)
+</span><span class="marked0"><a name="line194"></a>194         record_method_score(meth, score)
+</span><span class="marked1"><a name="line195"></a>195         increment_total_score_by score
+</span><span class="inferred0"><a name="line196"></a>196       end
+</span><span class="inferred1"><a name="line197"></a>197     end
+</span><span class="marked0"><a name="line198"></a>198     @totals
+</span><span class="inferred1"><a name="line199"></a>199   end
+</span><span class="inferred0"><a name="line200"></a>200 
+</span><span class="marked1"><a name="line201"></a>201   def report io = $stdout
+</span><span class="inferred0"><a name="line202"></a>202     current = 0   # can be moved lower
+</span><span class="inferred1"><a name="line203"></a>203     total_score = self.total
+</span><span class="inferred0"><a name="line204"></a>204     max = total_score * THRESHOLD  # can be moved lower
+</span><span class="inferred1"><a name="line205"></a>205     totals = self.totals  # can be moved lower
 </span><span class="inferred0"><a name="line206"></a>206 
-</span><span class="inferred1"><a name="line207"></a>207     @calls.sort_by { |k,v| -totals[k] }.each do |class_method, calls|
-</span><span class="inferred0"><a name="line208"></a>208       next if $m and class_method =~ /##{@@no_method}/
-</span><span class="inferred1"><a name="line209"></a>209       total = totals[class_method]
-</span><span class="inferred0"><a name="line210"></a>210       io.puts &quot;%s: (%.1f)&quot; % [class_method, total]
-</span><span class="inferred1"><a name="line211"></a>211       calls.sort_by { |k,v| -v }.each do |call, count|
-</span><span class="inferred0"><a name="line212"></a>212         io.puts &quot;  %6.1f: %s&quot; % [count, call]
-</span><span class="inferred1"><a name="line213"></a>213       end
-</span><span class="inferred0"><a name="line214"></a>214 
-</span><span class="inferred1"><a name="line215"></a>215       current += total
-</span><span class="inferred0"><a name="line216"></a>216       break if current &gt;= max
-</span><span class="inferred1"><a name="line217"></a>217     end
-</span><span class="uncovered0"><a name="line218"></a>218   ensure
-</span><span class="uncovered1"><a name="line219"></a>219     self.reset
-</span><span class="uncovered0"><a name="line220"></a>220   end
-</span><span class="inferred1"><a name="line221"></a>221 
-</span><span class="inferred0"><a name="line222"></a>222   ############################################################
-</span><span class="inferred1"><a name="line223"></a>223   # Process Methods:
-</span><span class="inferred0"><a name="line224"></a>224 
-</span><span class="marked1"><a name="line225"></a>225   def process_alias(exp)
-</span><span class="uncovered0"><a name="line226"></a>226     process exp.shift
-</span><span class="uncovered1"><a name="line227"></a>227     process exp.shift
-</span><span class="uncovered0"><a name="line228"></a>228     add_to_score :alias
-</span><span class="uncovered1"><a name="line229"></a>229     s()
-</span><span class="uncovered0"><a name="line230"></a>230   end
-</span><span class="inferred1"><a name="line231"></a>231 
-</span><span class="marked0"><a name="line232"></a>232   def process_and(exp)
-</span><span class="marked1"><a name="line233"></a>233     add_to_score :branch
-</span><span class="marked0"><a name="line234"></a>234     penalize_by 0.1 do
-</span><span class="marked1"><a name="line235"></a>235       process exp.shift # lhs
-</span><span class="marked0"><a name="line236"></a>236       process exp.shift # rhs
-</span><span class="inferred1"><a name="line237"></a>237     end
-</span><span class="marked0"><a name="line238"></a>238     s()
-</span><span class="inferred1"><a name="line239"></a>239   end
-</span><span class="inferred0"><a name="line240"></a>240 
-</span><span class="marked1"><a name="line241"></a>241   def process_attrasgn(exp)
-</span><span class="marked0"><a name="line242"></a>242     add_to_score :assignment
-</span><span class="marked1"><a name="line243"></a>243     process exp.shift # lhs
-</span><span class="marked0"><a name="line244"></a>244     exp.shift # name
-</span><span class="marked1"><a name="line245"></a>245     process exp.shift # rhs
-</span><span class="marked0"><a name="line246"></a>246     s()
-</span><span class="inferred1"><a name="line247"></a>247   end
-</span><span class="inferred0"><a name="line248"></a>248 
-</span><span class="marked1"><a name="line249"></a>249   def process_attrset(exp)
-</span><span class="uncovered0"><a name="line250"></a>250     add_to_score :assignment
-</span><span class="uncovered1"><a name="line251"></a>251     raise exp.inspect
-</span><span class="uncovered0"><a name="line252"></a>252     s()
-</span><span class="uncovered1"><a name="line253"></a>253   end
-</span><span class="inferred0"><a name="line254"></a>254 
-</span><span class="marked1"><a name="line255"></a>255   def process_block(exp)
-</span><span class="marked0"><a name="line256"></a>256     penalize_by 0.1 do
-</span><span class="marked1"><a name="line257"></a>257       analyze_list exp
-</span><span class="inferred0"><a name="line258"></a>258     end
-</span><span class="marked1"><a name="line259"></a>259     s()
-</span><span class="inferred0"><a name="line260"></a>260   end
-</span><span class="inferred1"><a name="line261"></a>261 
-</span><span class="inferred0"><a name="line262"></a>262   # [:block_pass, [:lit, :blah], [:fcall, :foo]]
-</span><span class="marked1"><a name="line263"></a>263   def process_block_pass(exp)
-</span><span class="marked0"><a name="line264"></a>264     arg = exp.shift
-</span><span class="marked1"><a name="line265"></a>265     call = exp.shift
+</span><span class="inferred1"><a name="line207"></a>207     io.puts &quot;Total Flog = %.1f (%.1f flog / method)&quot; % [total_score, self.average]
+</span><span class="inferred0"><a name="line208"></a>208     io.puts
+</span><span class="inferred1"><a name="line209"></a>209 
+</span><span class="inferred0"><a name="line210"></a>210     exit 0 if $s
+</span><span class="inferred1"><a name="line211"></a>211 
+</span><span class="inferred0"><a name="line212"></a>212     @calls.sort_by { |k,v| -totals[k] }.each do |class_method, calls|
+</span><span class="inferred1"><a name="line213"></a>213       next if $m and class_method =~ /##{@@no_method}/
+</span><span class="inferred0"><a name="line214"></a>214       total = totals[class_method]
+</span><span class="inferred1"><a name="line215"></a>215       io.puts &quot;%s: (%.1f)&quot; % [class_method, total]
+</span><span class="inferred0"><a name="line216"></a>216       calls.sort_by { |k,v| -v }.each do |call, count|
+</span><span class="inferred1"><a name="line217"></a>217         io.puts &quot;  %6.1f: %s&quot; % [count, call]
+</span><span class="inferred0"><a name="line218"></a>218       end
+</span><span class="inferred1"><a name="line219"></a>219 
+</span><span class="inferred0"><a name="line220"></a>220       current += total
+</span><span class="inferred1"><a name="line221"></a>221       break if current &gt;= max
+</span><span class="inferred0"><a name="line222"></a>222     end
+</span><span class="uncovered1"><a name="line223"></a>223   ensure
+</span><span class="uncovered0"><a name="line224"></a>224     self.reset
+</span><span class="uncovered1"><a name="line225"></a>225   end
+</span><span class="inferred0"><a name="line226"></a>226 
+</span><span class="inferred1"><a name="line227"></a>227   ############################################################
+</span><span class="inferred0"><a name="line228"></a>228   # Process Methods:
+</span><span class="inferred1"><a name="line229"></a>229 
+</span><span class="marked0"><a name="line230"></a>230   def process_alias(exp)
+</span><span class="uncovered1"><a name="line231"></a>231     process exp.shift
+</span><span class="uncovered0"><a name="line232"></a>232     process exp.shift
+</span><span class="uncovered1"><a name="line233"></a>233     add_to_score :alias
+</span><span class="uncovered0"><a name="line234"></a>234     s()
+</span><span class="uncovered1"><a name="line235"></a>235   end
+</span><span class="inferred0"><a name="line236"></a>236 
+</span><span class="marked1"><a name="line237"></a>237   def process_and(exp)
+</span><span class="marked0"><a name="line238"></a>238     add_to_score :branch
+</span><span class="marked1"><a name="line239"></a>239     penalize_by 0.1 do
+</span><span class="marked0"><a name="line240"></a>240       process exp.shift # lhs
+</span><span class="marked1"><a name="line241"></a>241       process exp.shift # rhs
+</span><span class="inferred0"><a name="line242"></a>242     end
+</span><span class="marked1"><a name="line243"></a>243     s()
+</span><span class="inferred0"><a name="line244"></a>244   end
+</span><span class="inferred1"><a name="line245"></a>245 
+</span><span class="marked0"><a name="line246"></a>246   def process_attrasgn(exp)
+</span><span class="marked1"><a name="line247"></a>247     add_to_score :assignment
+</span><span class="marked0"><a name="line248"></a>248     process exp.shift # lhs
+</span><span class="marked1"><a name="line249"></a>249     exp.shift # name
+</span><span class="marked0"><a name="line250"></a>250     process exp.shift # rhs
+</span><span class="marked1"><a name="line251"></a>251     s()
+</span><span class="inferred0"><a name="line252"></a>252   end
+</span><span class="inferred1"><a name="line253"></a>253 
+</span><span class="marked0"><a name="line254"></a>254   def process_attrset(exp)
+</span><span class="uncovered1"><a name="line255"></a>255     add_to_score :assignment
+</span><span class="uncovered0"><a name="line256"></a>256     raise exp.inspect
+</span><span class="uncovered1"><a name="line257"></a>257     s()
+</span><span class="uncovered0"><a name="line258"></a>258   end
+</span><span class="inferred1"><a name="line259"></a>259 
+</span><span class="marked0"><a name="line260"></a>260   def process_block(exp)
+</span><span class="marked1"><a name="line261"></a>261     penalize_by 0.1 do
+</span><span class="marked0"><a name="line262"></a>262       analyze_list exp
+</span><span class="inferred1"><a name="line263"></a>263     end
+</span><span class="marked0"><a name="line264"></a>264     s()
+</span><span class="inferred1"><a name="line265"></a>265   end
 </span><span class="inferred0"><a name="line266"></a>266 
-</span><span class="marked1"><a name="line267"></a>267     add_to_score :block_pass
-</span><span class="inferred0"><a name="line268"></a>268 
-</span><span class="marked1"><a name="line269"></a>269     case arg.first
-</span><span class="marked0"><a name="line270"></a>270     when :lvar, :dvar, :ivar, :cvar, :self, :const, :nil then
-</span><span class="uncovered1"><a name="line271"></a>271       # do nothing
-</span><span class="uncovered0"><a name="line272"></a>272     when :lit, :call then
-</span><span class="uncovered1"><a name="line273"></a>273       add_to_score :to_proc_normal
-</span><span class="uncovered0"><a name="line274"></a>274     when :iter, *BRANCHING then
-</span><span class="uncovered1"><a name="line275"></a>275       add_to_score :to_proc_icky!
-</span><span class="uncovered0"><a name="line276"></a>276     else
-</span><span class="uncovered1"><a name="line277"></a>277       raise({:block_pass =&gt; [arg, call]}.inspect)
-</span><span class="uncovered0"><a name="line278"></a>278     end
-</span><span class="inferred1"><a name="line279"></a>279 
-</span><span class="marked0"><a name="line280"></a>280     process arg
-</span><span class="marked1"><a name="line281"></a>281     process call
-</span><span class="inferred0"><a name="line282"></a>282 
-</span><span class="marked1"><a name="line283"></a>283     s()
-</span><span class="inferred0"><a name="line284"></a>284   end
-</span><span class="inferred1"><a name="line285"></a>285 
-</span><span class="marked0"><a name="line286"></a>286   def process_call(exp)
-</span><span class="marked1"><a name="line287"></a>287     penalize_by 0.2 do
-</span><span class="marked0"><a name="line288"></a>288       recv = process exp.shift
-</span><span class="inferred1"><a name="line289"></a>289     end
-</span><span class="marked0"><a name="line290"></a>290     name = exp.shift
-</span><span class="marked1"><a name="line291"></a>291     penalize_by 0.2 do
-</span><span class="marked0"><a name="line292"></a>292       args = process exp.shift
-</span><span class="inferred1"><a name="line293"></a>293     end
-</span><span class="inferred0"><a name="line294"></a>294 
-</span><span class="marked1"><a name="line295"></a>295     add_to_score name
-</span><span class="inferred0"><a name="line296"></a>296 
-</span><span class="marked1"><a name="line297"></a>297     s()
-</span><span class="inferred0"><a name="line298"></a>298   end
+</span><span class="inferred1"><a name="line267"></a>267   # [:block_pass, [:lit, :blah], [:fcall, :foo]]
+</span><span class="marked0"><a name="line268"></a>268   def process_block_pass(exp)
+</span><span class="marked1"><a name="line269"></a>269     arg = exp.shift
+</span><span class="marked0"><a name="line270"></a>270     call = exp.shift
+</span><span class="inferred1"><a name="line271"></a>271 
+</span><span class="marked0"><a name="line272"></a>272     add_to_score :block_pass
+</span><span class="inferred1"><a name="line273"></a>273 
+</span><span class="marked0"><a name="line274"></a>274     case arg.first
+</span><span class="marked1"><a name="line275"></a>275     when :lvar, :dvar, :ivar, :cvar, :self, :const, :nil then
+</span><span class="uncovered0"><a name="line276"></a>276       # do nothing
+</span><span class="uncovered1"><a name="line277"></a>277     when :lit, :call then
+</span><span class="uncovered0"><a name="line278"></a>278       add_to_score :to_proc_normal
+</span><span class="uncovered1"><a name="line279"></a>279     when :iter, *BRANCHING then
+</span><span class="uncovered0"><a name="line280"></a>280       add_to_score :to_proc_icky!
+</span><span class="uncovered1"><a name="line281"></a>281     else
+</span><span class="uncovered0"><a name="line282"></a>282       raise({:block_pass =&gt; [arg, call]}.inspect)
+</span><span class="uncovered1"><a name="line283"></a>283     end
+</span><span class="inferred0"><a name="line284"></a>284 
+</span><span class="marked1"><a name="line285"></a>285     process arg
+</span><span class="marked0"><a name="line286"></a>286     process call
+</span><span class="inferred1"><a name="line287"></a>287 
+</span><span class="marked0"><a name="line288"></a>288     s()
+</span><span class="inferred1"><a name="line289"></a>289   end
+</span><span class="inferred0"><a name="line290"></a>290 
+</span><span class="marked1"><a name="line291"></a>291   def process_call(exp)
+</span><span class="marked0"><a name="line292"></a>292     penalize_by 0.2 do
+</span><span class="marked1"><a name="line293"></a>293       recv = process exp.shift
+</span><span class="inferred0"><a name="line294"></a>294     end
+</span><span class="marked1"><a name="line295"></a>295     name = exp.shift
+</span><span class="marked0"><a name="line296"></a>296     penalize_by 0.2 do
+</span><span class="marked1"><a name="line297"></a>297       args = process exp.shift
+</span><span class="inferred0"><a name="line298"></a>298     end
 </span><span class="inferred1"><a name="line299"></a>299 
-</span><span class="marked0"><a name="line300"></a>300   def process_case(exp)
-</span><span class="uncovered1"><a name="line301"></a>301     add_to_score :branch
-</span><span class="uncovered0"><a name="line302"></a>302     process exp.shift # recv
-</span><span class="uncovered1"><a name="line303"></a>303     penalize_by 0.1 do
-</span><span class="uncovered0"><a name="line304"></a>304       analyze_list exp
-</span><span class="uncovered1"><a name="line305"></a>305     end
-</span><span class="uncovered0"><a name="line306"></a>306     s()
-</span><span class="uncovered1"><a name="line307"></a>307   end
-</span><span class="inferred0"><a name="line308"></a>308 
-</span><span class="marked1"><a name="line309"></a>309   def process_class(exp)
-</span><span class="marked0"><a name="line310"></a>310     set_class exp.shift do
-</span><span class="marked1"><a name="line311"></a>311       penalize_by 1.0 do
-</span><span class="marked0"><a name="line312"></a>312         supr = process exp.shift
-</span><span class="inferred1"><a name="line313"></a>313       end
-</span><span class="marked0"><a name="line314"></a>314       analyze_list exp
-</span><span class="inferred1"><a name="line315"></a>315     end
-</span><span class="marked0"><a name="line316"></a>316     s()
-</span><span class="inferred1"><a name="line317"></a>317   end
-</span><span class="inferred0"><a name="line318"></a>318 
-</span><span class="marked1"><a name="line319"></a>319   def process_dasgn_curr(exp)
-</span><span class="marked0"><a name="line320"></a>320     add_to_score :assignment
-</span><span class="marked1"><a name="line321"></a>321     exp.shift # name
-</span><span class="marked0"><a name="line322"></a>322     process exp.shift # assigment, if any
-</span><span class="marked1"><a name="line323"></a>323     s()
-</span><span class="inferred0"><a name="line324"></a>324   end
-</span><span class="inferred1"><a name="line325"></a>325 
-</span><span class="marked0"><a name="line326"></a>326   def process_defn(exp)
-</span><span class="marked1"><a name="line327"></a>327     set_method exp.shift do
-</span><span class="marked0"><a name="line328"></a>328       analyze_list exp
-</span><span class="inferred1"><a name="line329"></a>329     end
-</span><span class="marked0"><a name="line330"></a>330     s()
-</span><span class="inferred1"><a name="line331"></a>331   end
-</span><span class="inferred0"><a name="line332"></a>332 
-</span><span class="marked1"><a name="line333"></a>333   def process_defs(exp)
-</span><span class="marked0"><a name="line334"></a>334     process exp.shift
-</span><span class="marked1"><a name="line335"></a>335     set_method exp.shift do
-</span><span class="marked0"><a name="line336"></a>336       analyze_list exp
-</span><span class="inferred1"><a name="line337"></a>337     end
-</span><span class="marked0"><a name="line338"></a>338     s()
-</span><span class="inferred1"><a name="line339"></a>339   end
-</span><span class="inferred0"><a name="line340"></a>340 
-</span><span class="marked1"><a name="line341"></a>341   def process_else(exp)
-</span><span class="uncovered0"><a name="line342"></a>342     add_to_score :branch
-</span><span class="uncovered1"><a name="line343"></a>343     penalize_by 0.1 do
-</span><span class="uncovered0"><a name="line344"></a>344       analyze_list exp
-</span><span class="uncovered1"><a name="line345"></a>345     end
-</span><span class="uncovered0"><a name="line346"></a>346     s()
-</span><span class="uncovered1"><a name="line347"></a>347   end
-</span><span class="inferred0"><a name="line348"></a>348 
-</span><span class="marked1"><a name="line349"></a>349   def process_iasgn(exp)
-</span><span class="marked0"><a name="line350"></a>350     add_to_score :assignment
-</span><span class="marked1"><a name="line351"></a>351     exp.shift # name
-</span><span class="marked0"><a name="line352"></a>352     process exp.shift # rhs
-</span><span class="marked1"><a name="line353"></a>353     s()
-</span><span class="inferred0"><a name="line354"></a>354   end
-</span><span class="inferred1"><a name="line355"></a>355 
-</span><span class="marked0"><a name="line356"></a>356   def process_if(exp)
-</span><span class="marked1"><a name="line357"></a>357     add_to_score :branch
-</span><span class="marked0"><a name="line358"></a>358     process exp.shift # cond
-</span><span class="marked1"><a name="line359"></a>359     penalize_by 0.1 do
-</span><span class="marked0"><a name="line360"></a>360       process exp.shift # true
-</span><span class="marked1"><a name="line361"></a>361       process exp.shift # false
-</span><span class="inferred0"><a name="line362"></a>362     end
-</span><span class="marked1"><a name="line363"></a>363     s()
-</span><span class="inferred0"><a name="line364"></a>364   end
-</span><span class="inferred1"><a name="line365"></a>365 
-</span><span class="marked0"><a name="line366"></a>366   def process_iter(exp)
-</span><span class="marked1"><a name="line367"></a>367     context = (self.context - [:class, :module, :scope])
-</span><span class="marked0"><a name="line368"></a>368     if context.uniq.sort_by {|s|s.to_s} == [:block, :iter] then
-</span><span class="marked1"><a name="line369"></a>369       recv = exp.first
-</span><span class="marked0"><a name="line370"></a>370       if recv[0] == :call and recv[1] == nil and recv.arglist[1] and [:lit, :str].include? recv.arglist[1][0] then
-</span><span class="marked1"><a name="line371"></a>371         msg = recv[2]
-</span><span class="marked0"><a name="line372"></a>372         submsg = recv.arglist[1][1]
-</span><span class="marked1"><a name="line373"></a>373         set_method submsg do
-</span><span class="marked0"><a name="line374"></a>374           set_class msg do
-</span><span class="marked1"><a name="line375"></a>375             analyze_list exp
-</span><span class="inferred0"><a name="line376"></a>376           end
-</span><span class="inferred1"><a name="line377"></a>377         end
-</span><span class="marked0"><a name="line378"></a>378         return s()
-</span><span class="inferred1"><a name="line379"></a>379       end
-</span><span class="inferred0"><a name="line380"></a>380     end
-</span><span class="inferred1"><a name="line381"></a>381 
-</span><span class="marked0"><a name="line382"></a>382     add_to_score :branch
-</span><span class="inferred1"><a name="line383"></a>383 
-</span><span class="marked0"><a name="line384"></a>384     process exp.shift # no penalty for LHS
-</span><span class="inferred1"><a name="line385"></a>385 
-</span><span class="marked0"><a name="line386"></a>386     penalize_by 0.1 do
-</span><span class="marked1"><a name="line387"></a>387       analyze_list exp
-</span><span class="inferred0"><a name="line388"></a>388     end
-</span><span class="inferred1"><a name="line389"></a>389 
-</span><span class="marked0"><a name="line390"></a>390     s()
-</span><span class="inferred1"><a name="line391"></a>391   end
-</span><span class="inferred0"><a name="line392"></a>392 
-</span><span class="marked1"><a name="line393"></a>393   def process_lasgn(exp)
-</span><span class="marked0"><a name="line394"></a>394     add_to_score :assignment
-</span><span class="marked1"><a name="line395"></a>395     exp.shift # name
-</span><span class="marked0"><a name="line396"></a>396     process exp.shift # rhs
-</span><span class="marked1"><a name="line397"></a>397     s()
-</span><span class="inferred0"><a name="line398"></a>398   end
-</span><span class="inferred1"><a name="line399"></a>399 
-</span><span class="marked0"><a name="line400"></a>400   def process_lit(exp)
-</span><span class="marked1"><a name="line401"></a>401     value = exp.shift
-</span><span class="marked0"><a name="line402"></a>402     case value
-</span><span class="marked1"><a name="line403"></a>403     when 0, -1 then
-</span><span class="inferred0"><a name="line404"></a>404       # ignore those because they're used as array indicies instead of first/last
-</span><span class="marked1"><a name="line405"></a>405     when Integer then
-</span><span class="marked0"><a name="line406"></a>406       add_to_score :lit_fixnum
-</span><span class="marked1"><a name="line407"></a>407     when Float, Symbol, Regexp, Range then
-</span><span class="uncovered0"><a name="line408"></a>408       # do nothing
-</span><span class="uncovered1"><a name="line409"></a>409     else
-</span><span class="uncovered0"><a name="line410"></a>410       raise value.inspect
-</span><span class="uncovered1"><a name="line411"></a>411     end
-</span><span class="marked0"><a name="line412"></a>412     s()
-</span><span class="inferred1"><a name="line413"></a>413   end
-</span><span class="inferred0"><a name="line414"></a>414 
-</span><span class="marked1"><a name="line415"></a>415   def process_masgn(exp)
-</span><span class="marked0"><a name="line416"></a>416     add_to_score :assignment
-</span><span class="marked1"><a name="line417"></a>417     process exp.shift # lhs
-</span><span class="marked0"><a name="line418"></a>418     process exp.shift # rhs
-</span><span class="marked1"><a name="line419"></a>419     s()
-</span><span class="inferred0"><a name="line420"></a>420   end
-</span><span class="inferred1"><a name="line421"></a>421 
-</span><span class="marked0"><a name="line422"></a>422   def process_module(exp)
-</span><span class="marked1"><a name="line423"></a>423     set_class exp.shift do
-</span><span class="marked0"><a name="line424"></a>424       analyze_list exp
-</span><span class="inferred1"><a name="line425"></a>425     end
-</span><span class="marked0"><a name="line426"></a>426     s()
-</span><span class="inferred1"><a name="line427"></a>427   end
-</span><span class="inferred0"><a name="line428"></a>428 
-</span><span class="marked1"><a name="line429"></a>429   def process_or(exp)
-</span><span class="marked0"><a name="line430"></a>430     add_to_score :branch
-</span><span class="marked1"><a name="line431"></a>431     penalize_by 0.1 do
-</span><span class="marked0"><a name="line432"></a>432       process exp.shift # lhs
-</span><span class="marked1"><a name="line433"></a>433       process exp.shift # rhs
-</span><span class="inferred0"><a name="line434"></a>434     end
-</span><span class="marked1"><a name="line435"></a>435     s()
-</span><span class="inferred0"><a name="line436"></a>436   end
-</span><span class="inferred1"><a name="line437"></a>437 
-</span><span class="marked0"><a name="line438"></a>438   def process_rescue(exp)
-</span><span class="marked1"><a name="line439"></a>439     add_to_score :branch
-</span><span class="marked0"><a name="line440"></a>440     penalize_by 0.1 do
-</span><span class="marked1"><a name="line441"></a>441       analyze_list exp
-</span><span class="inferred0"><a name="line442"></a>442     end
-</span><span class="marked1"><a name="line443"></a>443     s()
-</span><span class="inferred0"><a name="line444"></a>444   end
-</span><span class="inferred1"><a name="line445"></a>445 
-</span><span class="marked0"><a name="line446"></a>446   def process_sclass(exp)
-</span><span class="marked1"><a name="line447"></a>447     penalize_by 0.5 do
-</span><span class="marked0"><a name="line448"></a>448       recv = process exp.shift
-</span><span class="marked1"><a name="line449"></a>449       analyze_list exp
-</span><span class="inferred0"><a name="line450"></a>450     end
-</span><span class="inferred1"><a name="line451"></a>451 
-</span><span class="marked0"><a name="line452"></a>452     add_to_score :sclass
-</span><span class="marked1"><a name="line453"></a>453     s()
-</span><span class="inferred0"><a name="line454"></a>454   end
-</span><span class="inferred1"><a name="line455"></a>455 
-</span><span class="marked0"><a name="line456"></a>456   def process_super(exp)
-</span><span class="uncovered1"><a name="line457"></a>457     add_to_score :super
-</span><span class="uncovered0"><a name="line458"></a>458     analyze_list exp
-</span><span class="uncovered1"><a name="line459"></a>459     s()
-</span><span class="uncovered0"><a name="line460"></a>460   end
-</span><span class="inferred1"><a name="line461"></a>461 
-</span><span class="marked0"><a name="line462"></a>462   def process_until(exp)
-</span><span class="uncovered1"><a name="line463"></a>463     add_to_score :branch
-</span><span class="uncovered0"><a name="line464"></a>464     penalize_by 0.1 do
-</span><span class="uncovered1"><a name="line465"></a>465       process exp.shift # cond
-</span><span class="uncovered0"><a name="line466"></a>466       process exp.shift # body
-</span><span class="uncovered1"><a name="line467"></a>467     end
-</span><span class="uncovered0"><a name="line468"></a>468     exp.shift # pre/post
-</span><span class="uncovered1"><a name="line469"></a>469     s()
-</span><span class="uncovered0"><a name="line470"></a>470   end
-</span><span class="inferred1"><a name="line471"></a>471 
-</span><span class="marked0"><a name="line472"></a>472   def process_when(exp)
-</span><span class="uncovered1"><a name="line473"></a>473     add_to_score :branch
-</span><span class="uncovered0"><a name="line474"></a>474     penalize_by 0.1 do
-</span><span class="uncovered1"><a name="line475"></a>475       analyze_list exp
-</span><span class="uncovered0"><a name="line476"></a>476     end
-</span><span class="uncovered1"><a name="line477"></a>477     s()
-</span><span class="uncovered0"><a name="line478"></a>478   end
-</span><span class="inferred1"><a name="line479"></a>479 
-</span><span class="marked0"><a name="line480"></a>480   def process_while(exp)
-</span><span class="uncovered1"><a name="line481"></a>481     add_to_score :branch
-</span><span class="uncovered0"><a name="line482"></a>482     penalize_by 0.1 do
-</span><span class="uncovered1"><a name="line483"></a>483       process exp.shift # cond
-</span><span class="uncovered0"><a name="line484"></a>484       process exp.shift # body
-</span><span class="uncovered1"><a name="line485"></a>485     end
-</span><span class="uncovered0"><a name="line486"></a>486     exp.shift # pre/post
-</span><span class="uncovered1"><a name="line487"></a>487     s()
-</span><span class="uncovered0"><a name="line488"></a>488   end
-</span><span class="inferred1"><a name="line489"></a>489 
-</span><span class="marked0"><a name="line490"></a>490   def process_yield(exp)
-</span><span class="marked1"><a name="line491"></a>491     add_to_score :yield
-</span><span class="marked0"><a name="line492"></a>492     analyze_list exp
-</span><span class="marked1"><a name="line493"></a>493     s()
-</span><span class="inferred0"><a name="line494"></a>494   end
-</span><span class="inferred1"><a name="line495"></a>495 end
+</span><span class="marked0"><a name="line300"></a>300     add_to_score name
+</span><span class="inferred1"><a name="line301"></a>301 
+</span><span class="marked0"><a name="line302"></a>302     s()
+</span><span class="inferred1"><a name="line303"></a>303   end
+</span><span class="inferred0"><a name="line304"></a>304 
+</span><span class="marked1"><a name="line305"></a>305   def process_case(exp)
+</span><span class="uncovered0"><a name="line306"></a>306     add_to_score :branch
+</span><span class="uncovered1"><a name="line307"></a>307     process exp.shift # recv
+</span><span class="uncovered0"><a name="line308"></a>308     penalize_by 0.1 do
+</span><span class="uncovered1"><a name="line309"></a>309       analyze_list exp
+</span><span class="uncovered0"><a name="line310"></a>310     end
+</span><span class="uncovered1"><a name="line311"></a>311     s()
+</span><span class="uncovered0"><a name="line312"></a>312   end
+</span><span class="inferred1"><a name="line313"></a>313 
+</span><span class="marked0"><a name="line314"></a>314   def process_class(exp)
+</span><span class="marked1"><a name="line315"></a>315     set_class exp.shift do
+</span><span class="marked0"><a name="line316"></a>316       penalize_by 1.0 do
+</span><span class="marked1"><a name="line317"></a>317         supr = process exp.shift
+</span><span class="inferred0"><a name="line318"></a>318       end
+</span><span class="marked1"><a name="line319"></a>319       analyze_list exp
+</span><span class="inferred0"><a name="line320"></a>320     end
+</span><span class="marked1"><a name="line321"></a>321     s()
+</span><span class="inferred0"><a name="line322"></a>322   end
+</span><span class="inferred1"><a name="line323"></a>323 
+</span><span class="marked0"><a name="line324"></a>324   def process_dasgn_curr(exp)
+</span><span class="marked1"><a name="line325"></a>325     add_to_score :assignment
+</span><span class="marked0"><a name="line326"></a>326     exp.shift # name
+</span><span class="marked1"><a name="line327"></a>327     process exp.shift # assigment, if any
+</span><span class="marked0"><a name="line328"></a>328     s()
+</span><span class="inferred1"><a name="line329"></a>329   end
+</span><span class="inferred0"><a name="line330"></a>330 
+</span><span class="marked1"><a name="line331"></a>331   def process_defn(exp)
+</span><span class="marked0"><a name="line332"></a>332     set_method exp.shift do
+</span><span class="marked1"><a name="line333"></a>333       analyze_list exp
+</span><span class="inferred0"><a name="line334"></a>334     end
+</span><span class="marked1"><a name="line335"></a>335     s()
+</span><span class="inferred0"><a name="line336"></a>336   end
+</span><span class="inferred1"><a name="line337"></a>337 
+</span><span class="marked0"><a name="line338"></a>338   def process_defs(exp)
+</span><span class="marked1"><a name="line339"></a>339     process exp.shift
+</span><span class="marked0"><a name="line340"></a>340     set_method exp.shift do
+</span><span class="marked1"><a name="line341"></a>341       analyze_list exp
+</span><span class="inferred0"><a name="line342"></a>342     end
+</span><span class="marked1"><a name="line343"></a>343     s()
+</span><span class="inferred0"><a name="line344"></a>344   end
+</span><span class="inferred1"><a name="line345"></a>345 
+</span><span class="marked0"><a name="line346"></a>346   def process_else(exp)
+</span><span class="uncovered1"><a name="line347"></a>347     add_to_score :branch
+</span><span class="uncovered0"><a name="line348"></a>348     penalize_by 0.1 do
+</span><span class="uncovered1"><a name="line349"></a>349       analyze_list exp
+</span><span class="uncovered0"><a name="line350"></a>350     end
+</span><span class="uncovered1"><a name="line351"></a>351     s()
+</span><span class="uncovered0"><a name="line352"></a>352   end
+</span><span class="inferred1"><a name="line353"></a>353 
+</span><span class="marked0"><a name="line354"></a>354   def process_iasgn(exp)
+</span><span class="marked1"><a name="line355"></a>355     add_to_score :assignment
+</span><span class="marked0"><a name="line356"></a>356     exp.shift # name
+</span><span class="marked1"><a name="line357"></a>357     process exp.shift # rhs
+</span><span class="marked0"><a name="line358"></a>358     s()
+</span><span class="inferred1"><a name="line359"></a>359   end
+</span><span class="inferred0"><a name="line360"></a>360 
+</span><span class="marked1"><a name="line361"></a>361   def process_if(exp)
+</span><span class="marked0"><a name="line362"></a>362     add_to_score :branch
+</span><span class="marked1"><a name="line363"></a>363     process exp.shift # cond
+</span><span class="marked0"><a name="line364"></a>364     penalize_by 0.1 do
+</span><span class="marked1"><a name="line365"></a>365       process exp.shift # true
+</span><span class="marked0"><a name="line366"></a>366       process exp.shift # false
+</span><span class="inferred1"><a name="line367"></a>367     end
+</span><span class="marked0"><a name="line368"></a>368     s()
+</span><span class="inferred1"><a name="line369"></a>369   end
+</span><span class="inferred0"><a name="line370"></a>370 
+</span><span class="marked1"><a name="line371"></a>371   def process_iter(exp)
+</span><span class="marked0"><a name="line372"></a>372     context = (self.context - [:class, :module, :scope])
+</span><span class="marked1"><a name="line373"></a>373     if context.uniq.sort_by {|s|s.to_s} == [:block, :iter] then
+</span><span class="marked0"><a name="line374"></a>374       recv = exp.first
+</span><span class="marked1"><a name="line375"></a>375       if recv[0] == :call and recv[1] == nil and recv.arglist[1] and [:lit, :str].include? recv.arglist[1][0] then
+</span><span class="marked0"><a name="line376"></a>376         msg = recv[2]
+</span><span class="marked1"><a name="line377"></a>377         submsg = recv.arglist[1][1]
+</span><span class="marked0"><a name="line378"></a>378         set_method submsg do
+</span><span class="marked1"><a name="line379"></a>379           set_class msg do
+</span><span class="marked0"><a name="line380"></a>380             analyze_list exp
+</span><span class="inferred1"><a name="line381"></a>381           end
+</span><span class="inferred0"><a name="line382"></a>382         end
+</span><span class="marked1"><a name="line383"></a>383         return s()
+</span><span class="inferred0"><a name="line384"></a>384       end
+</span><span class="inferred1"><a name="line385"></a>385     end
+</span><span class="inferred0"><a name="line386"></a>386 
+</span><span class="marked1"><a name="line387"></a>387     add_to_score :branch
+</span><span class="inferred0"><a name="line388"></a>388 
+</span><span class="marked1"><a name="line389"></a>389     process exp.shift # no penalty for LHS
+</span><span class="inferred0"><a name="line390"></a>390 
+</span><span class="marked1"><a name="line391"></a>391     penalize_by 0.1 do
+</span><span class="marked0"><a name="line392"></a>392       analyze_list exp
+</span><span class="inferred1"><a name="line393"></a>393     end
+</span><span class="inferred0"><a name="line394"></a>394 
+</span><span class="marked1"><a name="line395"></a>395     s()
+</span><span class="inferred0"><a name="line396"></a>396   end
+</span><span class="inferred1"><a name="line397"></a>397 
+</span><span class="marked0"><a name="line398"></a>398   def process_lasgn(exp)
+</span><span class="marked1"><a name="line399"></a>399     add_to_score :assignment
+</span><span class="marked0"><a name="line400"></a>400     exp.shift # name
+</span><span class="marked1"><a name="line401"></a>401     process exp.shift # rhs
+</span><span class="marked0"><a name="line402"></a>402     s()
+</span><span class="inferred1"><a name="line403"></a>403   end
+</span><span class="inferred0"><a name="line404"></a>404 
+</span><span class="marked1"><a name="line405"></a>405   def process_lit(exp)
+</span><span class="marked0"><a name="line406"></a>406     value = exp.shift
+</span><span class="marked1"><a name="line407"></a>407     case value
+</span><span class="marked0"><a name="line408"></a>408     when 0, -1 then
+</span><span class="inferred1"><a name="line409"></a>409       # ignore those because they're used as array indicies instead of first/last
+</span><span class="marked0"><a name="line410"></a>410     when Integer then
+</span><span class="marked1"><a name="line411"></a>411       add_to_score :lit_fixnum
+</span><span class="marked0"><a name="line412"></a>412     when Float, Symbol, Regexp, Range then
+</span><span class="uncovered1"><a name="line413"></a>413       # do nothing
+</span><span class="uncovered0"><a name="line414"></a>414     else
+</span><span class="uncovered1"><a name="line415"></a>415       raise value.inspect
+</span><span class="uncovered0"><a name="line416"></a>416     end
+</span><span class="marked1"><a name="line417"></a>417     s()
+</span><span class="inferred0"><a name="line418"></a>418   end
+</span><span class="inferred1"><a name="line419"></a>419 
+</span><span class="marked0"><a name="line420"></a>420   def process_masgn(exp)
+</span><span class="marked1"><a name="line421"></a>421     add_to_score :assignment
+</span><span class="marked0"><a name="line422"></a>422     process exp.shift # lhs
+</span><span class="marked1"><a name="line423"></a>423     process exp.shift # rhs
+</span><span class="marked0"><a name="line424"></a>424     s()
+</span><span class="inferred1"><a name="line425"></a>425   end
+</span><span class="inferred0"><a name="line426"></a>426 
+</span><span class="marked1"><a name="line427"></a>427   def process_module(exp)
+</span><span class="marked0"><a name="line428"></a>428     set_class exp.shift do
+</span><span class="marked1"><a name="line429"></a>429       analyze_list exp
+</span><span class="inferred0"><a name="line430"></a>430     end
+</span><span class="marked1"><a name="line431"></a>431     s()
+</span><span class="inferred0"><a name="line432"></a>432   end
+</span><span class="inferred1"><a name="line433"></a>433 
+</span><span class="marked0"><a name="line434"></a>434   def process_or(exp)
+</span><span class="marked1"><a name="line435"></a>435     add_to_score :branch
+</span><span class="marked0"><a name="line436"></a>436     penalize_by 0.1 do
+</span><span class="marked1"><a name="line437"></a>437       process exp.shift # lhs
+</span><span class="marked0"><a name="line438"></a>438       process exp.shift # rhs
+</span><span class="inferred1"><a name="line439"></a>439     end
+</span><span class="marked0"><a name="line440"></a>440     s()
+</span><span class="inferred1"><a name="line441"></a>441   end
+</span><span class="inferred0"><a name="line442"></a>442 
+</span><span class="marked1"><a name="line443"></a>443   def process_rescue(exp)
+</span><span class="marked0"><a name="line444"></a>444     add_to_score :branch
+</span><span class="marked1"><a name="line445"></a>445     penalize_by 0.1 do
+</span><span class="marked0"><a name="line446"></a>446       analyze_list exp
+</span><span class="inferred1"><a name="line447"></a>447     end
+</span><span class="marked0"><a name="line448"></a>448     s()
+</span><span class="inferred1"><a name="line449"></a>449   end
+</span><span class="inferred0"><a name="line450"></a>450 
+</span><span class="marked1"><a name="line451"></a>451   def process_sclass(exp)
+</span><span class="marked0"><a name="line452"></a>452     penalize_by 0.5 do
+</span><span class="marked1"><a name="line453"></a>453       recv = process exp.shift
+</span><span class="marked0"><a name="line454"></a>454       analyze_list exp
+</span><span class="inferred1"><a name="line455"></a>455     end
+</span><span class="inferred0"><a name="line456"></a>456 
+</span><span class="marked1"><a name="line457"></a>457     add_to_score :sclass
+</span><span class="marked0"><a name="line458"></a>458     s()
+</span><span class="inferred1"><a name="line459"></a>459   end
+</span><span class="inferred0"><a name="line460"></a>460 
+</span><span class="marked1"><a name="line461"></a>461   def process_super(exp)
+</span><span class="uncovered0"><a name="line462"></a>462     add_to_score :super
+</span><span class="uncovered1"><a name="line463"></a>463     analyze_list exp
+</span><span class="uncovered0"><a name="line464"></a>464     s()
+</span><span class="uncovered1"><a name="line465"></a>465   end
+</span><span class="inferred0"><a name="line466"></a>466 
+</span><span class="marked1"><a name="line467"></a>467   def process_until(exp)
+</span><span class="uncovered0"><a name="line468"></a>468     add_to_score :branch
+</span><span class="uncovered1"><a name="line469"></a>469     penalize_by 0.1 do
+</span><span class="uncovered0"><a name="line470"></a>470       process exp.shift # cond
+</span><span class="uncovered1"><a name="line471"></a>471       process exp.shift # body
+</span><span class="uncovered0"><a name="line472"></a>472     end
+</span><span class="uncovered1"><a name="line473"></a>473     exp.shift # pre/post
+</span><span class="uncovered0"><a name="line474"></a>474     s()
+</span><span class="uncovered1"><a name="line475"></a>475   end
+</span><span class="inferred0"><a name="line476"></a>476 
+</span><span class="marked1"><a name="line477"></a>477   def process_when(exp)
+</span><span class="uncovered0"><a name="line478"></a>478     add_to_score :branch
+</span><span class="uncovered1"><a name="line479"></a>479     penalize_by 0.1 do
+</span><span class="uncovered0"><a name="line480"></a>480       analyze_list exp
+</span><span class="uncovered1"><a name="line481"></a>481     end
+</span><span class="uncovered0"><a name="line482"></a>482     s()
+</span><span class="uncovered1"><a name="line483"></a>483   end
+</span><span class="inferred0"><a name="line484"></a>484 
+</span><span class="marked1"><a name="line485"></a>485   def process_while(exp)
+</span><span class="uncovered0"><a name="line486"></a>486     add_to_score :branch
+</span><span class="uncovered1"><a name="line487"></a>487     penalize_by 0.1 do
+</span><span class="uncovered0"><a name="line488"></a>488       process exp.shift # cond
+</span><span class="uncovered1"><a name="line489"></a>489       process exp.shift # body
+</span><span class="uncovered0"><a name="line490"></a>490     end
+</span><span class="uncovered1"><a name="line491"></a>491     exp.shift # pre/post
+</span><span class="uncovered0"><a name="line492"></a>492     s()
+</span><span class="uncovered1"><a name="line493"></a>493   end
+</span><span class="inferred0"><a name="line494"></a>494 
+</span><span class="marked1"><a name="line495"></a>495   def process_yield(exp)
+</span><span class="marked0"><a name="line496"></a>496     add_to_score :yield
+</span><span class="marked1"><a name="line497"></a>497     analyze_list exp
+</span><span class="marked0"><a name="line498"></a>498     s()
+</span><span class="inferred1"><a name="line499"></a>499   end
+</span><span class="inferred0"><a name="line500"></a>500 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
