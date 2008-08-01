@@ -662,6 +662,38 @@ describe Flog do
       @flog.total.should_not == 0
     end
   end
+  
+  describe 'when requesting totals' do
+    it 'should not accept any arguments' do
+      lambda { @flog.totals('foo') }.should raise_error(ArgumentError)
+    end
+    
+    describe 'when called the first time' do
+      it 'should access calls data' do
+        @flog.expects(:calls).returns({})
+        @flog.totals
+      end
+      
+      it 'should return the totals data' do
+        @flog.totals.should == {}
+      end
+    end
+    
+    describe 'when called after the first time' do
+      before :each do
+        @flog.totals
+      end
+      
+      it 'should not access calls data' do
+        @flog.expects(:calls).never
+        @flog.totals        
+      end
+      
+      it 'should return the totals data' do
+        @flog.totals.should == {}
+      end
+    end
+  end
 
   describe 'when generating a report' do
     it 'allows specifying an io handle'
