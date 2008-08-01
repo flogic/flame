@@ -206,8 +206,7 @@ class Flog < SexpProcessor
     max = total_score * THRESHOLD  # can be moved lower
     totals = self.totals  # can be moved lower
 
-    io.puts "Total Flog = %.1f (%.1f flog / method)" % [total_score, self.average]
-    io.puts
+    io.puts "Total Flog = %.1f (%.1f flog / method)\n" % [total_score, self.average]
 
     exit 0 if $s
 
