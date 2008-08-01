@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:37:54 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:38:04 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -1059,15 +1059,15 @@ span.run100 {
 </span><span class="inferred1"><a name="line459"></a>459 
 </span><span class="marked0"><a name="line460"></a>460   describe 'when recursively analyzing the complexity of code' do
 </span><span class="marked1"><a name="line461"></a>461     it 'should require a complexity modifier value' do
-</span><span class="marked0"><a name="line462"></a>462       lambda { @flog.bad_dog! }.should raise_error(ArgumentError)
+</span><span class="marked0"><a name="line462"></a>462       lambda { @flog.penalize_by }.should raise_error(ArgumentError)
 </span><span class="inferred1"><a name="line463"></a>463     end
 </span><span class="inferred0"><a name="line464"></a>464     
 </span><span class="marked1"><a name="line465"></a>465     it 'should require a block, for code to recursively analyze' do
-</span><span class="marked0"><a name="line466"></a>466       lambda { @flog.bad_dog!(42) }.should raise_error(LocalJumpError)
+</span><span class="marked0"><a name="line466"></a>466       lambda { @flog.penalize_by(42) }.should raise_error(LocalJumpError)
 </span><span class="inferred1"><a name="line467"></a>467     end
 </span><span class="inferred0"><a name="line468"></a>468     
 </span><span class="marked1"><a name="line469"></a>469     it 'should recursively analyze the provided code block' do
-</span><span class="marked0"><a name="line470"></a>470       @flog.bad_dog!(42) do
+</span><span class="marked0"><a name="line470"></a>470       @flog.penalize_by(42) do
 </span><span class="marked1"><a name="line471"></a>471         @foo = true
 </span><span class="inferred0"><a name="line472"></a>472       end
 </span><span class="inferred1"><a name="line473"></a>473       
@@ -1076,14 +1076,14 @@ span.run100 {
 </span><span class="inferred0"><a name="line476"></a>476     
 </span><span class="marked1"><a name="line477"></a>477     it 'should update the complexity multiplier when recursing' do
 </span><span class="marked0"><a name="line478"></a>478       @flog.multiplier = 1
-</span><span class="marked1"><a name="line479"></a>479       @flog.bad_dog!(42) do
+</span><span class="marked1"><a name="line479"></a>479       @flog.penalize_by(42) do
 </span><span class="marked0"><a name="line480"></a>480         @flog.multiplier.should == 43
 </span><span class="inferred1"><a name="line481"></a>481       end
 </span><span class="inferred0"><a name="line482"></a>482     end
 </span><span class="inferred1"><a name="line483"></a>483     
 </span><span class="marked0"><a name="line484"></a>484     it 'when it is done it should restore the complexity multiplier to its original value' do
 </span><span class="marked1"><a name="line485"></a>485       @flog.multiplier = 1
-</span><span class="marked0"><a name="line486"></a>486       @flog.bad_dog!(42) do
+</span><span class="marked0"><a name="line486"></a>486       @flog.penalize_by(42) do
 </span><span class="inferred1"><a name="line487"></a>487       end
 </span><span class="marked0"><a name="line488"></a>488       @flog.multiplier.should == 1
 </span><span class="inferred1"><a name="line489"></a>489     end

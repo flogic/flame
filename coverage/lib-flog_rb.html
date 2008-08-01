@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:37:52 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:38:03 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -720,7 +720,7 @@ span.run100 {
 </span><span class="marked0"><a name="line120"></a>120     self.total / self.calls.size
 </span><span class="marked1"><a name="line121"></a>121   end
 </span><span class="inferred0"><a name="line122"></a>122   
-</span><span class="marked1"><a name="line123"></a>123   def bad_dog! bonus
+</span><span class="marked1"><a name="line123"></a>123   def penalize_by bonus
 </span><span class="marked0"><a name="line124"></a>124     @multiplier += bonus
 </span><span class="marked1"><a name="line125"></a>125     yield
 </span><span class="marked0"><a name="line126"></a>126     @multiplier -= bonus
@@ -822,7 +822,7 @@ span.run100 {
 </span><span class="inferred0"><a name="line222"></a>222 
 </span><span class="marked1"><a name="line223"></a>223   def process_and(exp)
 </span><span class="marked0"><a name="line224"></a>224     add_to_score :branch
-</span><span class="marked1"><a name="line225"></a>225     bad_dog! 0.1 do
+</span><span class="marked1"><a name="line225"></a>225     penalize_by 0.1 do
 </span><span class="marked0"><a name="line226"></a>226       process exp.shift # lhs
 </span><span class="marked1"><a name="line227"></a>227       process exp.shift # rhs
 </span><span class="inferred0"><a name="line228"></a>228     end
@@ -844,7 +844,7 @@ span.run100 {
 </span><span class="uncovered0"><a name="line244"></a>244   end
 </span><span class="inferred1"><a name="line245"></a>245 
 </span><span class="marked0"><a name="line246"></a>246   def process_block(exp)
-</span><span class="marked1"><a name="line247"></a>247     bad_dog! 0.1 do
+</span><span class="marked1"><a name="line247"></a>247     penalize_by 0.1 do
 </span><span class="marked0"><a name="line248"></a>248       analyze_list exp
 </span><span class="inferred1"><a name="line249"></a>249     end
 </span><span class="marked0"><a name="line250"></a>250     s()
@@ -875,11 +875,11 @@ span.run100 {
 </span><span class="inferred1"><a name="line275"></a>275   end
 </span><span class="inferred0"><a name="line276"></a>276 
 </span><span class="marked1"><a name="line277"></a>277   def process_call(exp)
-</span><span class="marked0"><a name="line278"></a>278     bad_dog! 0.2 do
+</span><span class="marked0"><a name="line278"></a>278     penalize_by 0.2 do
 </span><span class="marked1"><a name="line279"></a>279       recv = process exp.shift
 </span><span class="inferred0"><a name="line280"></a>280     end
 </span><span class="marked1"><a name="line281"></a>281     name = exp.shift
-</span><span class="marked0"><a name="line282"></a>282     bad_dog! 0.2 do
+</span><span class="marked0"><a name="line282"></a>282     penalize_by 0.2 do
 </span><span class="marked1"><a name="line283"></a>283       args = process exp.shift
 </span><span class="inferred0"><a name="line284"></a>284     end
 </span><span class="inferred1"><a name="line285"></a>285 
@@ -891,7 +891,7 @@ span.run100 {
 </span><span class="marked1"><a name="line291"></a>291   def process_case(exp)
 </span><span class="uncovered0"><a name="line292"></a>292     add_to_score :branch
 </span><span class="uncovered1"><a name="line293"></a>293     process exp.shift # recv
-</span><span class="uncovered0"><a name="line294"></a>294     bad_dog! 0.1 do
+</span><span class="uncovered0"><a name="line294"></a>294     penalize_by 0.1 do
 </span><span class="uncovered1"><a name="line295"></a>295       analyze_list exp
 </span><span class="uncovered0"><a name="line296"></a>296     end
 </span><span class="uncovered1"><a name="line297"></a>297     s()
@@ -899,7 +899,7 @@ span.run100 {
 </span><span class="inferred1"><a name="line299"></a>299 
 </span><span class="marked0"><a name="line300"></a>300   def process_class(exp)
 </span><span class="marked1"><a name="line301"></a>301     self.klass exp.shift do
-</span><span class="marked0"><a name="line302"></a>302       bad_dog! 1.0 do
+</span><span class="marked0"><a name="line302"></a>302       penalize_by 1.0 do
 </span><span class="marked1"><a name="line303"></a>303         supr = process exp.shift
 </span><span class="inferred0"><a name="line304"></a>304       end
 </span><span class="marked1"><a name="line305"></a>305       analyze_list exp
@@ -931,7 +931,7 @@ span.run100 {
 </span><span class="inferred1"><a name="line331"></a>331 
 </span><span class="marked0"><a name="line332"></a>332   def process_else(exp)
 </span><span class="uncovered1"><a name="line333"></a>333     add_to_score :branch
-</span><span class="uncovered0"><a name="line334"></a>334     bad_dog! 0.1 do
+</span><span class="uncovered0"><a name="line334"></a>334     penalize_by 0.1 do
 </span><span class="uncovered1"><a name="line335"></a>335       analyze_list exp
 </span><span class="uncovered0"><a name="line336"></a>336     end
 </span><span class="uncovered1"><a name="line337"></a>337     s()
@@ -947,7 +947,7 @@ span.run100 {
 </span><span class="marked1"><a name="line347"></a>347   def process_if(exp)
 </span><span class="marked0"><a name="line348"></a>348     add_to_score :branch
 </span><span class="marked1"><a name="line349"></a>349     process exp.shift # cond
-</span><span class="marked0"><a name="line350"></a>350     bad_dog! 0.1 do
+</span><span class="marked0"><a name="line350"></a>350     penalize_by 0.1 do
 </span><span class="marked1"><a name="line351"></a>351       process exp.shift # true
 </span><span class="marked0"><a name="line352"></a>352       process exp.shift # false
 </span><span class="inferred1"><a name="line353"></a>353     end
@@ -974,7 +974,7 @@ span.run100 {
 </span><span class="inferred0"><a name="line374"></a>374 
 </span><span class="marked1"><a name="line375"></a>375     process exp.shift # no penalty for LHS
 </span><span class="inferred0"><a name="line376"></a>376 
-</span><span class="marked1"><a name="line377"></a>377     bad_dog! 0.1 do
+</span><span class="marked1"><a name="line377"></a>377     penalize_by 0.1 do
 </span><span class="marked0"><a name="line378"></a>378       analyze_list exp
 </span><span class="inferred1"><a name="line379"></a>379     end
 </span><span class="inferred0"><a name="line380"></a>380 
@@ -1019,7 +1019,7 @@ span.run100 {
 </span><span class="inferred1"><a name="line419"></a>419 
 </span><span class="marked0"><a name="line420"></a>420   def process_or(exp)
 </span><span class="marked1"><a name="line421"></a>421     add_to_score :branch
-</span><span class="marked0"><a name="line422"></a>422     bad_dog! 0.1 do
+</span><span class="marked0"><a name="line422"></a>422     penalize_by 0.1 do
 </span><span class="marked1"><a name="line423"></a>423       process exp.shift # lhs
 </span><span class="marked0"><a name="line424"></a>424       process exp.shift # rhs
 </span><span class="inferred1"><a name="line425"></a>425     end
@@ -1028,14 +1028,14 @@ span.run100 {
 </span><span class="inferred0"><a name="line428"></a>428 
 </span><span class="marked1"><a name="line429"></a>429   def process_rescue(exp)
 </span><span class="marked0"><a name="line430"></a>430     add_to_score :branch
-</span><span class="marked1"><a name="line431"></a>431     bad_dog! 0.1 do
+</span><span class="marked1"><a name="line431"></a>431     penalize_by 0.1 do
 </span><span class="marked0"><a name="line432"></a>432       analyze_list exp
 </span><span class="inferred1"><a name="line433"></a>433     end
 </span><span class="marked0"><a name="line434"></a>434     s()
 </span><span class="inferred1"><a name="line435"></a>435   end
 </span><span class="inferred0"><a name="line436"></a>436 
 </span><span class="marked1"><a name="line437"></a>437   def process_sclass(exp)
-</span><span class="marked0"><a name="line438"></a>438     bad_dog! 0.5 do
+</span><span class="marked0"><a name="line438"></a>438     penalize_by 0.5 do
 </span><span class="marked1"><a name="line439"></a>439       recv = process exp.shift
 </span><span class="marked0"><a name="line440"></a>440       analyze_list exp
 </span><span class="inferred1"><a name="line441"></a>441     end
@@ -1052,7 +1052,7 @@ span.run100 {
 </span><span class="inferred0"><a name="line452"></a>452 
 </span><span class="marked1"><a name="line453"></a>453   def process_until(exp)
 </span><span class="uncovered0"><a name="line454"></a>454     add_to_score :branch
-</span><span class="uncovered1"><a name="line455"></a>455     bad_dog! 0.1 do
+</span><span class="uncovered1"><a name="line455"></a>455     penalize_by 0.1 do
 </span><span class="uncovered0"><a name="line456"></a>456       process exp.shift # cond
 </span><span class="uncovered1"><a name="line457"></a>457       process exp.shift # body
 </span><span class="uncovered0"><a name="line458"></a>458     end
@@ -1062,7 +1062,7 @@ span.run100 {
 </span><span class="inferred0"><a name="line462"></a>462 
 </span><span class="marked1"><a name="line463"></a>463   def process_when(exp)
 </span><span class="uncovered0"><a name="line464"></a>464     add_to_score :branch
-</span><span class="uncovered1"><a name="line465"></a>465     bad_dog! 0.1 do
+</span><span class="uncovered1"><a name="line465"></a>465     penalize_by 0.1 do
 </span><span class="uncovered0"><a name="line466"></a>466       analyze_list exp
 </span><span class="uncovered1"><a name="line467"></a>467     end
 </span><span class="uncovered0"><a name="line468"></a>468     s()
@@ -1070,7 +1070,7 @@ span.run100 {
 </span><span class="inferred0"><a name="line470"></a>470 
 </span><span class="marked1"><a name="line471"></a>471   def process_while(exp)
 </span><span class="uncovered0"><a name="line472"></a>472     add_to_score :branch
-</span><span class="uncovered1"><a name="line473"></a>473     bad_dog! 0.1 do
+</span><span class="uncovered1"><a name="line473"></a>473     penalize_by 0.1 do
 </span><span class="uncovered0"><a name="line474"></a>474       process exp.shift # cond
 </span><span class="uncovered1"><a name="line475"></a>475       process exp.shift # body
 </span><span class="uncovered0"><a name="line476"></a>476     end

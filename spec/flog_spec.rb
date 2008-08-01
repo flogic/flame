@@ -459,15 +459,15 @@ describe Flog do
 
   describe 'when recursively analyzing the complexity of code' do
     it 'should require a complexity modifier value' do
-      lambda { @flog.bad_dog! }.should raise_error(ArgumentError)
+      lambda { @flog.penalize_by }.should raise_error(ArgumentError)
     end
     
     it 'should require a block, for code to recursively analyze' do
-      lambda { @flog.bad_dog!(42) }.should raise_error(LocalJumpError)
+      lambda { @flog.penalize_by(42) }.should raise_error(LocalJumpError)
     end
     
     it 'should recursively analyze the provided code block' do
-      @flog.bad_dog!(42) do
+      @flog.penalize_by(42) do
         @foo = true
       end
       
@@ -476,14 +476,14 @@ describe Flog do
     
     it 'should update the complexity multiplier when recursing' do
       @flog.multiplier = 1
-      @flog.bad_dog!(42) do
+      @flog.penalize_by(42) do
         @flog.multiplier.should == 43
       end
     end
     
     it 'when it is done it should restore the complexity multiplier to its original value' do
       @flog.multiplier = 1
-      @flog.bad_dog!(42) do
+      @flog.penalize_by(42) do
       end
       @flog.multiplier.should == 1
     end
