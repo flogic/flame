@@ -9,8 +9,6 @@ class Flog < SexpProcessor
   include UnifiedRuby
 
   THRESHOLD = 0.60
-  BRANCHING = [ :and, :case, :else, :if, :or, :rescue, :until, :when, :while ]
-
   SCORES = Hash.new(1)
 
   # various non-call constructs
@@ -287,7 +285,7 @@ class Flog < SexpProcessor
       # do nothing
     when :lit, :call then
       add_to_score :to_proc_normal
-    when :iter, *BRANCHING then
+    when :iter, :and, :case, :else, :if, :or, :rescue, :until, :when, :while then
       add_to_score :to_proc_icky!
     else
       raise({:block_pass => [arg, call]}.inspect)
