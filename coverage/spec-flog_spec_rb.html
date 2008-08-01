@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:35:05 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:35:15 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_spec_rb.html'>spec/flog_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>458</tt>
+      <td class='lines_total'><tt>490</tt>
         </td>
-      <td class='lines_code'><tt>374</tt>
+      <td class='lines_code'><tt>400</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -1034,28 +1034,60 @@ span.run100 {
 </span><span class="marked1"><a name="line434"></a>434       @flog.average.should be_close(100.0/2, 0.00000000001)
 </span><span class="inferred0"><a name="line435"></a>435     end
 </span><span class="inferred1"><a name="line436"></a>436   end
-</span><span class="inferred0"><a name="line437"></a>437   
-</span><span class="marked1"><a name="line438"></a>438   describe 'when generating a report' do
-</span><span class="marked0"><a name="line439"></a>439     it 'allows specifying an io handle'
-</span><span class="marked1"><a name="line440"></a>440     it 'defaults the io handle to stdout'
-</span><span class="marked0"><a name="line441"></a>441     it 'computes the total flog score'
-</span><span class="marked1"><a name="line442"></a>442     it 'retrieves the set of total statistics'
-</span><span class="inferred0"><a name="line443"></a>443     
-</span><span class="marked1"><a name="line444"></a>444     it 'outputs the total flog score'
-</span><span class="marked0"><a name="line445"></a>445     it 'computes the average flog score'
-</span><span class="marked1"><a name="line446"></a>446     it 'outputs the average flog score'
-</span><span class="inferred0"><a name="line447"></a>447     
-</span><span class="marked1"><a name="line448"></a>448     describe 'when summary mode is set' do
-</span><span class="marked0"><a name="line449"></a>449       it 'exits with status 0'
-</span><span class="marked1"><a name="line450"></a>450       it 'does not produce a call listing'
-</span><span class="marked0"><a name="line451"></a>451       it 'should not retrieve the set of total statistics'
-</span><span class="inferred1"><a name="line452"></a>452     end
-</span><span class="inferred0"><a name="line453"></a>453     
-</span><span class="marked1"><a name="line454"></a>454     describe 'when summary mode is not set' do
-</span><span class="inferred0"><a name="line455"></a>455       
-</span><span class="inferred1"><a name="line456"></a>456     end
-</span><span class="inferred0"><a name="line457"></a>457   end
-</span><span class="inferred1"><a name="line458"></a>458 end
+</span><span class="inferred0"><a name="line437"></a>437 
+</span><span class="marked1"><a name="line438"></a>438   describe 'when recursively analyzing the complexity of code' do
+</span><span class="marked0"><a name="line439"></a>439     it 'should require a complexity modifier value' do
+</span><span class="marked1"><a name="line440"></a>440       lambda { @flog.bad_dog! }.should raise_error(ArgumentError)
+</span><span class="inferred0"><a name="line441"></a>441     end
+</span><span class="inferred1"><a name="line442"></a>442     
+</span><span class="marked0"><a name="line443"></a>443     it 'should require a block, for code to recursively analyze' do
+</span><span class="marked1"><a name="line444"></a>444       lambda { @flog.bad_dog!(42) }.should raise_error(LocalJumpError)
+</span><span class="inferred0"><a name="line445"></a>445     end
+</span><span class="inferred1"><a name="line446"></a>446     
+</span><span class="marked0"><a name="line447"></a>447     it 'should recursively analyze the provided code block' do
+</span><span class="marked1"><a name="line448"></a>448       @flog.bad_dog!(42) do
+</span><span class="marked0"><a name="line449"></a>449         @foo = true
+</span><span class="inferred1"><a name="line450"></a>450       end
+</span><span class="inferred0"><a name="line451"></a>451       
+</span><span class="marked1"><a name="line452"></a>452       @foo.should be_true
+</span><span class="inferred0"><a name="line453"></a>453     end
+</span><span class="inferred1"><a name="line454"></a>454     
+</span><span class="marked0"><a name="line455"></a>455     it 'should update the complexity multiplier when recursing' do
+</span><span class="marked1"><a name="line456"></a>456       @flog.multiplier = 1
+</span><span class="marked0"><a name="line457"></a>457       @flog.bad_dog!(42) do
+</span><span class="marked1"><a name="line458"></a>458         @flog.multiplier.should == 43
+</span><span class="inferred0"><a name="line459"></a>459       end
+</span><span class="inferred1"><a name="line460"></a>460     end
+</span><span class="inferred0"><a name="line461"></a>461     
+</span><span class="marked1"><a name="line462"></a>462     it 'when it is done it should restore the complexity multiplier to its original value' do
+</span><span class="marked0"><a name="line463"></a>463       @flog.multiplier = 1
+</span><span class="marked1"><a name="line464"></a>464       @flog.bad_dog!(42) do
+</span><span class="inferred0"><a name="line465"></a>465       end
+</span><span class="marked1"><a name="line466"></a>466       @flog.multiplier.should == 1
+</span><span class="inferred0"><a name="line467"></a>467     end
+</span><span class="inferred1"><a name="line468"></a>468   end
+</span><span class="inferred0"><a name="line469"></a>469   
+</span><span class="marked1"><a name="line470"></a>470   describe 'when generating a report' do
+</span><span class="marked0"><a name="line471"></a>471     it 'allows specifying an io handle'
+</span><span class="marked1"><a name="line472"></a>472     it 'defaults the io handle to stdout'
+</span><span class="marked0"><a name="line473"></a>473     it 'computes the total flog score'
+</span><span class="marked1"><a name="line474"></a>474     it 'retrieves the set of total statistics'
+</span><span class="inferred0"><a name="line475"></a>475     
+</span><span class="marked1"><a name="line476"></a>476     it 'outputs the total flog score'
+</span><span class="marked0"><a name="line477"></a>477     it 'computes the average flog score'
+</span><span class="marked1"><a name="line478"></a>478     it 'outputs the average flog score'
+</span><span class="inferred0"><a name="line479"></a>479     
+</span><span class="marked1"><a name="line480"></a>480     describe 'when summary mode is set' do
+</span><span class="marked0"><a name="line481"></a>481       it 'exits with status 0'
+</span><span class="marked1"><a name="line482"></a>482       it 'does not produce a call listing'
+</span><span class="marked0"><a name="line483"></a>483       it 'should not retrieve the set of total statistics'
+</span><span class="inferred1"><a name="line484"></a>484     end
+</span><span class="inferred0"><a name="line485"></a>485     
+</span><span class="marked1"><a name="line486"></a>486     describe 'when summary mode is not set' do
+</span><span class="inferred0"><a name="line487"></a>487       
+</span><span class="inferred1"><a name="line488"></a>488     end
+</span><span class="inferred0"><a name="line489"></a>489   end
+</span><span class="inferred1"><a name="line490"></a>490 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
