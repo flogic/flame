@@ -120,7 +120,7 @@ class Flog < SexpProcessor
     self.total / self.calls.size
   end
   
-  def bad_dog! bonus
+  def penalize_by bonus
     @multiplier += bonus
     yield
     @multiplier -= bonus
@@ -222,7 +222,7 @@ class Flog < SexpProcessor
 
   def process_and(exp)
     add_to_score :branch
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       process exp.shift # lhs
       process exp.shift # rhs
     end
@@ -244,7 +244,7 @@ class Flog < SexpProcessor
   end
 
   def process_block(exp)
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       analyze_list exp
     end
     s()
@@ -275,11 +275,11 @@ class Flog < SexpProcessor
   end
 
   def process_call(exp)
-    bad_dog! 0.2 do
+    penalize_by 0.2 do
       recv = process exp.shift
     end
     name = exp.shift
-    bad_dog! 0.2 do
+    penalize_by 0.2 do
       args = process exp.shift
     end
 
@@ -291,7 +291,7 @@ class Flog < SexpProcessor
   def process_case(exp)
     add_to_score :branch
     process exp.shift # recv
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       analyze_list exp
     end
     s()
@@ -299,7 +299,7 @@ class Flog < SexpProcessor
 
   def process_class(exp)
     self.klass exp.shift do
-      bad_dog! 1.0 do
+      penalize_by 1.0 do
         supr = process exp.shift
       end
       analyze_list exp
@@ -331,7 +331,7 @@ class Flog < SexpProcessor
 
   def process_else(exp)
     add_to_score :branch
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       analyze_list exp
     end
     s()
@@ -347,7 +347,7 @@ class Flog < SexpProcessor
   def process_if(exp)
     add_to_score :branch
     process exp.shift # cond
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       process exp.shift # true
       process exp.shift # false
     end
@@ -374,7 +374,7 @@ class Flog < SexpProcessor
 
     process exp.shift # no penalty for LHS
 
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       analyze_list exp
     end
 
@@ -419,7 +419,7 @@ class Flog < SexpProcessor
 
   def process_or(exp)
     add_to_score :branch
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       process exp.shift # lhs
       process exp.shift # rhs
     end
@@ -428,14 +428,14 @@ class Flog < SexpProcessor
 
   def process_rescue(exp)
     add_to_score :branch
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       analyze_list exp
     end
     s()
   end
 
   def process_sclass(exp)
-    bad_dog! 0.5 do
+    penalize_by 0.5 do
       recv = process exp.shift
       analyze_list exp
     end
@@ -452,7 +452,7 @@ class Flog < SexpProcessor
 
   def process_until(exp)
     add_to_score :branch
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       process exp.shift # cond
       process exp.shift # body
     end
@@ -462,7 +462,7 @@ class Flog < SexpProcessor
 
   def process_when(exp)
     add_to_score :branch
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       analyze_list exp
     end
     s()
@@ -470,7 +470,7 @@ class Flog < SexpProcessor
 
   def process_while(exp)
     add_to_score :branch
-    bad_dog! 0.1 do
+    penalize_by 0.1 do
       process exp.shift # cond
       process exp.shift # body
     end
