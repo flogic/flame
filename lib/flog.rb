@@ -352,6 +352,7 @@ class Flog < SexpProcessor
     s()
   end
 
+  # TODO:  it's not clear to me whether this can be generated at all.
   def process_else(exp)
     add_to_score :branch
     penalize_by 0.1 do

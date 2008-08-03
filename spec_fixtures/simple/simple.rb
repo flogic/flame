@@ -151,3 +151,41 @@ module ObjectDaddy
     end
   end
 end
+
+
+# these additional routines are just to give us coverage for flog opcodes that we hadn't yet covered in an integration test
+alias puts print
+attr_writer :foo
+
+foo = 2
+
+case 'foo'
+when :foo
+  true
+else
+  false
+end
+
+class Foo
+  def initialize
+    super(:foo)
+  end
+end
+
+until true
+  true
+end
+
+while false
+  true
+end
+
+begin
+  true
+rescue Exception
+  false
+else
+  true
+end
+
+puts(/foo/)
