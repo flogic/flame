@@ -175,11 +175,7 @@ describe Flog do
         
         describe 'when the verbose flag is on' do
           before :each do
-            $v = true
-          end
-          
-          after :each do
-            $v = false
+            @flog = Flog.new(:verbose => true)
           end
           
           it 'should note which file is being flogged' do
@@ -190,7 +186,7 @@ describe Flog do
         
         describe 'when the verbose flag is off' do
           before :each do
-            $v = false
+            @flog = Flog.new({})
           end
           
           it 'should not note which file is being flogged' do
@@ -250,11 +246,7 @@ describe Flog do
         
         describe 'when the verbose flag is on' do
           before :each do
-            $v = true
-          end
-          
-          after :each do
-            $v = false
+            @flog = Flog.new(:verbose => true)
           end
           
           it 'should note which file is being flogged' do
@@ -265,7 +257,7 @@ describe Flog do
         
         describe 'when the verbose flag is off' do
           before :each do
-            $v = false
+            @flog = Flog.new({})
           end
           
           it 'should not note which file is being flogged' do
@@ -937,11 +929,8 @@ describe Flog do
         
     describe 'and ignoring non-method code' do
       before :each do
-        $m = true
-      end
-      
-      after :each do
-        $m = false
+        @flog = Flog.new(:methods => true)
+        @flog.stubs(:totals).returns(@totals)
       end
       
       describe 'and given non-method data to summarize' do
@@ -979,14 +968,6 @@ describe Flog do
     end
     
     describe 'and not excluding non-method code' do
-      before :each do
-        $m = true
-      end
-      
-      after :each do
-        $m = false
-      end
-      
       it 'should return the total complexity for the method' do
         @flog.output_method_details(@handle, 'foo#foo', @data).should == 42.0
       end
@@ -1027,7 +1008,7 @@ describe Flog do
 
     describe 'and producing a summary report' do
       before :each do
-        $s = true
+        @flog = Flog.new(:score => true)
         @flog.stubs(:output_summary)
       end
       
@@ -1049,7 +1030,6 @@ describe Flog do
     
     describe 'and producing a full report' do
       before :each do
-        $s = false
         @flog.stubs(:output_summary)
         @flog.stubs(:output_details)
       end
@@ -1066,7 +1046,9 @@ describe Flog do
 
       describe 'when flogging all methods in the system' do
         before :each do
-          $a = true
+          @flog = Flog.new(:all => true)
+          @flog.stubs(:output_summary)
+          @flog.stubs(:output_details)
         end
         
         it 'should not limit the detailed report' do
@@ -1076,10 +1058,6 @@ describe Flog do
       end
       
       describe 'when flogging only the most expensive methods in the system' do
-        before :each do
-          $a = false
-        end
-        
         it 'should limit the detailed report to the Flog threshold' do
           @flog.stubs(:total).returns(3.45)
           @flog.expects(:output_details).with('handle', 3.45 * 0.60)
