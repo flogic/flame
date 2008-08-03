@@ -33,17 +33,6 @@ end.parse!
 
 options[:paths].each {|dir| $: << dir } if options[:paths]
 
-# we still need these, as the library is currently dependent upon these global variables
-$a = true if options[:all]
-$s = true if options[:score]
-$m = true if options[:methods]
-$v = true if options[:verbose]
-
-$a ||= false
-$m ||= false
-$s ||= false
-$v ||= false
-
 ARGV.push "-" if ARGV.empty?
 
 flogger = Flog.new(options)

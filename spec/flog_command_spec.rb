@@ -28,29 +28,14 @@ describe 'flog command' do
       run_command
       $:.should == @paths
     end
-    
-    it 'should not display all flog results' do
-      run_command
-      $a.should be_false
-    end
-    
-    it 'should not display a summary report' do
-      run_command
-      $s.should be_false
-    end
-    
-    it 'should not skip code outside of methods' do
-      run_command
-      $m.should be_false
-    end
-    
-    it 'should not display verbose progress info' do
-      run_command
-      $v.should be_false
-    end
-    
+
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
+      run_command
+    end
+    
+    it 'should not have any options flags set' do
+      Flog.expects(:new).with({}).returns(@flog)
       run_command
     end
     
@@ -81,10 +66,6 @@ describe 'flog command' do
       ARGV = ['-a']
     end
     
-    after :each do
-      $a = nil
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
       run_command
@@ -105,10 +86,6 @@ describe 'flog command' do
     before :each do
       Object.send(:remove_const, :ARGV)
       ARGV = ['--all']
-    end
-    
-    after :each do
-      $a = nil
     end
     
     it 'should create a Flog instance' do
@@ -133,10 +110,6 @@ describe 'flog command' do
       ARGV = ['-s']
     end
     
-    after :each do
-      $s = nil
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
       run_command
@@ -159,10 +132,6 @@ describe 'flog command' do
       ARGV = ['--score']
     end
     
-    after :each do
-      $s = nil
-    end
-
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
       run_command
@@ -183,10 +152,6 @@ describe 'flog command' do
     before :each do
       Object.send(:remove_const, :ARGV)
       ARGV = ['-m']
-    end
-    
-    after :each do
-      $m = nil
     end
     
     it 'should create a Flog instance' do
@@ -211,10 +176,6 @@ describe 'flog command' do
       ARGV = ['--methods-only']
     end
     
-    after :each do
-      $m = nil
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
       run_command
@@ -235,10 +196,6 @@ describe 'flog command' do
     before :each do
       Object.send(:remove_const, :ARGV)
       ARGV = ['-v']
-    end
-    
-    after :each do
-      $v = nil
     end
     
     it 'should create a Flog instance' do
@@ -263,10 +220,6 @@ describe 'flog command' do
       ARGV = ['--verbose']
     end
     
-    after :each do
-      $v = nil
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
       run_command
@@ -289,10 +242,6 @@ describe 'flog command' do
       ARGV = ['-h']
     end
     
-    after :each do
-      $h = nil
-    end
-    
     it "should display help information" do
       self.expects(:puts)
       run_command
@@ -313,10 +262,6 @@ describe 'flog command' do
     before :each do
       Object.send(:remove_const, :ARGV)
       ARGV = ['--help']
-    end
-    
-    after :each do
-      $h = nil
     end
     
     it "should display help information" do
@@ -345,10 +290,6 @@ describe 'flog command' do
       @paths = $:.dup
     end
  
-    after :each do
-      $I = nil
-    end
-
     it "should append each ':' separated path to $:" do
       run_command
       $:.should_not == @paths
