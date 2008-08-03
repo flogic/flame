@@ -59,11 +59,12 @@ class Flog < SexpProcessor
   @@no_class = :main
   @@no_method = :none
 
-  attr_reader :calls
+  attr_reader :calls, :options
   attr_accessor :multiplier, :class_stack, :method_stack
 
-  def initialize
-    super
+  def initialize(options)
+    super()
+    @options = options
     @class_stack = []
     @method_stack = []
     self.auto_shift_type = true
