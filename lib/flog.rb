@@ -111,6 +111,7 @@ class Flog < SexpProcessor
   end
   
   def average
+    return 0 if calls.size == 0
     total / calls.size
   end
   
