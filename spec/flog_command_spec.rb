@@ -85,13 +85,13 @@ describe 'flog command' do
       $a = nil
     end
     
-    it "should set the option to show all methods" do
-      run_command
-      $a.should be_true
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
+      run_command
+    end
+    
+    it "should set the option to show all methods" do
+      Flog.expects(:new).with(:all => true).returns(@flog)      
       run_command
     end
     
@@ -111,13 +111,13 @@ describe 'flog command' do
       $a = nil
     end
     
-    it "should set the option to show all methods" do
-      run_command
-      $a.should be_true
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
+      run_command
+    end
+    
+    it "should set the option to show all methods" do
+      Flog.expects(:new).with(:all => true).returns(@flog)      
       run_command
     end
     
@@ -137,16 +137,16 @@ describe 'flog command' do
       $s = nil
     end
     
-    it "should set the option to show only the score" do
-      run_command
-      $s.should be_true
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
       run_command
     end
-    
+
+    it "should set the option to show only the score" do
+      Flog.expects(:new).with(:score => true).returns(@flog)      
+      run_command
+    end
+        
     it 'should exit with status 0' do
       self.expects(:exit).with(0)
       run_command
@@ -162,14 +162,14 @@ describe 'flog command' do
     after :each do
       $s = nil
     end
-    
-    it "should set the option to show only the score" do
-      run_command
-      $s.should be_true
-    end
-    
+
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
+      run_command
+    end
+    
+    it "should set the option to show only the score" do
+      Flog.expects(:new).with(:score => true).returns(@flog)      
       run_command
     end
     
@@ -189,13 +189,13 @@ describe 'flog command' do
       $m = nil
     end
     
-    it "should set the option to report on methods only" do
-      run_command
-      $m.should be_true
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
+      run_command
+    end
+    
+    it "should set the option to report on methods only" do
+      Flog.expects(:new).with(:methods => true).returns(@flog)      
       run_command
     end
     
@@ -215,16 +215,16 @@ describe 'flog command' do
       $m = nil
     end
     
-    it "should set the option to report on methods only" do
-      run_command
-      $m.should be_true
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
       run_command
     end
-    
+
+    it "should set the option to report on methods only" do
+      Flog.expects(:new).with(:methods => true).returns(@flog)      
+      run_command
+    end
+        
     it 'should exit with status 0' do
       self.expects(:exit).with(0)
       run_command
@@ -241,13 +241,13 @@ describe 'flog command' do
       $v = nil
     end
     
-    it "should set the option to be verbose" do
-      run_command
-      $v.should be_true
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
+      run_command
+    end
+    
+    it "should set the option to be verbose" do
+      Flog.expects(:new).with(:verbose => true).returns(@flog)      
       run_command
     end
     
@@ -267,13 +267,13 @@ describe 'flog command' do
       $v = nil
     end
     
-    it "should set the option to be verbose" do
-      run_command
-      $v.should be_true
-    end
-    
     it 'should create a Flog instance' do
       Flog.expects(:new).returns(@flog)
+      run_command
+    end
+    
+    it "should set the option to be verbose" do
+      Flog.expects(:new).with(:verbose => true).returns(@flog)      
       run_command
     end
     
