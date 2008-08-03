@@ -34,129 +34,140 @@ describe Flog do
         @calls = YAML.load(<<-YAML)
         --- 
         RailsClassMethods#generate: 
-          :save: 1.3
-          :spawn: 1.3
-          :assignment: 2.6
+          :save: 1.4
+          :assignment: 2.80000000000001
+          :spawn: 1.4
         RailsClassMethods#exemplar_path: 
-          :join: 1.3
+          :join: 1.4
         ClassMethods#generator_for: 
-          :is_a?: 2.6
-          :arity: 1.9
-          :respond_to?: 1.6
-          :first: 1.5
-          :name: 1.9
-          :assignment: 15.5
-          :branch: 17.8
-          :length: 1.7
-          :raise: 8.10000000000001
-          :lit_fixnum: 0.425
-          :include?: 1.7
-          :record_generator_for: 4.70000000000001
-          :lambda: 1.7
-          :to_sym: 2.9
-          :[]: 15.2
-          :==: 1.5
-          :keys: 3.6
-        ObjectDaddy#included: 
-          :extend: 5.2
-          :branch: 2.4
-          :alias_method: 8.0
-          :<: 1.3
-          :sclass: 7.0
-        ClassMethods#underscore: 
-          :gsub: 1.5
-          :downcase: 1.3
-        ClassMethods#gather_exemplars: 
-          :underscore: 1.5
-          :load: 1.4
-          :respond_to?: 1.3
-          :superclass: 5.20000000000001
-          :name: 1.7
-          :assignment: 4.10000000000001
-          :gather_exemplars: 1.5
-          :exists?: 1.3
-          :join: 1.3
-          :dup: 1.5
-          :exemplars_generated: 1.3
-          :branch: 5.60000000000001
-          :exemplar_path: 1.5
-          :generators: 1.8
-        ClassMethods#none: 
-          :protected: 2.4
-          :attr_accessor: 1.2
-          :attr_reader: 1.2
-        ClassMethods#record_generator_for: 
-          :assignment: 1.3
-          :branch: 3.0
-          :raise: 1.4
-          :==: 1.3
-          :[]: 3.3
-          :generators: 3.3
-        RailsClassMethods#validates_presence_of_with_object_daddy: 
-          :validates_presence_of_without_object_daddy: 1.3
-          :is_a?: 1.3
-          :last: 1.5
-          :assignment: 5.40000000000001
-          :branch: 2.6
-          :dup: 1.3
-          :pop: 1.4
-          :each: 1.3
-        ClassMethods#presence_validated_attributes: 
-          :merge: 1.4
-          :presence_validated_attributes: 1.6
-          :respond_to?: 1.3
-          :superclass: 3.3
-          :assignment: 4.00000000000001
-          :branch: 1.3
-        ClassMethods#spawn: 
-          :class_name: 2.0
-          :presence_validated_attributes: 5.1
-          :each_pair: 1.3
-          :call: 1.7
-          :generate: 1.6
-          :constantize: 1.8
-          :name: 3.7
-          :reflect_on_all_associations: 1.7
-          :assignment: 33.2
-          :select: 1.5
-          :gather_exemplars: 1.3
-          :-: 1.7
-          :send: 5.1
-          :branch: 22.5
-          :scope: 1.5
-          :to_a: 1.5
-          :empty?: 1.4
-          :new: 1.3
-          :reject!: 1.6
-          :next: 1.8
-          :delete: 1.8
-          :include?: 1.7
-          :to_s: 5.4
-          :each: 3.0
+          :is_a?: 2.8
+          :arity: 2.0
+          :assignment: 16.5
+          :respond_to?: 1.7
+          :first: 1.6
+          :branch: 19.0
+          :name: 2.0
+          :lit_fixnum: 0.45
+          :length: 1.8
+          :raise: 8.60000000000001
+          :include?: 1.8
+          :lambda: 1.8
+          :to_sym: 3.1
+          :[]: 16.1
+          :==: 1.6
           :keys: 3.8
-          :[]: 22.3
-          :primary_key_name: 4.0
-          :generators: 1.6
+          :record_generator_for: 5.00000000000001
+        ObjectDaddy#included: 
+          :extend: 5.6
+          :branch: 2.6
+          :sclass: 7.5
+          :alias_method: 8.4
+          :<: 1.4
+        ClassMethods#underscore: 
+          :gsub: 1.6
+          :downcase: 1.4
+        ClassMethods#gather_exemplars: 
+          :load: 1.5
+          :underscore: 1.6
+          :assignment: 4.40000000000001
+          :respond_to?: 1.4
+          :superclass: 5.50000000000001
+          :branch: 6.00000000000001
+          :name: 1.8
+          :gather_exemplars: 1.6
+          :exemplars_generated: 1.4
+          :exists?: 1.4
+          :join: 1.4
+          :dup: 1.6
+          :exemplar_path: 1.6
+          :generators: 1.9
+        ClassMethods#none: 
+          :protected: 2.6
+          :attr_accessor: 1.3
+          :attr_reader: 1.3
+        Foo#initialize: 
+          :super: 1.2
+        main#none: 
+          :assignment: 1.1
+          :attr_writer: 1.1
+          :branch: 5.60000000000001
+          :lit_fixnum: 0.275000000000001
+          :puts: 1.1
+          :alias: 2.20000000000001
+        ClassMethods#record_generator_for: 
+          :assignment: 1.4
+          :branch: 3.20000000000001
+          :raise: 1.5
+          :==: 1.4
+          :[]: 3.50000000000001
+          :generators: 3.50000000000001
+        RailsClassMethods#validates_presence_of_with_object_daddy: 
+          :is_a?: 1.4
+          :assignment: 5.80000000000001
+          :branch: 2.80000000000001
+          :last: 1.6
+          :dup: 1.4
+          :pop: 1.5
+          :each: 1.4
+          :validates_presence_of_without_object_daddy: 1.4
+        ClassMethods#presence_validated_attributes: 
+          :merge: 1.5
+          :presence_validated_attributes: 1.7
+          :assignment: 4.30000000000001
+          :respond_to?: 1.4
+          :superclass: 3.50000000000001
+          :branch: 1.4
+        ClassMethods#spawn: 
+          :presence_validated_attributes: 5.4
+          :each_pair: 1.4
+          :assignment: 35.3
+          :generate: 1.7
+          :class_name: 2.1
+          :call: 1.8
+          :reflect_on_all_associations: 1.8
+          :branch: 24.0
+          :constantize: 1.9
+          :name: 3.9
+          :gather_exemplars: 1.4
+          :select: 1.6
+          :-: 1.8
+          :send: 5.4
+          :to_a: 1.6
+          :empty?: 1.5
+          :new: 1.4
+          :reject!: 1.7
+          :next: 1.9
+          :delete: 1.9
+          :include?: 1.8
+          :primary_key_name: 4.2
+          :to_s: 5.7
+          :each: 3.2
+          :keys: 4.0
+          :[]: 23.6
+          :generators: 1.7
+          :scope: 1.6
         RailsClassMethods#generate!: 
-          :spawn: 1.3
-          :assignment: 2.6
-          :save!: 1.3
+          :save!: 1.4
+          :assignment: 2.80000000000001
+          :spawn: 1.4
         YAML
         
         @totals = YAML.load(<<-YAML)
         --- 
-        RailsClassMethods#generate: 3.67695526217005
-        ObjectDaddy#included: 21.6335387766311
-        ClassMethods#generator_for: 56.219575105118
-        RailsClassMethods#exemplar_path: 1.3
-        ClassMethods#underscore: 2.8
-        ClassMethods#none: 4.8
-        ClassMethods#gather_exemplars: 22.4022320316526
-        ClassMethods#record_generator_for: 9.85799168187924
-        ClassMethods#spawn: 90.5645073966618
-        ClassMethods#presence_validated_attributes: 8.6861959452916
-        RailsClassMethods#validates_presence_of_with_object_daddy: 10.0762096048068
-        RailsClassMethods#generate!: 3.67695526217005
+        RailsClassMethods#generate: 3.95979797464467
+        ObjectDaddy#included: 23.0471256342304
+        ClassMethods#generator_for: 59.7115776043475
+        RailsClassMethods#exemplar_path: 1.4
+        ClassMethods#underscore: 3.00000000000001
+        ClassMethods#none: 5.2
+        ClassMethods#gather_exemplars: 23.8882816460289
+        ClassMethods#record_generator_for: 10.4980950652964
+        main#none: 7.37737249974544
+        Foo#initialize: 1.2
+        ClassMethods#spawn: 96.0108847995893
+        ClassMethods#presence_validated_attributes: 9.27685291464731
+        RailsClassMethods#validates_presence_of_with_object_daddy: 10.8245092267502
+        RailsClassMethods#generate!: 3.95979797464467
         YAML
       end
     
@@ -164,9 +175,9 @@ describe Flog do
         lambda { @flog.flog_files(fixture_files(@files)) }.should_not raise_error
       end
 
-      currently 'should report an overall flog score of 235.694161066381' do
+      currently 'should report an overall flog score of 259.354295339925' do
         @flog.flog_files(fixture_files(@files))
-        @flog.total.should be_close(235.694161066381, 0.0000000001)
+        @flog.total.should be_close(259.354295339925, 0.0000000001)
       end
       
       currently 'should compute the same call data as flog-1.1.0' do
