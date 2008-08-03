@@ -86,7 +86,7 @@ class Flog < SexpProcessor
     return flog_directory(file) if File.directory? file
     data = $stdin.read if file == '-'
     data ||= File.read(file)
-    warn "** flogging #{file}" if $v
+    warn "** flogging #{file}" if options[:verbose]
     flog(data, file)
   end
   
@@ -181,7 +181,7 @@ class Flog < SexpProcessor
   end
   
   def summarize_method(meth, tally)
-    return if $m and meth =~ /##{@@no_method}$/
+    return if options[:methods] and meth =~ /##{@@no_method}$/
     score = score_method(tally)
     record_method_score(meth, score)
     increment_total_score_by score
@@ -201,7 +201,7 @@ class Flog < SexpProcessor
   end
 
   def output_method_details(io, class_method, call_list)
-    return 0 if $m and class_method =~ /##{@@no_method}/
+    return 0 if options[:methods] and class_method =~ /##{@@no_method}/
     
     total = totals[class_method]
     io.puts "%s: (%.1f)" % [class_method, total]
@@ -224,9 +224,9 @@ class Flog < SexpProcessor
 
   def report(io = $stdout)
     output_summary(io)
-    return if $s
+    return if options[:score]
     
-    if $a
+    if options[:all]
       output_details(io)
     else
       output_details(io, total * THRESHOLD)
