@@ -91,7 +91,7 @@ describe 'flog command' do
     end
     
     it 'should create a Flog instance' do
-      Flog.expects(:new).never
+      Flog.expects(:new).returns(@flog)
       run_command
     end
     
@@ -117,7 +117,7 @@ describe 'flog command' do
     end
     
     it 'should create a Flog instance' do
-      Flog.expects(:new).never
+      Flog.expects(:new).returns(@flog)
       run_command
     end
     
@@ -143,7 +143,7 @@ describe 'flog command' do
     end
     
     it 'should create a Flog instance' do
-      Flog.expects(:new).never
+      Flog.expects(:new).returns(@flog)
       run_command
     end
     
@@ -169,7 +169,7 @@ describe 'flog command' do
     end
     
     it 'should create a Flog instance' do
-      Flog.expects(:new).never
+      Flog.expects(:new).returns(@flog)
       run_command
     end
     
@@ -195,7 +195,7 @@ describe 'flog command' do
     end
     
     it 'should create a Flog instance' do
-      Flog.expects(:new).never
+      Flog.expects(:new).returns(@flog)
       run_command
     end
     
@@ -221,7 +221,7 @@ describe 'flog command' do
     end
     
     it 'should create a Flog instance' do
-      Flog.expects(:new).never
+      Flog.expects(:new).returns(@flog)
       run_command
     end
     
@@ -247,7 +247,7 @@ describe 'flog command' do
     end
     
     it 'should create a Flog instance' do
-      Flog.expects(:new).never
+      Flog.expects(:new).returns(@flog)
       run_command
     end
     
@@ -273,7 +273,7 @@ describe 'flog command' do
     end
     
     it 'should create a Flog instance' do
-      Flog.expects(:new).never
+      Flog.expects(:new).returns(@flog)
       run_command
     end
     
