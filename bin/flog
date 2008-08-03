@@ -1,37 +1,50 @@
-#!/usr/local/bin/ruby -ws
+#!/usr/local/bin/ruby -w
 
+require 'optparse'
 require 'flog'
 
-def usage
-  puts "#{File.basename $0} options dirs_or_files"
-  puts "  -a      display all flog results, not top 60%"
-  puts "  -h      display help"
-  puts "  -I=path extend $LOAD_PATH with path"
-  puts "  -s      display total score only"
-  puts "  -m      skip code outside of methods"
-  puts "  -v      verbosely display progress and errors"
-end
+options = {}
+op = OptionParser.new do |opts|
+  opts.on('-a', '--all', "display all flog results, not top 60%") do |a| 
+    options[:all] = a
+  end
+  
+  opts.on('-s', '--score', 'display total score only')  do |s| 
+    options[:score] = s
+  end
+  
+  opts.on('-m', '--methods-only', 'skip code outside of methods') do |m| 
+    options[:methods] = m
+  end
+  
+  opts.on("-I path1,path2,path3", Array, 'ruby include paths to search') do |list|
+    options[:paths] = list.collect {|l| l.to_s }
+  end
+  
+  opts.on('-v', '--verbose', 'verbosely display progress and errors')  do |v| 
+    options[:verbose] = v
+  end
+  
+  opts.on_tail('-h', '--help', 'show this message') do
+    puts opts
+    exit
+  end
+end.parse!
+
+options[:paths].each {|dir| $: << dir } if options[:paths]
+
+# we still need these, as the library is currently dependent upon these global variables
+$a = true if options[:all]
+$s = true if options[:score]
+$m = true if options[:methods]
+$v = true if options[:verbose]
+
+$a ||= false
+$m ||= false
+$s ||= false
+$v ||= false
 
 ARGV.push "-" if ARGV.empty?
-
-if $h then
-  usage
-  exit 0  
-end
-
-if $I
-  if String === $I
-    $I.split(/:/).each {|dir| $: << dir }
-  else
-    usage
-    exit 0
-  end
-end
-
-$a ||= false # report all methods, not just 60%
-$m ||= false # real methods only (no global scope)
-$s ||= false # summary only
-$v ||= false # verbose, print methods as processed
 
 flogger = Flog.new
 flogger.flog_files ARGV
