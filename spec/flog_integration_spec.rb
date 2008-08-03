@@ -4,15 +4,11 @@ require 'sexp_processor'
 
 describe Flog do
   before :each do
-    @flog = Flog.new
+    @flog = Flog.new({})
   end
 
   describe 'flog_files' do
 
-    before :each do
-      @flog = Flog.new
-    end
-    
     describe 'when given empty input' do
       before :each do
         @files = ['/empty/empty.rb']

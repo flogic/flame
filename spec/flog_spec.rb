@@ -4,25 +4,26 @@ require 'sexp_processor'
 
 describe Flog do
   before :each do
-    @flog = Flog.new
+    @options = { }
+    @flog = Flog.new(@options)
   end
 
   describe 'when initializing' do
-    it 'should allow no arguments' do
-      lambda { Flog.new 'bogus' }.should raise_error(ArgumentError)
-    end
-    
-    it 'should succeed if given no arguments' do
-      lambda { Flog.new }.should_not raise_error
+    it 'should require options arguments' do
+      lambda { Flog.new }.should raise_error(ArgumentError)
     end
     
     it 'should not reference the parse tree' do
       ParseTree.expects(:new).never
-      Flog.new
+      Flog.new(@options)
     end
   end
   
-  describe 'after initializing' do    
+  describe 'after initializing' do
+    it 'should have options set' do
+      @flog.options.should == @options
+    end
+
     it 'should return an SexpProcessor' do
       @flog.should be_a_kind_of(SexpProcessor)
     end
@@ -66,6 +67,12 @@ describe Flog do
 
     currently "should have 'require empty' set to false" do
       @flog.require_empty.should be_false
+    end
+  end
+  
+  describe 'options' do
+    it 'should return the current options settings' do
+      @flog.should respond_to(:options)
     end
   end
   

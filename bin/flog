@@ -46,7 +46,7 @@ $v ||= false
 
 ARGV.push "-" if ARGV.empty?
 
-flogger = Flog.new
+flogger = Flog.new(options)
 flogger.flog_files ARGV
 flogger.report
 
