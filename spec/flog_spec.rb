@@ -443,6 +443,18 @@ describe Flog do
     end
   end
   
+  describe 'when collecting blame information from a file' do
+    it 'should require a filename' do
+      lambda { @flog.collect_blame }.should raise_error(ArgumentError)
+    end
+    
+    it 'should not fail when given a filename' do
+      @flog.collect_blame('filename')
+    end
+    
+    it 'should have more specs'
+  end
+
   describe 'multiplier' do
     it 'should be possible to determine the current value of the multiplier' do
       @flog.should respond_to(:multiplier)
