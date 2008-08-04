@@ -111,6 +111,9 @@ class Flog < SexpProcessor
     process Sexp.from_array(sexp).first
   end
   
+  def collect_blame(filename)
+  end
+  
   def add_to_score(name)
     @calls["#{class_name}##{method_name}"][name] += SCORES[name] * @multiplier
   end
