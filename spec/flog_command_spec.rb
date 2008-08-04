@@ -305,4 +305,48 @@ describe 'flog command' do
       run_command
     end
   end
+  
+  describe 'when -b is specified on the command-line' do
+    before :each do
+      Object.send(:remove_const, :ARGV)
+      ARGV = ['-b']
+    end
+
+    it 'should create a Flog instance' do
+      Flog.expects(:new).returns(@flog)
+      run_command
+    end
+    
+    it "should set the option to provide 'blame' information" do
+      Flog.expects(:new).with(:blame => true).returns(@flog)      
+      run_command
+    end
+    
+    it 'should exit with status 0' do
+      self.expects(:exit).with(0)
+      run_command
+    end
+  end
+  
+  describe 'when --blame is specified on the command-line' do
+    before :each do
+      Object.send(:remove_const, :ARGV)
+      ARGV = ['--blame']
+    end
+
+    it 'should create a Flog instance' do
+      Flog.expects(:new).returns(@flog)
+      run_command
+    end
+    
+    it "should set the option to provide 'blame' information" do
+      Flog.expects(:new).with(:blame => true).returns(@flog)      
+      run_command
+    end
+    
+    it 'should exit with status 0' do
+      self.expects(:exit).with(0)
+      run_command
+    end
+  end
 end

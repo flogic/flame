@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:46:50 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:47:04 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -571,9 +571,9 @@ span.run100 {
     </thead>
   <tbody><tr class='light'><td><a href='spec-flog_command_spec_rb.html'>spec/flog_command_spec.rb</a>
         </td>
-      <td class='lines_total'><tt>308</tt>
+      <td class='lines_total'><tt>352</tt>
         </td>
-      <td class='lines_code'><tt>252</tt>
+      <td class='lines_code'><tt>288</tt>
         </td>
       <td><table cellspacing='0' cellpadding='0' align='right'><tr><td><tt class='coverage_total'>100.0%</tt>
               &nbsp;</td>
@@ -905,7 +905,51 @@ span.run100 {
 </span><span class="marked1"><a name="line305"></a>305       run_command
 </span><span class="inferred0"><a name="line306"></a>306     end
 </span><span class="inferred1"><a name="line307"></a>307   end
-</span><span class="inferred0"><a name="line308"></a>308 end
+</span><span class="inferred0"><a name="line308"></a>308   
+</span><span class="marked1"><a name="line309"></a>309   describe 'when -b is specified on the command-line' do
+</span><span class="marked0"><a name="line310"></a>310     before :each do
+</span><span class="marked1"><a name="line311"></a>311       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line312"></a>312       ARGV = ['-b']
+</span><span class="inferred1"><a name="line313"></a>313     end
+</span><span class="inferred0"><a name="line314"></a>314 
+</span><span class="marked1"><a name="line315"></a>315     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line316"></a>316       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line317"></a>317       run_command
+</span><span class="inferred0"><a name="line318"></a>318     end
+</span><span class="inferred1"><a name="line319"></a>319     
+</span><span class="marked0"><a name="line320"></a>320     it &quot;should set the option to provide 'blame' information&quot; do
+</span><span class="marked1"><a name="line321"></a>321       Flog.expects(:new).with(:blame =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line322"></a>322       run_command
+</span><span class="inferred1"><a name="line323"></a>323     end
+</span><span class="inferred0"><a name="line324"></a>324     
+</span><span class="marked1"><a name="line325"></a>325     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line326"></a>326       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line327"></a>327       run_command
+</span><span class="inferred0"><a name="line328"></a>328     end
+</span><span class="inferred1"><a name="line329"></a>329   end
+</span><span class="inferred0"><a name="line330"></a>330   
+</span><span class="marked1"><a name="line331"></a>331   describe 'when --blame is specified on the command-line' do
+</span><span class="marked0"><a name="line332"></a>332     before :each do
+</span><span class="marked1"><a name="line333"></a>333       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line334"></a>334       ARGV = ['--blame']
+</span><span class="inferred1"><a name="line335"></a>335     end
+</span><span class="inferred0"><a name="line336"></a>336 
+</span><span class="marked1"><a name="line337"></a>337     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line338"></a>338       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line339"></a>339       run_command
+</span><span class="inferred0"><a name="line340"></a>340     end
+</span><span class="inferred1"><a name="line341"></a>341     
+</span><span class="marked0"><a name="line342"></a>342     it &quot;should set the option to provide 'blame' information&quot; do
+</span><span class="marked1"><a name="line343"></a>343       Flog.expects(:new).with(:blame =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line344"></a>344       run_command
+</span><span class="inferred1"><a name="line345"></a>345     end
+</span><span class="inferred0"><a name="line346"></a>346     
+</span><span class="marked1"><a name="line347"></a>347     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line348"></a>348       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line349"></a>349       run_command
+</span><span class="inferred0"><a name="line350"></a>350     end
+</span><span class="inferred1"><a name="line351"></a>351   end
+</span><span class="inferred0"><a name="line352"></a>352 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>
