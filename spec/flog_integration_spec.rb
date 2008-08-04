@@ -18,7 +18,7 @@ describe Flog do
         lambda { @flog.flog_files(fixture_files(@files)) }.should_not raise_error
       end
       
-      currently 'should report an overall flog score of 0' do
+      it 'should report an overall flog score of 0' do
         @flog.flog_files(fixture_files(@files))
         @flog.total.should be_close(0.0, 0.0000000001)
       end
