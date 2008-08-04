@@ -553,7 +553,7 @@ span.run100 {
 </style>
     </head>
   <body><h3>C0 code coverage information</h3>
-    <p>Generated on Mon Aug 04 22:47:19 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
+    <p>Generated on Mon Aug 04 22:47:34 -0500 2008 with <a href='http://eigenclass.org/hiki/rcov'>rcov 0.8.1.2</a>
       </p>
     <hr/>
     <pre><span class='marked0'>Code reported as executed by Ruby looks like this...
@@ -598,358 +598,358 @@ span.run100 {
       </tr>
     </tbody>
   </table>
-<pre><span class="marked0"><a name="line1"></a>  1 require File.dirname(__FILE__) + '/spec_helper.rb'
-</span><span class="marked1"><a name="line2"></a>  2 require 'flog'
-</span><span class="inferred0"><a name="line3"></a>  3 
-</span><span class="marked1"><a name="line4"></a>  4 describe 'flog command' do
-</span><span class="marked0"><a name="line5"></a>  5   before :each do
-</span><span class="marked1"><a name="line6"></a>  6     @flog = stub('Flog', :flog_files =&gt; true, :report =&gt; true)
-</span><span class="marked0"><a name="line7"></a>  7     Flog.stubs(:new).returns(@flog)
-</span><span class="marked1"><a name="line8"></a>  8     self.stubs(:exit)
-</span><span class="marked0"><a name="line9"></a>  9     self.stubs(:puts)
-</span><span class="inferred1"><a name="line10"></a> 10   end
-</span><span class="inferred0"><a name="line11"></a> 11 
-</span><span class="marked1"><a name="line12"></a> 12   def run_command
-</span><span class="marked0"><a name="line13"></a> 13     eval File.read(File.join(File.dirname(__FILE__), *%w[.. bin flog]))
-</span><span class="marked1"><a name="line14"></a> 14   end
-</span><span class="inferred0"><a name="line15"></a> 15   
-</span><span class="marked1"><a name="line16"></a> 16   describe 'when no command-line arguments are specified' do
-</span><span class="marked0"><a name="line17"></a> 17     before :each do
-</span><span class="marked1"><a name="line18"></a> 18       Object.send(:remove_const, :ARGV)
-</span><span class="marked0"><a name="line19"></a> 19       ARGV = []
-</span><span class="inferred1"><a name="line20"></a> 20     end  
-</span><span class="inferred0"><a name="line21"></a> 21   
-</span><span class="marked1"><a name="line22"></a> 22     it 'should run' do
-</span><span class="marked0"><a name="line23"></a> 23       lambda { run_command }.should_not raise_error(Errno::ENOENT)
-</span><span class="inferred1"><a name="line24"></a> 24     end
-</span><span class="inferred0"><a name="line25"></a> 25     
-</span><span class="marked1"><a name="line26"></a> 26     it 'should not alter the include path' do
-</span><span class="marked0"><a name="line27"></a> 27       @paths = $:.dup
-</span><span class="marked1"><a name="line28"></a> 28       run_command
-</span><span class="marked0"><a name="line29"></a> 29       $:.should == @paths
-</span><span class="inferred1"><a name="line30"></a> 30     end
-</span><span class="inferred0"><a name="line31"></a> 31 
-</span><span class="marked1"><a name="line32"></a> 32     it 'should create a Flog instance' do
-</span><span class="marked0"><a name="line33"></a> 33       Flog.expects(:new).returns(@flog)
-</span><span class="marked1"><a name="line34"></a> 34       run_command
-</span><span class="inferred0"><a name="line35"></a> 35     end
-</span><span class="inferred1"><a name="line36"></a> 36     
-</span><span class="marked0"><a name="line37"></a> 37     it 'should not have any options flags set' do
-</span><span class="marked1"><a name="line38"></a> 38       Flog.expects(:new).with({}).returns(@flog)
-</span><span class="marked0"><a name="line39"></a> 39       run_command
-</span><span class="inferred1"><a name="line40"></a> 40     end
-</span><span class="inferred0"><a name="line41"></a> 41     
-</span><span class="marked1"><a name="line42"></a> 42     it 'should call flog_files on the Flog instance' do
-</span><span class="marked0"><a name="line43"></a> 43       @flog.expects(:flog_files)
-</span><span class="marked1"><a name="line44"></a> 44       run_command
-</span><span class="inferred0"><a name="line45"></a> 45     end
-</span><span class="inferred1"><a name="line46"></a> 46     
-</span><span class="marked0"><a name="line47"></a> 47     it &quot;should pass '-' (for the file path) to flog_files on the instance&quot; do
-</span><span class="marked1"><a name="line48"></a> 48       @flog.expects(:flog_files).with(['-'])
-</span><span class="marked0"><a name="line49"></a> 49       run_command
-</span><span class="inferred1"><a name="line50"></a> 50     end
-</span><span class="inferred0"><a name="line51"></a> 51 
-</span><span class="marked1"><a name="line52"></a> 52     it 'should call report on the Flog instance' do
-</span><span class="marked0"><a name="line53"></a> 53       @flog.expects(:report)
-</span><span class="marked1"><a name="line54"></a> 54       run_command
-</span><span class="inferred0"><a name="line55"></a> 55     end
-</span><span class="inferred1"><a name="line56"></a> 56     
-</span><span class="marked0"><a name="line57"></a> 57     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line58"></a> 58       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line59"></a> 59       run_command
-</span><span class="inferred1"><a name="line60"></a> 60     end
-</span><span class="inferred0"><a name="line61"></a> 61   end
-</span><span class="inferred1"><a name="line62"></a> 62   
-</span><span class="marked0"><a name="line63"></a> 63   describe &quot;when -a is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line64"></a> 64     before :each do
-</span><span class="marked0"><a name="line65"></a> 65       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line66"></a> 66       ARGV = ['-a']
-</span><span class="inferred0"><a name="line67"></a> 67     end
-</span><span class="inferred1"><a name="line68"></a> 68     
-</span><span class="marked0"><a name="line69"></a> 69     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line70"></a> 70       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line71"></a> 71       run_command
-</span><span class="inferred1"><a name="line72"></a> 72     end
-</span><span class="inferred0"><a name="line73"></a> 73     
-</span><span class="marked1"><a name="line74"></a> 74     it &quot;should set the option to show all methods&quot; do
-</span><span class="marked0"><a name="line75"></a> 75       Flog.expects(:new).with(:all =&gt; true).returns(@flog)      
-</span><span class="marked1"><a name="line76"></a> 76       run_command
-</span><span class="inferred0"><a name="line77"></a> 77     end
-</span><span class="inferred1"><a name="line78"></a> 78     
-</span><span class="marked0"><a name="line79"></a> 79     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line80"></a> 80       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line81"></a> 81       run_command
-</span><span class="inferred1"><a name="line82"></a> 82     end
-</span><span class="inferred0"><a name="line83"></a> 83   end
-</span><span class="inferred1"><a name="line84"></a> 84   
-</span><span class="marked0"><a name="line85"></a> 85   describe &quot;when --all is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line86"></a> 86     before :each do
-</span><span class="marked0"><a name="line87"></a> 87       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line88"></a> 88       ARGV = ['--all']
-</span><span class="inferred0"><a name="line89"></a> 89     end
-</span><span class="inferred1"><a name="line90"></a> 90     
-</span><span class="marked0"><a name="line91"></a> 91     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line92"></a> 92       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line93"></a> 93       run_command
-</span><span class="inferred1"><a name="line94"></a> 94     end
-</span><span class="inferred0"><a name="line95"></a> 95     
-</span><span class="marked1"><a name="line96"></a> 96     it &quot;should set the option to show all methods&quot; do
-</span><span class="marked0"><a name="line97"></a> 97       Flog.expects(:new).with(:all =&gt; true).returns(@flog)      
-</span><span class="marked1"><a name="line98"></a> 98       run_command
-</span><span class="inferred0"><a name="line99"></a> 99     end
-</span><span class="inferred1"><a name="line100"></a>100     
-</span><span class="marked0"><a name="line101"></a>101     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line102"></a>102       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line103"></a>103       run_command
-</span><span class="inferred1"><a name="line104"></a>104     end
-</span><span class="inferred0"><a name="line105"></a>105   end
-</span><span class="inferred1"><a name="line106"></a>106   
-</span><span class="marked0"><a name="line107"></a>107   describe &quot;when -s is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line108"></a>108     before :each do
-</span><span class="marked0"><a name="line109"></a>109       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line110"></a>110       ARGV = ['-s']
-</span><span class="inferred0"><a name="line111"></a>111     end
-</span><span class="inferred1"><a name="line112"></a>112     
-</span><span class="marked0"><a name="line113"></a>113     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line114"></a>114       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line115"></a>115       run_command
-</span><span class="inferred1"><a name="line116"></a>116     end
-</span><span class="inferred0"><a name="line117"></a>117 
-</span><span class="marked1"><a name="line118"></a>118     it &quot;should set the option to show only the score&quot; do
-</span><span class="marked0"><a name="line119"></a>119       Flog.expects(:new).with(:score =&gt; true).returns(@flog)      
-</span><span class="marked1"><a name="line120"></a>120       run_command
-</span><span class="inferred0"><a name="line121"></a>121     end
-</span><span class="inferred1"><a name="line122"></a>122         
-</span><span class="marked0"><a name="line123"></a>123     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line124"></a>124       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line125"></a>125       run_command
-</span><span class="inferred1"><a name="line126"></a>126     end
-</span><span class="inferred0"><a name="line127"></a>127   end
-</span><span class="inferred1"><a name="line128"></a>128   
-</span><span class="marked0"><a name="line129"></a>129   describe &quot;when --score is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line130"></a>130     before :each do
-</span><span class="marked0"><a name="line131"></a>131       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line132"></a>132       ARGV = ['--score']
-</span><span class="inferred0"><a name="line133"></a>133     end
-</span><span class="inferred1"><a name="line134"></a>134     
-</span><span class="marked0"><a name="line135"></a>135     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line136"></a>136       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line137"></a>137       run_command
-</span><span class="inferred1"><a name="line138"></a>138     end
-</span><span class="inferred0"><a name="line139"></a>139     
-</span><span class="marked1"><a name="line140"></a>140     it &quot;should set the option to show only the score&quot; do
-</span><span class="marked0"><a name="line141"></a>141       Flog.expects(:new).with(:score =&gt; true).returns(@flog)      
-</span><span class="marked1"><a name="line142"></a>142       run_command
-</span><span class="inferred0"><a name="line143"></a>143     end
-</span><span class="inferred1"><a name="line144"></a>144     
-</span><span class="marked0"><a name="line145"></a>145     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line146"></a>146       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line147"></a>147       run_command
-</span><span class="inferred1"><a name="line148"></a>148     end
-</span><span class="inferred0"><a name="line149"></a>149   end
-</span><span class="inferred1"><a name="line150"></a>150   
-</span><span class="marked0"><a name="line151"></a>151   describe &quot;when -m is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line152"></a>152     before :each do
-</span><span class="marked0"><a name="line153"></a>153       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line154"></a>154       ARGV = ['-m']
-</span><span class="inferred0"><a name="line155"></a>155     end
-</span><span class="inferred1"><a name="line156"></a>156     
-</span><span class="marked0"><a name="line157"></a>157     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line158"></a>158       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line159"></a>159       run_command
-</span><span class="inferred1"><a name="line160"></a>160     end
-</span><span class="inferred0"><a name="line161"></a>161     
-</span><span class="marked1"><a name="line162"></a>162     it &quot;should set the option to report on methods only&quot; do
-</span><span class="marked0"><a name="line163"></a>163       Flog.expects(:new).with(:methods =&gt; true).returns(@flog)      
-</span><span class="marked1"><a name="line164"></a>164       run_command
-</span><span class="inferred0"><a name="line165"></a>165     end
-</span><span class="inferred1"><a name="line166"></a>166     
-</span><span class="marked0"><a name="line167"></a>167     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line168"></a>168       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line169"></a>169       run_command
-</span><span class="inferred1"><a name="line170"></a>170     end
-</span><span class="inferred0"><a name="line171"></a>171   end
-</span><span class="inferred1"><a name="line172"></a>172 
-</span><span class="marked0"><a name="line173"></a>173   describe &quot;when --methods-only is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line174"></a>174     before :each do
-</span><span class="marked0"><a name="line175"></a>175       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line176"></a>176       ARGV = ['--methods-only']
-</span><span class="inferred0"><a name="line177"></a>177     end
-</span><span class="inferred1"><a name="line178"></a>178     
-</span><span class="marked0"><a name="line179"></a>179     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line180"></a>180       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line181"></a>181       run_command
-</span><span class="inferred1"><a name="line182"></a>182     end
-</span><span class="inferred0"><a name="line183"></a>183 
-</span><span class="marked1"><a name="line184"></a>184     it &quot;should set the option to report on methods only&quot; do
-</span><span class="marked0"><a name="line185"></a>185       Flog.expects(:new).with(:methods =&gt; true).returns(@flog)      
-</span><span class="marked1"><a name="line186"></a>186       run_command
-</span><span class="inferred0"><a name="line187"></a>187     end
-</span><span class="inferred1"><a name="line188"></a>188         
-</span><span class="marked0"><a name="line189"></a>189     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line190"></a>190       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line191"></a>191       run_command
-</span><span class="inferred1"><a name="line192"></a>192     end
-</span><span class="inferred0"><a name="line193"></a>193   end
-</span><span class="inferred1"><a name="line194"></a>194 
-</span><span class="marked0"><a name="line195"></a>195   describe &quot;when -v is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line196"></a>196     before :each do
-</span><span class="marked0"><a name="line197"></a>197       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line198"></a>198       ARGV = ['-v']
-</span><span class="inferred0"><a name="line199"></a>199     end
-</span><span class="inferred1"><a name="line200"></a>200     
-</span><span class="marked0"><a name="line201"></a>201     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line202"></a>202       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line203"></a>203       run_command
-</span><span class="inferred1"><a name="line204"></a>204     end
-</span><span class="inferred0"><a name="line205"></a>205     
-</span><span class="marked1"><a name="line206"></a>206     it &quot;should set the option to be verbose&quot; do
-</span><span class="marked0"><a name="line207"></a>207       Flog.expects(:new).with(:verbose =&gt; true).returns(@flog)      
-</span><span class="marked1"><a name="line208"></a>208       run_command
-</span><span class="inferred0"><a name="line209"></a>209     end
-</span><span class="inferred1"><a name="line210"></a>210     
-</span><span class="marked0"><a name="line211"></a>211     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line212"></a>212       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line213"></a>213       run_command
-</span><span class="inferred1"><a name="line214"></a>214     end
-</span><span class="inferred0"><a name="line215"></a>215   end
-</span><span class="inferred1"><a name="line216"></a>216 
-</span><span class="marked0"><a name="line217"></a>217   describe &quot;when --verbose is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line218"></a>218     before :each do
-</span><span class="marked0"><a name="line219"></a>219       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line220"></a>220       ARGV = ['--verbose']
-</span><span class="inferred0"><a name="line221"></a>221     end
-</span><span class="inferred1"><a name="line222"></a>222     
-</span><span class="marked0"><a name="line223"></a>223     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line224"></a>224       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line225"></a>225       run_command
-</span><span class="inferred1"><a name="line226"></a>226     end
-</span><span class="inferred0"><a name="line227"></a>227     
-</span><span class="marked1"><a name="line228"></a>228     it &quot;should set the option to be verbose&quot; do
-</span><span class="marked0"><a name="line229"></a>229       Flog.expects(:new).with(:verbose =&gt; true).returns(@flog)      
-</span><span class="marked1"><a name="line230"></a>230       run_command
-</span><span class="inferred0"><a name="line231"></a>231     end
-</span><span class="inferred1"><a name="line232"></a>232     
-</span><span class="marked0"><a name="line233"></a>233     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line234"></a>234       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line235"></a>235       run_command
-</span><span class="inferred1"><a name="line236"></a>236     end
-</span><span class="inferred0"><a name="line237"></a>237   end
-</span><span class="inferred1"><a name="line238"></a>238 
-</span><span class="marked0"><a name="line239"></a>239   describe &quot;when -h is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line240"></a>240     before :each do
-</span><span class="marked0"><a name="line241"></a>241       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line242"></a>242       ARGV = ['-h']
-</span><span class="inferred0"><a name="line243"></a>243     end
-</span><span class="inferred1"><a name="line244"></a>244     
-</span><span class="marked0"><a name="line245"></a>245     it &quot;should display help information&quot; do
-</span><span class="marked1"><a name="line246"></a>246       self.expects(:puts)
-</span><span class="marked0"><a name="line247"></a>247       run_command
-</span><span class="inferred1"><a name="line248"></a>248     end
-</span><span class="inferred0"><a name="line249"></a>249     
-</span><span class="marked1"><a name="line250"></a>250     it 'should not create a Flog instance' do
-</span><span class="marked0"><a name="line251"></a>251       Flog.expects(:new).never
-</span><span class="marked1"><a name="line252"></a>252       run_command
-</span><span class="inferred0"><a name="line253"></a>253     end
-</span><span class="inferred1"><a name="line254"></a>254     
-</span><span class="marked0"><a name="line255"></a>255     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line256"></a>256       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line257"></a>257       run_command
-</span><span class="inferred1"><a name="line258"></a>258     end
-</span><span class="inferred0"><a name="line259"></a>259   end
-</span><span class="inferred1"><a name="line260"></a>260   
-</span><span class="marked0"><a name="line261"></a>261   describe &quot;when --help is specified on the command-line&quot; do
-</span><span class="marked1"><a name="line262"></a>262     before :each do
-</span><span class="marked0"><a name="line263"></a>263       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line264"></a>264       ARGV = ['--help']
-</span><span class="inferred0"><a name="line265"></a>265     end
-</span><span class="inferred1"><a name="line266"></a>266     
-</span><span class="marked0"><a name="line267"></a>267     it &quot;should display help information&quot; do
-</span><span class="marked1"><a name="line268"></a>268       self.expects(:puts)
-</span><span class="marked0"><a name="line269"></a>269       run_command
-</span><span class="inferred1"><a name="line270"></a>270     end
-</span><span class="inferred0"><a name="line271"></a>271     
-</span><span class="marked1"><a name="line272"></a>272     it 'should not create a Flog instance' do
-</span><span class="marked0"><a name="line273"></a>273       Flog.expects(:new).never
-</span><span class="marked1"><a name="line274"></a>274       run_command
-</span><span class="inferred0"><a name="line275"></a>275     end
-</span><span class="inferred1"><a name="line276"></a>276     
-</span><span class="marked0"><a name="line277"></a>277     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line278"></a>278       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line279"></a>279       run_command
-</span><span class="inferred1"><a name="line280"></a>280     end
-</span><span class="inferred0"><a name="line281"></a>281   end
-</span><span class="inferred1"><a name="line282"></a>282   
-</span><span class="marked0"><a name="line283"></a>283   describe 'when -I is specified on the command-line' do
-</span><span class="marked1"><a name="line284"></a>284     before :each do
-</span><span class="marked0"><a name="line285"></a>285       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line286"></a>286       ARGV = ['-I /tmp,/etc']
-</span><span class="inferred0"><a name="line287"></a>287     end
-</span><span class="inferred1"><a name="line288"></a>288     
-</span><span class="marked0"><a name="line289"></a>289     before :each do
-</span><span class="marked1"><a name="line290"></a>290       @paths = $:.dup
-</span><span class="inferred0"><a name="line291"></a>291     end
-</span><span class="inferred1"><a name="line292"></a>292  
-</span><span class="marked0"><a name="line293"></a>293     it &quot;should append each ':' separated path to $:&quot; do
-</span><span class="marked1"><a name="line294"></a>294       run_command
-</span><span class="marked0"><a name="line295"></a>295       $:.should_not == @paths
-</span><span class="inferred1"><a name="line296"></a>296     end
-</span><span class="inferred0"><a name="line297"></a>297     
-</span><span class="marked1"><a name="line298"></a>298     it 'should create a Flog instance' do
-</span><span class="marked0"><a name="line299"></a>299       Flog.expects(:new).returns(@flog)
-</span><span class="marked1"><a name="line300"></a>300       run_command
-</span><span class="inferred0"><a name="line301"></a>301     end
-</span><span class="inferred1"><a name="line302"></a>302     
-</span><span class="marked0"><a name="line303"></a>303     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line304"></a>304       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line305"></a>305       run_command
-</span><span class="inferred1"><a name="line306"></a>306     end
-</span><span class="inferred0"><a name="line307"></a>307   end
-</span><span class="inferred1"><a name="line308"></a>308   
-</span><span class="marked0"><a name="line309"></a>309   describe 'when -b is specified on the command-line' do
-</span><span class="marked1"><a name="line310"></a>310     before :each do
-</span><span class="marked0"><a name="line311"></a>311       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line312"></a>312       ARGV = ['-b']
-</span><span class="inferred0"><a name="line313"></a>313     end
-</span><span class="inferred1"><a name="line314"></a>314 
-</span><span class="marked0"><a name="line315"></a>315     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line316"></a>316       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line317"></a>317       run_command
-</span><span class="inferred1"><a name="line318"></a>318     end
-</span><span class="inferred0"><a name="line319"></a>319     
-</span><span class="marked1"><a name="line320"></a>320     it &quot;should set the option to provide 'blame' information&quot; do
-</span><span class="marked0"><a name="line321"></a>321       Flog.expects(:new).with(:blame =&gt; true).returns(@flog)      
-</span><span class="marked1"><a name="line322"></a>322       run_command
-</span><span class="inferred0"><a name="line323"></a>323     end
-</span><span class="inferred1"><a name="line324"></a>324     
-</span><span class="marked0"><a name="line325"></a>325     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line326"></a>326       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line327"></a>327       run_command
-</span><span class="inferred1"><a name="line328"></a>328     end
-</span><span class="inferred0"><a name="line329"></a>329   end
-</span><span class="inferred1"><a name="line330"></a>330   
-</span><span class="marked0"><a name="line331"></a>331   describe 'when --blame is specified on the command-line' do
-</span><span class="marked1"><a name="line332"></a>332     before :each do
-</span><span class="marked0"><a name="line333"></a>333       Object.send(:remove_const, :ARGV)
-</span><span class="marked1"><a name="line334"></a>334       ARGV = ['--blame']
-</span><span class="inferred0"><a name="line335"></a>335     end
-</span><span class="inferred1"><a name="line336"></a>336 
-</span><span class="marked0"><a name="line337"></a>337     it 'should create a Flog instance' do
-</span><span class="marked1"><a name="line338"></a>338       Flog.expects(:new).returns(@flog)
-</span><span class="marked0"><a name="line339"></a>339       run_command
-</span><span class="inferred1"><a name="line340"></a>340     end
-</span><span class="inferred0"><a name="line341"></a>341     
-</span><span class="marked1"><a name="line342"></a>342     it &quot;should set the option to provide 'blame' information&quot; do
-</span><span class="marked0"><a name="line343"></a>343       Flog.expects(:new).with(:blame =&gt; true).returns(@flog)      
-</span><span class="marked1"><a name="line344"></a>344       run_command
-</span><span class="inferred0"><a name="line345"></a>345     end
-</span><span class="inferred1"><a name="line346"></a>346     
-</span><span class="marked0"><a name="line347"></a>347     it 'should exit with status 0' do
-</span><span class="marked1"><a name="line348"></a>348       self.expects(:exit).with(0)
-</span><span class="marked0"><a name="line349"></a>349       run_command
-</span><span class="inferred1"><a name="line350"></a>350     end
-</span><span class="inferred0"><a name="line351"></a>351   end
-</span><span class="inferred1"><a name="line352"></a>352 end
+<pre><span class="marked1"><a name="line1"></a>  1 require File.dirname(__FILE__) + '/spec_helper.rb'
+</span><span class="marked0"><a name="line2"></a>  2 require 'flog'
+</span><span class="inferred1"><a name="line3"></a>  3 
+</span><span class="marked0"><a name="line4"></a>  4 describe 'flog command' do
+</span><span class="marked1"><a name="line5"></a>  5   before :each do
+</span><span class="marked0"><a name="line6"></a>  6     @flog = stub('Flog', :flog_files =&gt; true, :report =&gt; true)
+</span><span class="marked1"><a name="line7"></a>  7     Flog.stubs(:new).returns(@flog)
+</span><span class="marked0"><a name="line8"></a>  8     self.stubs(:exit)
+</span><span class="marked1"><a name="line9"></a>  9     self.stubs(:puts)
+</span><span class="inferred0"><a name="line10"></a> 10   end
+</span><span class="inferred1"><a name="line11"></a> 11 
+</span><span class="marked0"><a name="line12"></a> 12   def run_command
+</span><span class="marked1"><a name="line13"></a> 13     eval File.read(File.join(File.dirname(__FILE__), *%w[.. bin flog]))
+</span><span class="marked0"><a name="line14"></a> 14   end
+</span><span class="inferred1"><a name="line15"></a> 15   
+</span><span class="marked0"><a name="line16"></a> 16   describe 'when no command-line arguments are specified' do
+</span><span class="marked1"><a name="line17"></a> 17     before :each do
+</span><span class="marked0"><a name="line18"></a> 18       Object.send(:remove_const, :ARGV)
+</span><span class="marked1"><a name="line19"></a> 19       ARGV = []
+</span><span class="inferred0"><a name="line20"></a> 20     end  
+</span><span class="inferred1"><a name="line21"></a> 21   
+</span><span class="marked0"><a name="line22"></a> 22     it 'should run' do
+</span><span class="marked1"><a name="line23"></a> 23       lambda { run_command }.should_not raise_error(Errno::ENOENT)
+</span><span class="inferred0"><a name="line24"></a> 24     end
+</span><span class="inferred1"><a name="line25"></a> 25     
+</span><span class="marked0"><a name="line26"></a> 26     it 'should not alter the include path' do
+</span><span class="marked1"><a name="line27"></a> 27       @paths = $:.dup
+</span><span class="marked0"><a name="line28"></a> 28       run_command
+</span><span class="marked1"><a name="line29"></a> 29       $:.should == @paths
+</span><span class="inferred0"><a name="line30"></a> 30     end
+</span><span class="inferred1"><a name="line31"></a> 31 
+</span><span class="marked0"><a name="line32"></a> 32     it 'should create a Flog instance' do
+</span><span class="marked1"><a name="line33"></a> 33       Flog.expects(:new).returns(@flog)
+</span><span class="marked0"><a name="line34"></a> 34       run_command
+</span><span class="inferred1"><a name="line35"></a> 35     end
+</span><span class="inferred0"><a name="line36"></a> 36     
+</span><span class="marked1"><a name="line37"></a> 37     it 'should not have any options flags set' do
+</span><span class="marked0"><a name="line38"></a> 38       Flog.expects(:new).with({}).returns(@flog)
+</span><span class="marked1"><a name="line39"></a> 39       run_command
+</span><span class="inferred0"><a name="line40"></a> 40     end
+</span><span class="inferred1"><a name="line41"></a> 41     
+</span><span class="marked0"><a name="line42"></a> 42     it 'should call flog_files on the Flog instance' do
+</span><span class="marked1"><a name="line43"></a> 43       @flog.expects(:flog_files)
+</span><span class="marked0"><a name="line44"></a> 44       run_command
+</span><span class="inferred1"><a name="line45"></a> 45     end
+</span><span class="inferred0"><a name="line46"></a> 46     
+</span><span class="marked1"><a name="line47"></a> 47     it &quot;should pass '-' (for the file path) to flog_files on the instance&quot; do
+</span><span class="marked0"><a name="line48"></a> 48       @flog.expects(:flog_files).with(['-'])
+</span><span class="marked1"><a name="line49"></a> 49       run_command
+</span><span class="inferred0"><a name="line50"></a> 50     end
+</span><span class="inferred1"><a name="line51"></a> 51 
+</span><span class="marked0"><a name="line52"></a> 52     it 'should call report on the Flog instance' do
+</span><span class="marked1"><a name="line53"></a> 53       @flog.expects(:report)
+</span><span class="marked0"><a name="line54"></a> 54       run_command
+</span><span class="inferred1"><a name="line55"></a> 55     end
+</span><span class="inferred0"><a name="line56"></a> 56     
+</span><span class="marked1"><a name="line57"></a> 57     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line58"></a> 58       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line59"></a> 59       run_command
+</span><span class="inferred0"><a name="line60"></a> 60     end
+</span><span class="inferred1"><a name="line61"></a> 61   end
+</span><span class="inferred0"><a name="line62"></a> 62   
+</span><span class="marked1"><a name="line63"></a> 63   describe &quot;when -a is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line64"></a> 64     before :each do
+</span><span class="marked1"><a name="line65"></a> 65       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line66"></a> 66       ARGV = ['-a']
+</span><span class="inferred1"><a name="line67"></a> 67     end
+</span><span class="inferred0"><a name="line68"></a> 68     
+</span><span class="marked1"><a name="line69"></a> 69     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line70"></a> 70       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line71"></a> 71       run_command
+</span><span class="inferred0"><a name="line72"></a> 72     end
+</span><span class="inferred1"><a name="line73"></a> 73     
+</span><span class="marked0"><a name="line74"></a> 74     it &quot;should set the option to show all methods&quot; do
+</span><span class="marked1"><a name="line75"></a> 75       Flog.expects(:new).with(:all =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line76"></a> 76       run_command
+</span><span class="inferred1"><a name="line77"></a> 77     end
+</span><span class="inferred0"><a name="line78"></a> 78     
+</span><span class="marked1"><a name="line79"></a> 79     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line80"></a> 80       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line81"></a> 81       run_command
+</span><span class="inferred0"><a name="line82"></a> 82     end
+</span><span class="inferred1"><a name="line83"></a> 83   end
+</span><span class="inferred0"><a name="line84"></a> 84   
+</span><span class="marked1"><a name="line85"></a> 85   describe &quot;when --all is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line86"></a> 86     before :each do
+</span><span class="marked1"><a name="line87"></a> 87       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line88"></a> 88       ARGV = ['--all']
+</span><span class="inferred1"><a name="line89"></a> 89     end
+</span><span class="inferred0"><a name="line90"></a> 90     
+</span><span class="marked1"><a name="line91"></a> 91     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line92"></a> 92       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line93"></a> 93       run_command
+</span><span class="inferred0"><a name="line94"></a> 94     end
+</span><span class="inferred1"><a name="line95"></a> 95     
+</span><span class="marked0"><a name="line96"></a> 96     it &quot;should set the option to show all methods&quot; do
+</span><span class="marked1"><a name="line97"></a> 97       Flog.expects(:new).with(:all =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line98"></a> 98       run_command
+</span><span class="inferred1"><a name="line99"></a> 99     end
+</span><span class="inferred0"><a name="line100"></a>100     
+</span><span class="marked1"><a name="line101"></a>101     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line102"></a>102       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line103"></a>103       run_command
+</span><span class="inferred0"><a name="line104"></a>104     end
+</span><span class="inferred1"><a name="line105"></a>105   end
+</span><span class="inferred0"><a name="line106"></a>106   
+</span><span class="marked1"><a name="line107"></a>107   describe &quot;when -s is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line108"></a>108     before :each do
+</span><span class="marked1"><a name="line109"></a>109       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line110"></a>110       ARGV = ['-s']
+</span><span class="inferred1"><a name="line111"></a>111     end
+</span><span class="inferred0"><a name="line112"></a>112     
+</span><span class="marked1"><a name="line113"></a>113     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line114"></a>114       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line115"></a>115       run_command
+</span><span class="inferred0"><a name="line116"></a>116     end
+</span><span class="inferred1"><a name="line117"></a>117 
+</span><span class="marked0"><a name="line118"></a>118     it &quot;should set the option to show only the score&quot; do
+</span><span class="marked1"><a name="line119"></a>119       Flog.expects(:new).with(:score =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line120"></a>120       run_command
+</span><span class="inferred1"><a name="line121"></a>121     end
+</span><span class="inferred0"><a name="line122"></a>122         
+</span><span class="marked1"><a name="line123"></a>123     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line124"></a>124       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line125"></a>125       run_command
+</span><span class="inferred0"><a name="line126"></a>126     end
+</span><span class="inferred1"><a name="line127"></a>127   end
+</span><span class="inferred0"><a name="line128"></a>128   
+</span><span class="marked1"><a name="line129"></a>129   describe &quot;when --score is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line130"></a>130     before :each do
+</span><span class="marked1"><a name="line131"></a>131       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line132"></a>132       ARGV = ['--score']
+</span><span class="inferred1"><a name="line133"></a>133     end
+</span><span class="inferred0"><a name="line134"></a>134     
+</span><span class="marked1"><a name="line135"></a>135     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line136"></a>136       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line137"></a>137       run_command
+</span><span class="inferred0"><a name="line138"></a>138     end
+</span><span class="inferred1"><a name="line139"></a>139     
+</span><span class="marked0"><a name="line140"></a>140     it &quot;should set the option to show only the score&quot; do
+</span><span class="marked1"><a name="line141"></a>141       Flog.expects(:new).with(:score =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line142"></a>142       run_command
+</span><span class="inferred1"><a name="line143"></a>143     end
+</span><span class="inferred0"><a name="line144"></a>144     
+</span><span class="marked1"><a name="line145"></a>145     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line146"></a>146       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line147"></a>147       run_command
+</span><span class="inferred0"><a name="line148"></a>148     end
+</span><span class="inferred1"><a name="line149"></a>149   end
+</span><span class="inferred0"><a name="line150"></a>150   
+</span><span class="marked1"><a name="line151"></a>151   describe &quot;when -m is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line152"></a>152     before :each do
+</span><span class="marked1"><a name="line153"></a>153       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line154"></a>154       ARGV = ['-m']
+</span><span class="inferred1"><a name="line155"></a>155     end
+</span><span class="inferred0"><a name="line156"></a>156     
+</span><span class="marked1"><a name="line157"></a>157     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line158"></a>158       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line159"></a>159       run_command
+</span><span class="inferred0"><a name="line160"></a>160     end
+</span><span class="inferred1"><a name="line161"></a>161     
+</span><span class="marked0"><a name="line162"></a>162     it &quot;should set the option to report on methods only&quot; do
+</span><span class="marked1"><a name="line163"></a>163       Flog.expects(:new).with(:methods =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line164"></a>164       run_command
+</span><span class="inferred1"><a name="line165"></a>165     end
+</span><span class="inferred0"><a name="line166"></a>166     
+</span><span class="marked1"><a name="line167"></a>167     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line168"></a>168       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line169"></a>169       run_command
+</span><span class="inferred0"><a name="line170"></a>170     end
+</span><span class="inferred1"><a name="line171"></a>171   end
+</span><span class="inferred0"><a name="line172"></a>172 
+</span><span class="marked1"><a name="line173"></a>173   describe &quot;when --methods-only is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line174"></a>174     before :each do
+</span><span class="marked1"><a name="line175"></a>175       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line176"></a>176       ARGV = ['--methods-only']
+</span><span class="inferred1"><a name="line177"></a>177     end
+</span><span class="inferred0"><a name="line178"></a>178     
+</span><span class="marked1"><a name="line179"></a>179     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line180"></a>180       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line181"></a>181       run_command
+</span><span class="inferred0"><a name="line182"></a>182     end
+</span><span class="inferred1"><a name="line183"></a>183 
+</span><span class="marked0"><a name="line184"></a>184     it &quot;should set the option to report on methods only&quot; do
+</span><span class="marked1"><a name="line185"></a>185       Flog.expects(:new).with(:methods =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line186"></a>186       run_command
+</span><span class="inferred1"><a name="line187"></a>187     end
+</span><span class="inferred0"><a name="line188"></a>188         
+</span><span class="marked1"><a name="line189"></a>189     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line190"></a>190       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line191"></a>191       run_command
+</span><span class="inferred0"><a name="line192"></a>192     end
+</span><span class="inferred1"><a name="line193"></a>193   end
+</span><span class="inferred0"><a name="line194"></a>194 
+</span><span class="marked1"><a name="line195"></a>195   describe &quot;when -v is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line196"></a>196     before :each do
+</span><span class="marked1"><a name="line197"></a>197       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line198"></a>198       ARGV = ['-v']
+</span><span class="inferred1"><a name="line199"></a>199     end
+</span><span class="inferred0"><a name="line200"></a>200     
+</span><span class="marked1"><a name="line201"></a>201     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line202"></a>202       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line203"></a>203       run_command
+</span><span class="inferred0"><a name="line204"></a>204     end
+</span><span class="inferred1"><a name="line205"></a>205     
+</span><span class="marked0"><a name="line206"></a>206     it &quot;should set the option to be verbose&quot; do
+</span><span class="marked1"><a name="line207"></a>207       Flog.expects(:new).with(:verbose =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line208"></a>208       run_command
+</span><span class="inferred1"><a name="line209"></a>209     end
+</span><span class="inferred0"><a name="line210"></a>210     
+</span><span class="marked1"><a name="line211"></a>211     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line212"></a>212       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line213"></a>213       run_command
+</span><span class="inferred0"><a name="line214"></a>214     end
+</span><span class="inferred1"><a name="line215"></a>215   end
+</span><span class="inferred0"><a name="line216"></a>216 
+</span><span class="marked1"><a name="line217"></a>217   describe &quot;when --verbose is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line218"></a>218     before :each do
+</span><span class="marked1"><a name="line219"></a>219       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line220"></a>220       ARGV = ['--verbose']
+</span><span class="inferred1"><a name="line221"></a>221     end
+</span><span class="inferred0"><a name="line222"></a>222     
+</span><span class="marked1"><a name="line223"></a>223     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line224"></a>224       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line225"></a>225       run_command
+</span><span class="inferred0"><a name="line226"></a>226     end
+</span><span class="inferred1"><a name="line227"></a>227     
+</span><span class="marked0"><a name="line228"></a>228     it &quot;should set the option to be verbose&quot; do
+</span><span class="marked1"><a name="line229"></a>229       Flog.expects(:new).with(:verbose =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line230"></a>230       run_command
+</span><span class="inferred1"><a name="line231"></a>231     end
+</span><span class="inferred0"><a name="line232"></a>232     
+</span><span class="marked1"><a name="line233"></a>233     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line234"></a>234       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line235"></a>235       run_command
+</span><span class="inferred0"><a name="line236"></a>236     end
+</span><span class="inferred1"><a name="line237"></a>237   end
+</span><span class="inferred0"><a name="line238"></a>238 
+</span><span class="marked1"><a name="line239"></a>239   describe &quot;when -h is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line240"></a>240     before :each do
+</span><span class="marked1"><a name="line241"></a>241       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line242"></a>242       ARGV = ['-h']
+</span><span class="inferred1"><a name="line243"></a>243     end
+</span><span class="inferred0"><a name="line244"></a>244     
+</span><span class="marked1"><a name="line245"></a>245     it &quot;should display help information&quot; do
+</span><span class="marked0"><a name="line246"></a>246       self.expects(:puts)
+</span><span class="marked1"><a name="line247"></a>247       run_command
+</span><span class="inferred0"><a name="line248"></a>248     end
+</span><span class="inferred1"><a name="line249"></a>249     
+</span><span class="marked0"><a name="line250"></a>250     it 'should not create a Flog instance' do
+</span><span class="marked1"><a name="line251"></a>251       Flog.expects(:new).never
+</span><span class="marked0"><a name="line252"></a>252       run_command
+</span><span class="inferred1"><a name="line253"></a>253     end
+</span><span class="inferred0"><a name="line254"></a>254     
+</span><span class="marked1"><a name="line255"></a>255     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line256"></a>256       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line257"></a>257       run_command
+</span><span class="inferred0"><a name="line258"></a>258     end
+</span><span class="inferred1"><a name="line259"></a>259   end
+</span><span class="inferred0"><a name="line260"></a>260   
+</span><span class="marked1"><a name="line261"></a>261   describe &quot;when --help is specified on the command-line&quot; do
+</span><span class="marked0"><a name="line262"></a>262     before :each do
+</span><span class="marked1"><a name="line263"></a>263       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line264"></a>264       ARGV = ['--help']
+</span><span class="inferred1"><a name="line265"></a>265     end
+</span><span class="inferred0"><a name="line266"></a>266     
+</span><span class="marked1"><a name="line267"></a>267     it &quot;should display help information&quot; do
+</span><span class="marked0"><a name="line268"></a>268       self.expects(:puts)
+</span><span class="marked1"><a name="line269"></a>269       run_command
+</span><span class="inferred0"><a name="line270"></a>270     end
+</span><span class="inferred1"><a name="line271"></a>271     
+</span><span class="marked0"><a name="line272"></a>272     it 'should not create a Flog instance' do
+</span><span class="marked1"><a name="line273"></a>273       Flog.expects(:new).never
+</span><span class="marked0"><a name="line274"></a>274       run_command
+</span><span class="inferred1"><a name="line275"></a>275     end
+</span><span class="inferred0"><a name="line276"></a>276     
+</span><span class="marked1"><a name="line277"></a>277     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line278"></a>278       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line279"></a>279       run_command
+</span><span class="inferred0"><a name="line280"></a>280     end
+</span><span class="inferred1"><a name="line281"></a>281   end
+</span><span class="inferred0"><a name="line282"></a>282   
+</span><span class="marked1"><a name="line283"></a>283   describe 'when -I is specified on the command-line' do
+</span><span class="marked0"><a name="line284"></a>284     before :each do
+</span><span class="marked1"><a name="line285"></a>285       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line286"></a>286       ARGV = ['-I /tmp,/etc']
+</span><span class="inferred1"><a name="line287"></a>287     end
+</span><span class="inferred0"><a name="line288"></a>288     
+</span><span class="marked1"><a name="line289"></a>289     before :each do
+</span><span class="marked0"><a name="line290"></a>290       @paths = $:.dup
+</span><span class="inferred1"><a name="line291"></a>291     end
+</span><span class="inferred0"><a name="line292"></a>292  
+</span><span class="marked1"><a name="line293"></a>293     it &quot;should append each ':' separated path to $:&quot; do
+</span><span class="marked0"><a name="line294"></a>294       run_command
+</span><span class="marked1"><a name="line295"></a>295       $:.should_not == @paths
+</span><span class="inferred0"><a name="line296"></a>296     end
+</span><span class="inferred1"><a name="line297"></a>297     
+</span><span class="marked0"><a name="line298"></a>298     it 'should create a Flog instance' do
+</span><span class="marked1"><a name="line299"></a>299       Flog.expects(:new).returns(@flog)
+</span><span class="marked0"><a name="line300"></a>300       run_command
+</span><span class="inferred1"><a name="line301"></a>301     end
+</span><span class="inferred0"><a name="line302"></a>302     
+</span><span class="marked1"><a name="line303"></a>303     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line304"></a>304       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line305"></a>305       run_command
+</span><span class="inferred0"><a name="line306"></a>306     end
+</span><span class="inferred1"><a name="line307"></a>307   end
+</span><span class="inferred0"><a name="line308"></a>308   
+</span><span class="marked1"><a name="line309"></a>309   describe 'when -b is specified on the command-line' do
+</span><span class="marked0"><a name="line310"></a>310     before :each do
+</span><span class="marked1"><a name="line311"></a>311       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line312"></a>312       ARGV = ['-b']
+</span><span class="inferred1"><a name="line313"></a>313     end
+</span><span class="inferred0"><a name="line314"></a>314 
+</span><span class="marked1"><a name="line315"></a>315     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line316"></a>316       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line317"></a>317       run_command
+</span><span class="inferred0"><a name="line318"></a>318     end
+</span><span class="inferred1"><a name="line319"></a>319     
+</span><span class="marked0"><a name="line320"></a>320     it &quot;should set the option to provide 'blame' information&quot; do
+</span><span class="marked1"><a name="line321"></a>321       Flog.expects(:new).with(:blame =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line322"></a>322       run_command
+</span><span class="inferred1"><a name="line323"></a>323     end
+</span><span class="inferred0"><a name="line324"></a>324     
+</span><span class="marked1"><a name="line325"></a>325     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line326"></a>326       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line327"></a>327       run_command
+</span><span class="inferred0"><a name="line328"></a>328     end
+</span><span class="inferred1"><a name="line329"></a>329   end
+</span><span class="inferred0"><a name="line330"></a>330   
+</span><span class="marked1"><a name="line331"></a>331   describe 'when --blame is specified on the command-line' do
+</span><span class="marked0"><a name="line332"></a>332     before :each do
+</span><span class="marked1"><a name="line333"></a>333       Object.send(:remove_const, :ARGV)
+</span><span class="marked0"><a name="line334"></a>334       ARGV = ['--blame']
+</span><span class="inferred1"><a name="line335"></a>335     end
+</span><span class="inferred0"><a name="line336"></a>336 
+</span><span class="marked1"><a name="line337"></a>337     it 'should create a Flog instance' do
+</span><span class="marked0"><a name="line338"></a>338       Flog.expects(:new).returns(@flog)
+</span><span class="marked1"><a name="line339"></a>339       run_command
+</span><span class="inferred0"><a name="line340"></a>340     end
+</span><span class="inferred1"><a name="line341"></a>341     
+</span><span class="marked0"><a name="line342"></a>342     it &quot;should set the option to provide 'blame' information&quot; do
+</span><span class="marked1"><a name="line343"></a>343       Flog.expects(:new).with(:blame =&gt; true).returns(@flog)      
+</span><span class="marked0"><a name="line344"></a>344       run_command
+</span><span class="inferred1"><a name="line345"></a>345     end
+</span><span class="inferred0"><a name="line346"></a>346     
+</span><span class="marked1"><a name="line347"></a>347     it 'should exit with status 0' do
+</span><span class="marked0"><a name="line348"></a>348       self.expects(:exit).with(0)
+</span><span class="marked1"><a name="line349"></a>349       run_command
+</span><span class="inferred0"><a name="line350"></a>350     end
+</span><span class="inferred1"><a name="line351"></a>351   end
+</span><span class="inferred0"><a name="line352"></a>352 end
 </span></pre><hr/>
     <p>Generated using the <a href='http://eigenclass.org/hiki.rb?rcov'>rcov code coverage analysis tool for Ruby</a>
    version 0.8.1.2.</p>

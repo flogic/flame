@@ -98,6 +98,7 @@ class Flog < SexpProcessor
   end
   
   def flog(ruby, file)
+    collect_blame(file) if options[:blame]
     process_parse_tree(ruby, file)
   rescue SyntaxError => e
     raise e unless e.inspect =~ /<%|%>/
