@@ -21,6 +21,10 @@ op = OptionParser.new do |opts|
     options[:paths] = list.collect {|l| l.to_s }
   end
   
+  opts.on('-b', '--blame', 'include blame information for methods') do |b|
+    options[:blame] = b
+  end
+  
   opts.on('-v', '--verbose', 'verbosely display progress and errors')  do |v| 
     options[:verbose] = v
   end
