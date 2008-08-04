@@ -158,6 +158,17 @@ describe Flog do
         after :each do
           $stdin = @stdin
         end
+        
+        describe 'when reporting blame information' do
+          before :each do
+            @flog = Flog.new(:blame => true)
+            @flog.stubs(:flog)
+          end
+          
+          it 'should fail' do
+            lambda { @flog.flog_file('-') }.should raise_error(RuntimeError)
+          end
+        end
 
         it 'should not raise an exception' do
           lambda { @flog.flog_file('-') }.should_not raise_error

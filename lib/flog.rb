@@ -84,7 +84,10 @@ class Flog < SexpProcessor
   
   def flog_file(file)
     return flog_directory(file) if File.directory? file
-    data = $stdin.read if file == '-'
+    if file == '-'
+      raise "Cannot provide blame information for code provided on input stream." if options[:blame]
+      data = $stdin.read
+    end
     data ||= File.read(file)
     warn "** flogging #{file}" if options[:verbose]
     flog(data, file)
