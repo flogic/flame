@@ -304,6 +304,24 @@ describe Flog do
       lambda { @flog.flog('string') }.should raise_error(ArgumentError)
     end
     
+    describe 'when reporting blame information' do
+      before :each do
+        @flog = Flog.new(:blame => true)
+      end
+      
+      it 'should gather blame information for the file' do
+        @flog.expects(:collect_blame).with('filename')
+        @flog.flog('string', 'filename')
+      end
+    end
+    
+    describe 'when not reporting blame information' do
+      it 'should not gather blame information for the file' do
+        @flog.expects(:collect_blame).never 
+        @flog.flog('string', 'filename')
+      end
+    end
+    
     describe 'when the string has a syntax error' do
       before :each do
         @flog.stubs(:warn)
@@ -1001,7 +1019,7 @@ describe Flog do
     end
   end
   
-  describe 'when generating a report' do    
+  describe 'when generating a report' do
     it 'allows specifying an i/o handle' do
       lambda { @flog.report 'handle' }.should_not raise_error(ArgumentError)
     end
