@@ -460,7 +460,7 @@ describe Flog do
       @flog.should respond_to(:multiplier)
     end
   
-    it 'should be possible to set the current value of the multiplier' do
+    currently 'should be possible to set the current value of the multiplier' do
       @flog.multiplier = 10
       @flog.multiplier.should == 10
     end
@@ -471,7 +471,7 @@ describe Flog do
       @flog.should respond_to(:class_stack)
     end
   
-    it 'should be possible to set the current value of the class stack' do
+    currently 'should be possible to set the current value of the class stack' do
       @flog.class_stack = [ 'name' ]
       @flog.class_stack.should == [ 'name' ]
     end
@@ -482,7 +482,7 @@ describe Flog do
       @flog.should respond_to(:method_stack)
     end
   
-    it 'should be possible to set the current value of the method stack' do
+    currently 'should be possible to set the current value of the method stack' do
       @flog.method_stack = [ 'name' ]
       @flog.method_stack.should == [ 'name' ]
     end
@@ -656,12 +656,12 @@ describe Flog do
       lambda { @flog.method_name('foo') }.should raise_error(ArgumentError)
     end
     
-    it 'should return the most recent class entered' do
+    it 'should return the most recent method entered' do
       @flog.method_stack = [:foo, :bar, :baz]
       @flog.method_name.should == :foo
     end
     
-    it 'should return the default class if no classes entered' do
+    it 'should return the default method if no methods entered' do
       @flog.method_stack = []
       @flog.method_name.should == :none
     end
@@ -1032,6 +1032,10 @@ describe Flog do
   end
   
   describe 'when generating a report' do
+    before :each do
+      @flog.stubs(:output_summary)
+    end
+    
     it 'allows specifying an i/o handle' do
       lambda { @flog.report 'handle' }.should_not raise_error(ArgumentError)
     end
